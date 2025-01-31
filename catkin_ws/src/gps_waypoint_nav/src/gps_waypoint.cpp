@@ -208,7 +208,7 @@ int main(int argc, char** argv)
 
     //Reading waypoints from text file and output results
     waypointVect = getWaypoints(path_local);
-    ROS_INFO("waypointVect: %d", waypointVect.size());
+    //ROS_INFO("waypointVect: %d", waypointVect.size());
 
     goal_tolerance = 7.0; //set goal tolerance
 
