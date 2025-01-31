@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<node ns="/gps_waypoint_nav" pkg="gps_waypoint_nav" type="setdatum" name="setdatum" output="screen"/>
+
+</launch>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rslidar_broadcaster" args="0.15 0 0.13 0 0.37 0 base rslidar " />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_camera_link_broadcaster" args="0.16 0 0.06 0 0 0 base camera_link" />
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_broadcaster" args="0 0 0 0 0 0 odom base" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom_broadcaster" args="0 0 0 0 0 0 map odom" /> -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_gps_broadcaster" args="0 0 0 0 0 0 base gps" />
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_map_broadcaster" args="0 0 0 0 0 0 utm map" /> -->
+
+    <param name="use_sim_time" value="true" />
+
+    <!-- Collect Goals-->
+    <!-- <include file="$(find gps_waypoint_nav)/launch/include/collect_goals.launch" /> -->
+
+    <!-- Wait for parameter 'collect_goals_finished' -->
+    <!-- <wait_for_param timeout="30" name="collect_goals_finished">
+        <on_timeout>fatal error</on_timeout>
+    </wait_for_param>
+     -->
+    <!-- Group to contain the rest of the components -->
+    <!-- <group name="main_components"> -->
+        <include file="$(find gps_waypoint_nav)/launch/include/setdatum.launch" />
+
+        <!-- Launch robot_localization and navsat -->
+        <include file="$(find gps_waypoint_nav)/launch/include/localization_run.launch"/>
+
+        <!-- Launch mapviz -->
+        <include file="$(find gps_waypoint_nav)/launch/mapviz.launch"/>
+
+        <!-- Run the node to send goals to the robot -->
+        <include file="$(find gps_waypoint_nav)/launch/include/send_goals.launch" />
+    <!-- </group> -->
+
+</launch>

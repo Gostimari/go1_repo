@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <group ns="/gps_waypoint_nav"> 
+  <rosparam command="load" file="$(find gps_waypoint_nav)/params/ekf_params.yaml" />
+  <rosparam command="load" file="$(find gps_waypoint_nav)/params/navsat_params.yaml" />
+  
+  <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params="true"/> -->
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
+    <remap from="odometry/filtered" to="odometry/navsat"/>
+  </node>
+
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
+      <remap from="odometry/filtered" to="odometry/navsat"/>
+      <remap from="gps/fix" to="/reach/fix"/>
+  </node>
+  </group>
+
+</launch>
