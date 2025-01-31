@@ -21,9 +21,9 @@ services:
     volumes:
         - type: bind
           source: ../catkin_ws/src
-          target: /catkin_ws/src
+          target: /root/catkin_ws/src
     environment:
-        - SETUP=~/catkin_ws/devel/setup.bash
+        - SETUP=/root/catkin_ws/devel/setup.bash
         - BUILDLIST= traversability_mapping #Only these packages will be build
     command: ./melodic-launch.sh
   
@@ -39,9 +39,9 @@ services:
     volumes:
         - type: bind
           source: ../catkin_ws/src
-          target: /catkin_ws/src
+          target: /root/catkin_ws/src
     environment:
-        - SETUP=~/catkin_ws/devel/setup.bash
+        - SETUP=/root/catkin_ws/devel/setup.bash
         - BUILDLIST= elevation_mapping gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pillot unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
     command: ./noetic-launch.sh
 
