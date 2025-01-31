@@ -45,7 +45,7 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
 
 
 #Configure catkin workspace
-ENV CATKIN_WS=/root/catkin_ws
+ENV CATKIN_WS=~/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
 WORKDIR $CATKIN_WS
 
