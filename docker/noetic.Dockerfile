@@ -1,0 +1,68 @@
+ARG ARCH=
+ARG CORES=2
+FROM ${ARCH}ros:noetic-ros-base
+
+LABEL maintainer="Duarte Cruz <duarte.cruz@isr.uc.pt>"
+
+ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
+
+SHELL ["/bin/bash","-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install packages
+RUN apt-get update \
+    && apt-get install -y \
+    # Basic utilities
+    build-essential \
+    apt-utils \
+    curl \
+    git \
+    wget \
+    vim \
+    nano \
+    libtbb-dev \
+    libgoogle-glog-dev
+
+
+# Install some python packages
+RUN apt-get -y install \
+    python3 \
+    python3-pip \
+    python3-serial \
+    python3-rosinstall \
+    python3-rosinstall-generator \
+    python3-wstool \
+    python3-rosdep \
+    python3-catkin-tools
+
+#Install ROS Packages
+RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \ 
+    ros-${ROS_DISTRO}-geometry \
+    ros-${ROS_DISTRO}-grid-map-core \
+    ros-${ROS_DISTRO}-grid-map-ros \
+    ros-${ROS_DISTRO}-grid-map-filters \
+    ros-${ROS_DISTRO}-grid-map-rviz-plugins \
+    ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-navigation \
+    ros-${ROS_DISTRO}-mapviz
+
+# Clean-up
+WORKDIR /
+RUN apt-get clean
+
+#Configure catkin workspace
+ENV CATKIN_WS=/root/catkin_ws
+RUN mkdir -p $CATKIN_WS/src
+#WORKDIR $CATKIN_WS
+
+# Clean-up
+WORKDIR /
+RUN apt-get clean
+
+#RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
+COPY noetic-launch.sh /noetic-launch.sh
+RUN chmod +x /noetic-launch.sh
+
+#ENTRYPOINT ["/noetic-launch.sh"]
+CMD ["bash"]

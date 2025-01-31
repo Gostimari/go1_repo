@@ -26,7 +26,6 @@ find_package(catkin REQUIRED COMPONENTS
   pluginlib
   nav_core
   laser_geometry
-  pcl_conversions
 )
 
 find_package(Boost REQUIRED COMPONENTS filesystem)
