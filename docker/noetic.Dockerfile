@@ -52,7 +52,7 @@ WORKDIR /
 RUN apt-get clean
 
 #Configure catkin workspace
-ENV CATKIN_WS=~/catkin_ws
+ENV CATKIN_WS=/root/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
 #WORKDIR $CATKIN_WS
 
