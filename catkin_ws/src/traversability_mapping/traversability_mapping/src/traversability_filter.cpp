@@ -1,6 +1,5 @@
 #include "utility.h"
 #include <boost/shared_ptr.hpp>
-#include <gazebo_msgs/ModelStates.h>
 #include <laser_geometry/laser_geometry.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <tf/transform_listener.h>

@@ -1,92 +1,107 @@
-# go1_repo
+# Waypoint Navigation on Unitree Go1 Edu in Irregular Outdoor Terrains
 
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/duarte/testes-noetic/src/ros_unitree/unitree_ros/unitree_gazebo/worlds/models
+This Repo has 3 pipelines to waypoint autonomous navigation on the Unitree Go1 Edu version. To install this on your system you have to follow this steps:
 
-Melodic compilation:
-    catkin_make -DCATKIN_WHITELIST_PACKAGES="cloud_msgs"
-    catkin_make -DCATKIN_WHITELIST_PACKAGES=""
+1 -> Install docker on you machine:
 
-Traversability Mapping:
+    Official docker website: https://docs.docker.com/desktop/
 
-ROS NOETIC:
+    OR
 
-    roslaunch unitree_gazebo robot_simulation.launch
-
-    rosrun unitree_guide junior_ctrl   ( tecla 2 -> 5 para ficar em move_base)
-
-ROS MELODIC:
-
-    roslaunch traversability_mapping offline_sim.launch
-
-
-Elevation Mapping:
-
-ROS NOETIC:
-
-    roslaunch unitree_gazebo elev_simulation.launch
-
-    rosrun unitree_guide junior_ctrl   ( tecla 2 -> 5 para ficar em move_base)
-
-    roslaunch elevation_mapping_demos go1_elevation_sim.launch
+    Ubuntu:
+        sudo apt install docker docker-compose
     
-MEBT:
-    roslaunch navigation_final_semfire_pilot ranger_navigation.launch
+    Fedora:
+        sudo dnf install docker docker-compose
 
+2 -> Clone this repository to you machine:
 
-Waypoint Navigation on Traversability e Elevation:
+    2.1 -> Install git:
+            Ubuntu:
+                sudo apt install git
+            Fedora:
+                sudo dnf install git
+    2.2 -> Clone Repo
+            git clone https://github.com/Gostimari/go1_repo.git
 
-ROS NOETIC:
+3 -> Enter the docker directory of this cloned repository and run docker compose:
 
-    - Change the desired waypoints on the .txt file located on: /outdoor_waypoint_nav/waypoint_files/points_sim.txt
-
-    roslaunch outdoor_waypoint_nav send_goals_sim.launch
-
-
-SLAM com OCTOMAP: (Keyboard Navigation)
-
-    roslaunch unitree_gazebo slam_simulation.launch
-
-    rosrun unitree_guide junior_ctrl   ( tecla 2 -> 5 para ficar em move_base)
-
-    roslaunch unitree_navigation slam.launch
+    Official docker website:
+        docker compose up
     
-LIO-SAM:
+    Ubuntu/Fedora:
+        docker-compose up
+
+Now that all the packages and workspace is ready you have three options to start the system. Every options has a different mapping algorithm.
+
+Navigation with elevation_mapping:
+
+    ROS NOETIC:
+
+    roslaunch ig_lio noetic_main_elev.launch
+
+Navigation with Mechanical Effort Based Traversability:
+
+    ROS NOETIC:
+
+    roslaunch ig_lio noetic_main_mebt.launch
+
+Navigation with traversability_mapping:
+
+    ROS NOETIC:
+
+    roslaunch ig_lio noetic_main_trav.launch
+
+    ROS MELODIC:
+
+    roslaunch traversability_mapping offline.launch
+
+
+To run individually all the algorithms you have bellow the launch files to the different packages:
+
+ig_lio:
     
-ROS MELODIC:
+    ROS NOETIC:
 
-    roslaunch lio_sam run.launch
-
-ROS NOETIC:
-
-    IG-LIO:
     roslaunch ig_lio lio_velodyne_Bpearl.launch
 
+traversability_mapping:
+
+    ROS MELODIC:
+
+    roslaunch traversability_mapping offline.launch
+
+
+elevation_mapping:
+
+    ROS NOETIC:
+
+    roslaunch elevation_mapping_demos go1_elevation.launch
+    
+navigation_final_semfire_pilot:
+
+    ROS NOETIC:
+
+    roslaunch navigation_final_semfire_pilot ranger_navigation.launch
+    
 gps_waypoint_nav:
 
-ROS NOETIC:
+    ROS NOETIC:
 
-    COLLECT POINTS:
-    roslaunch gps_waypoint_nav collect_goals.launch
-    
-    roslaunch gps_waypoint_nav gps_waypoint_nav.launch
-    
-    MAPVIZ:
-    roslaunch gps_waypoint_nav mapviz.launch
+        COLLECT POINTS:
+        roslaunch gps_waypoint_nav collect_goals.launch
+        
+        SEND POINS TO NAVIGATION:
+        roslaunch gps_waypoint_nav gps_waypoint_nav.launch
+        
+        MAPVIZ:
+        roslaunch gps_waypoint_nav mapviz.launch
 
-
-    
-MAP DOCKER:
-
-    sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy
-    
-    or Docker Desktop App
-    
-MAPVIZ TILE-MAP LINK:
-    
-    http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
-    Max Zoom: 19
-    
-    
-Bag: (IMU-GNSS)
-    
-    rosbag play bagfile_*.bag gt.bag --clock
+        MAP DOCKER:
+        sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy  
+        or 
+        Docker Official Desktop App
+        
+        MAPVIZ TILE-MAP LINK:
+        http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+        Max Zoom: 19

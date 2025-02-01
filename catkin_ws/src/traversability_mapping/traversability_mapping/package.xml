@@ -45,9 +45,6 @@
   <build_depend>elevation_msgs</build_depend>
   <run_depend>elevation_msgs</run_depend>
 
-  <build_depend>gazebo_msgs</build_depend>
-  <run_depend>gazebo_msgs</run_depend>
-
   <build_depend>laser_geometry</build_depend>
   <run_depend>laser_geometry</run_depend>
 

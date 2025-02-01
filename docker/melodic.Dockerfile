@@ -36,6 +36,7 @@ RUN apt-get -y install \
 #Install ROS Packages
 RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-tf \
+    ros-${ROS_DISTRO}-tf-conversions \
     ros-${ROS_DISTRO}-cv-bridge \
     ros-${ROS_DISTRO}-image-transport \
     ros-${ROS_DISTRO}-pcl-ros \
@@ -57,5 +58,5 @@ RUN apt-get clean
 COPY melodic-launch.sh /melodic-launch.sh
 RUN chmod +x /melodic-launch.sh
 
-#ENTRYPOINT ["/noetic-launch.sh"]
+#ENTRYPOINT ["/melodic-launch.sh"]
 CMD ["bash"]

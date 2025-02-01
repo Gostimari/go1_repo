@@ -1,5 +1,4 @@
 #include "utility.h"
-#include <gazebo_msgs/ModelStates.h>
 
 class TraversabilityMapping {
 

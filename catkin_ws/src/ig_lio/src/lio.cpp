@@ -670,7 +670,7 @@ bool LIO::ErrorStateUpdate(const double dt,
   Eigen::Vector3d a0 = acc_0 - curr_state_.ba;
   Eigen::Vector3d a1 = acc_1 - curr_state_.ba;
 
-  Eigen::Matrix3d w_x = Sophus::SO3d::hat(w).matrix();
+  //Eigen::Matrix3d w_x = Sophus::SO3d::hat(w).matrix();
   Eigen::Matrix3d a0_x = Sophus::SO3d::hat(a0).matrix();
   Eigen::Matrix3d a1_x = Sophus::SO3d::hat(a1).matrix();
   Eigen::Matrix3d I_w_x = Sophus::SO3d::exp(-w * dt).matrix();

@@ -17,7 +17,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   geometry_msgs
-  gazebo_msgs
   nav_msgs
   elevation_msgs
   # visualization

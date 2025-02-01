@@ -36,6 +36,8 @@ RUN apt-get -y install \
     python3-rosdep \
     python3-catkin-tools
 
+RUN pip3 install matplotlib
+
 #Install ROS Packages
 RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \ 
     ros-${ROS_DISTRO}-geometry \
@@ -45,7 +47,8 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-grid-map-rviz-plugin \
     ros-${ROS_DISTRO}-robot-localization \
     ros-${ROS_DISTRO}-navigation \
-    ros-${ROS_DISTRO}-mapviz
+    ros-${ROS_DISTRO}-mapviz \
+    ros-${ROS_DISTRO}-rviz
 
 # Clean-up
 WORKDIR /
