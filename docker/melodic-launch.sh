@@ -5,6 +5,7 @@ set -e
 cd /root/catkin_ws
 catkin config --whitelist $BUILDLIST #only builds these packages
 catkin build -v
-source $SETUP
 
-roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file
+source $SETUP
+exec /bin/bash
+#roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file

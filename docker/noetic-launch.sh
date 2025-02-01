@@ -15,4 +15,5 @@ else
         echo "source env is set to '/opt/ros/$ROS_DISTRO/setup.bash'"
 fi
 source $SETUP
-roslaunch --wait $ROSPACKAGE $LAUNCHFILE
+exec /bin/bash
+#roslaunch --wait $ROSPACKAGE $LAUNCHFILE
