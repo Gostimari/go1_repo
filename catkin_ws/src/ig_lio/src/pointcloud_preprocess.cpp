@@ -37,7 +37,6 @@ void PointCloudPreprocess::ProcessVelodyne(
   std::vector<double> yaw_fp(num_scans_, 0.0);    // yaw of first scan point
   std::vector<float> yaw_last(num_scans_, 0.0);   // yaw of last scan point
   std::vector<float> time_last(num_scans_, 0.0);  // last offset time
-  double yaw_end = 0.0;
   if (cloud_origin.back().time > 0) {
     has_time_ = true;
   } else {
@@ -45,7 +44,7 @@ void PointCloudPreprocess::ProcessVelodyne(
     has_time_ = false;
     double yaw_first =
         atan2(cloud_origin.points[0].y, cloud_origin.points[0].x) * 57.29578;
-    yaw_end = yaw_first;
+    double yaw_end = yaw_first;
     int layer_first = cloud_origin.points[0].ring;
     for (uint i = plsize - 1; i > 0; i--) {
       if (cloud_origin.points[i].ring == layer_first) {
