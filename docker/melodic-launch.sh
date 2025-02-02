@@ -8,7 +8,7 @@ catkin build -v
 
 source $SETUP
 
-
+exec /bin/bash
 
 #!/bin/bash
 # while true; do

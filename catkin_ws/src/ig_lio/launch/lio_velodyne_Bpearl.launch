@@ -50,5 +50,5 @@
     </node-->
 
     <!-- RViz Visualization -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ig_lio)/rviz/lio_show_mine.rviz" required="true" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ig_lio)/rviz/lio_show_mine.rviz" required="true" /> -->
 </launch>

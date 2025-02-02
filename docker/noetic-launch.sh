@@ -16,9 +16,10 @@ else
 fi
 source $SETUP
 
+#exec /bin/bash
 #!/bin/bash
 # while true; do
 #     echo "Service is running..."
 #     sleep 1
 # done
-#roslaunch --wait $ROSPACKAGE $LAUNCHFILE
+roslaunch $ROSPACKAGE $LAUNCHFILE

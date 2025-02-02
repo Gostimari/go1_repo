@@ -46,6 +46,8 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-grid-map-ros \
     ros-${ROS_DISTRO}-grid-map-filters \
     ros-${ROS_DISTRO}-grid-map-rviz-plugin \
+    ros-${ROS_DISTRO}-grid-map-visualization \
+    ros-${ROS_DISTRO}-imu-filter-madgwick \
     ros-${ROS_DISTRO}-robot-localization \
     ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-mapviz \
