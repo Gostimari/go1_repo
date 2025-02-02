@@ -1,8 +1,0 @@
-prefix=/root/catkin_ws/install
-
-Name: gps_waypoint_nav
-Description: Description of gps_waypoint_nav
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

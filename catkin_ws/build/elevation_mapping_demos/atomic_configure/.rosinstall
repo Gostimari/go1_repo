@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /root/catkin_ws/devel/.private/elevation_mapping_demos/setup.sh

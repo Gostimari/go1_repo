@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /root/catkin_ws/devel/.private/gps_waypoint_nav/setup.sh

@@ -1,2 +1,0 @@
-set(metrics_extractor_MESSAGE_FILES "/root/catkin_ws/src/metrics_extractor/msg/MotorState.msg")
-set(metrics_extractor_SERVICE_FILES "")
