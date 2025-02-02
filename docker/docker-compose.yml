@@ -22,7 +22,7 @@ services:
   #       #- LAUNCHFILE=offline.launch
   #   command: ./melodic-launch.sh
   
-  # ##Create the Noetic Container
+  #Create the Noetic Container
   ros-noetic:
     build:
       context: .
@@ -48,19 +48,15 @@ services:
     command: ./noetic-launch.sh
 
 
-  # tilemap:
-  #   build:
-  #     context: .
-  #     dockerfile: tilemap.Dockerfile
-  #   tty: true
-  #   environment:
-  #     - THREADS=24
-  #   stdin_open: true
-  #   network_mode: "host"
-  #   volumes:
-  #       - $HOME/.cache/tilemap/openstreetmap-data:/var/lib/postgresql/12/main
-  #       - $HOME/.cache/tilemap/openstreetmap-rendered-tiles:/var/lib/mod_tile
-  #   command: run
+  tilemap:
+    build:
+      context: .
+      dockerfile: tilemap.Dockerfile
+    environment:
+      - THREADS=24
+      - ALLOW_CORS=enabled
+    network_mode: "host"
+    command: run
 
 
 

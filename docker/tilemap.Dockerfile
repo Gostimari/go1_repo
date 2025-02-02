@@ -10,4 +10,4 @@ ENV THREADS 24
 
 ENV ALLOW_CORS true
 
-CMD ["run"] 
+RUN ./run.sh import
