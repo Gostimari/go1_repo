@@ -2,7 +2,6 @@
 
 #include "elevation_msgs/OccupancyElevation.h"
 #include "move_base_msgs/MoveBaseActionGoal.h"
-#include <gazebo_msgs/ModelStates.h>
 
 
 class TraversabilityPRM{
@@ -37,8 +36,6 @@ private:
     
     nav_msgs::Path globalPath;
     nav_msgs::Path displayGlobalPath;
-
-    geometry_msgs::Pose robotPose;
 
     double start_time;
     double finish_time;
@@ -163,10 +160,6 @@ public:
         // start planning
         planningFlag = true;
     }
-
-    void PoseHandler(const gazebo_msgs::ModelStates::ConstPtr& msg) { 
-        robotPose = msg->pose[0];
-    }   
     
     bool bfsSearch(){
 

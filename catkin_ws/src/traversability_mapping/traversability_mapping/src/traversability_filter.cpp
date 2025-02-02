@@ -25,7 +25,6 @@ private:
 
     laser_geometry::LaserProjection projector_;
 
-    geometry_msgs::Pose robotPose;
     // Point Cloud
     pcl::PointCloud<PointType>::Ptr laserCloudIn; // projected full velodyne cloud
     pcl::PointCloud<PointType>::Ptr laserCloudOut; // filtered and downsampled point cloud
@@ -287,11 +286,6 @@ public:
         }
     }
 
-    void PoseHandler(const gazebo_msgs::ModelStates::ConstPtr& msg)
-    {
-        robotPose = msg->pose[0];
-    }
-    
     bool transformCloud()
     {
     

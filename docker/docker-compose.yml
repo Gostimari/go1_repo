@@ -2,7 +2,7 @@ version: "3"
 
 #Create a network that links containers
 services:
-  #Create a container for the ROS master
+#   #Create a container for the ROS master
   ros-master:
     image: ros:noetic-ros-core
     network_mode: "host"
@@ -17,19 +17,36 @@ services:
       - ros-master
     privileged: true
     network_mode: "host"
-    #Mount the src/ folder inside the docker container
-    # volumes:
-    #     - type: bind
-    #       source: ../catkin_ws/src
-    #       target: /root/catkin_ws/src
     volumes:
         - ../catkin_ws/src:/root/catkin_ws/src
     environment:
         - SETUP=/root/catkin_ws/devel/setup.bash
         - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
+        # - ROSPACKAGE=traversability_mapping
+        # - LAUNCHFILE=offline.launch
     command: ./melodic-launch.sh
+
+  # ros-melodic-trav:
+  #   build:
+  #     context: .
+  #     dockerfile: melodic.Dockerfile
+  #   depends_on:
+  #     - ros-melodic
+  #   privileged: true
+  #   network_mode: "host"
+  #   # volumes:
+  #   #     - type: bind
+  #   #       source: ../catkin_ws/src
+  #   #       target: /root/catkin_ws/src
+  #   volumes:
+  #       - ../catkin_ws/src:/root/catkin_ws/src
+  #   environment:
+  #       - SETUP=/root/catkin_ws/devel/setup.bash
+  #       - ROSPACKAGE=traversability_mapping
+  #       - LAUNCHFILE=offline.launch
+  #   command: roslaunch traversability_mapping offline.launch
   
-  ##Create the Noetic Container
+  # ##Create the Noetic Container
   ros-noetic:
     build:
       context: .
@@ -37,17 +54,77 @@ services:
     depends_on:
       - ros-master
     privileged: true
+    tty: true
     network_mode: "host"
-    # volumes:
-    #     - type: bind
-    #       source: ../catkin_ws/src
-    #       target: /root/catkin_ws/src
     volumes:
         - ../catkin_ws/src:/root/catkin_ws/src
     environment:
         - SETUP=/root/catkin_ws/devel/setup.bash
         - BUILDLIST= elevation_mapping gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pillot unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
+        # - ROSPACKAGE=ig_lio
+        # - LAUNCHFILE=noetic_main_elev.launch
     command: ./noetic-launch.sh
+
+  # ros-noetic-elev:
+  #   build:
+  #     context: .
+  #     dockerfile: noetic.Dockerfile
+  #   depends_on:
+  #     - ros-noetic
+  #   privileged: true
+  #   network_mode: "host"
+  #   # volumes:
+  #   #     - type: bind
+  #   #       source: ../catkin_ws/src
+  #   #       target: /root/catkin_ws/src
+  #   volumes:
+  #       - ../catkin_ws/src:/root/catkin_ws/src
+  #   environment:
+  #       - SETUP=/root/catkin_ws/devel/setup.bash
+  #       - ROSPACKAGE=ig_lio
+  #       - LAUNCHFILE=noetic_main_elev.launch       
+  #   command: roslaunch ig_lio noetic_main_elev.launch
+
+  # ros-noetic-mebt:
+  #   build:
+  #     context: .
+  #     dockerfile: noetic.Dockerfile
+  #   depends_on:
+  #     - ros-noetic
+  #   privileged: true
+  #   network_mode: "host"
+  #   # volumes:
+  #   #     - type: bind
+  #   #       source: ../catkin_ws/src
+  #   #       target: /root/catkin_ws/src
+  #   volumes:
+  #       - ../catkin_ws/src:/root/catkin_ws/src
+  #   environment:
+  #       - SETUP=/root/catkin_ws/devel/setup.bash
+  #       - ROSPACKAGE=ig_lio
+  #       - LAUNCHFILE=noetic_main_mebt.launch     
+  #   command: roslaunch ig_lio noetic_main_mebt.launch
+
+  # ros-noetic-trav:
+  #   build:
+  #     context: .
+  #     dockerfile: noetic.Dockerfile
+  #   depends_on:
+  #     - ros-noetic
+  #   privileged: true
+  #   network_mode: "host"
+  #   # volumes:
+  #   #     - type: bind
+  #   #       source: ../catkin_ws/src
+  #   #       target: /root/catkin_ws/src
+  #   volumes:
+  #       - ../catkin_ws/src:/root/catkin_ws/src
+  #   environment:
+  #       - SETUP=/root/catkin_ws/devel/setup.bash
+  #       - ROSPACKAGE=ig_lio
+  #       - LAUNCHFILE=noetic_main_trav.launch  
+  #   command: roslaunch ig_lio noetic_main_trav.launch
+
 
   #  viz:
   #  image: osrf/ros:kinetic-desktop-full

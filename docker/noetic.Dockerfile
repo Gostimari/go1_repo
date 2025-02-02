@@ -1,5 +1,6 @@
 ARG ARCH=
-ARG CORES=2
+#2
+ARG CORES=6
 FROM ${ARCH}ros:noetic-ros-base
 
 LABEL maintainer="Duarte Cruz <duarte.cruz@isr.uc.pt>"

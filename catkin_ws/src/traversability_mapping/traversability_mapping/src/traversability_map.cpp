@@ -22,7 +22,6 @@ private:
     pcl::PointCloud<PointType>::Ptr laserCloud; // save input filtered laser cloud for mapping
     pcl::PointCloud<PointType>::Ptr laserCloudElevation; // a cloud for publishing elevation map
 
-    geometry_msgs::Pose robotPose;
     // Occupancy Grid Map
     nav_msgs::OccupancyGrid occupancyMap2D; // local occupancy grid map
     elevation_msgs::OccupancyElevation occupancyMap2DHeight; // customized message that includes occupancy map and elevation info
@@ -114,11 +113,6 @@ public:
         updateElevationMap();
         // publish local occupancy grid map
         publishMap();
-    }
-
-    void PoseHandler(const gazebo_msgs::ModelStates::ConstPtr& msg)
-    {
-        robotPose = msg->pose[0];
     }
 
     void updateElevationMap()

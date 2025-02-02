@@ -15,5 +15,10 @@ else
         echo "source env is set to '/opt/ros/$ROS_DISTRO/setup.bash'"
 fi
 source $SETUP
-exec /bin/bash
+
+#!/bin/bash
+# while true; do
+#     echo "Service is running..."
+#     sleep 1
+# done
 #roslaunch --wait $ROSPACKAGE $LAUNCHFILE
