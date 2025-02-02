@@ -1,0 +1,77 @@
+capture_directory: "~"
+fixed_frame: map
+target_frame: <none>
+fix_orientation: false
+rotate_90: false
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 1920
+window_height: 1043
+view_scale: 0.05730853
+offset_x: 27.50369
+offset_y: -31.18626
+background: "#a0a0a4"
+displays:
+  - type: mapviz_plugins/tile_map
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      custom_sources:
+        - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: docker
+          type: wmts
+      bing_api_key: ""
+      source: docker
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /gps_waypoint_nav/odometry/gps
+      color: "#00ff00"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      use_latest_transforms: true
+      show_timestamps: 0
+  - type: mapviz_plugins/pose_publisher
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: gps_waypoint
+      output_frame: /wgs84
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: false
+      collapsed: true
+      topic: /reach/fix
+      color: "#a40000"
+      draw_style: points
+      use_latest_transforms: true
+      position_tolerance: 0
+      buffer_size: 0
+  - type: mapviz_plugins/pose
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /gps_waypoint_nav/vizualize_goal
+      color: "#ce5c00"
+      draw_style: arrows
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      static_arrow_sizes: true
+      arrow_size: 36
+      use_latest_transforms: true
