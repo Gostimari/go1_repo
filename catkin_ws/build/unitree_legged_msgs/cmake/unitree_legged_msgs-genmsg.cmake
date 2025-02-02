@@ -59,17 +59,17 @@ add_custom_target(_unitree_legged_msgs_generate_messages_check_deps_${_filename}
 
 get_filename_component(_filename "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg" NAME_WE)
 add_custom_target(_unitree_legged_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg" "unitree_legged_msgs/Cartesian:unitree_legged_msgs/IMU:unitree_legged_msgs/MotorState:unitree_legged_msgs/BmsState"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg" "unitree_legged_msgs/MotorState:unitree_legged_msgs/BmsState:unitree_legged_msgs/Cartesian:unitree_legged_msgs/IMU"
 )
 
 get_filename_component(_filename "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg" NAME_WE)
 add_custom_target(_unitree_legged_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg" "unitree_legged_msgs/LED:unitree_legged_msgs/BmsCmd"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg" "unitree_legged_msgs/BmsCmd:unitree_legged_msgs/LED"
 )
 
 get_filename_component(_filename "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg" NAME_WE)
 add_custom_target(_unitree_legged_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg" "unitree_legged_msgs/Cartesian:unitree_legged_msgs/IMU:unitree_legged_msgs/MotorState:unitree_legged_msgs/BmsState"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "unitree_legged_msgs" "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg" "unitree_legged_msgs/MotorState:unitree_legged_msgs/BmsState:unitree_legged_msgs/Cartesian:unitree_legged_msgs/IMU"
 )
 
 #
@@ -129,19 +129,19 @@ _generate_msg_cpp(unitree_legged_msgs
 _generate_msg_cpp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_cpp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_cpp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/unitree_legged_msgs
 )
 
@@ -242,19 +242,19 @@ _generate_msg_eus(unitree_legged_msgs
 _generate_msg_eus(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_eus(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_eus(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/unitree_legged_msgs
 )
 
@@ -355,19 +355,19 @@ _generate_msg_lisp(unitree_legged_msgs
 _generate_msg_lisp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_lisp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_lisp(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/unitree_legged_msgs
 )
 
@@ -468,19 +468,19 @@ _generate_msg_nodejs(unitree_legged_msgs
 _generate_msg_nodejs(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_nodejs(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_nodejs(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/unitree_legged_msgs
 )
 
@@ -581,19 +581,19 @@ _generate_msg_py(unitree_legged_msgs
 _generate_msg_py(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_py(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/unitree_legged_msgs
 )
 _generate_msg_py(unitree_legged_msgs
   "/root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg"
   "${MSG_I_FLAGS}"
-  "/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg"
+  "/root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg;/root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/unitree_legged_msgs
 )
 

@@ -9,23 +9,27 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1920
 window_height: 1043
-view_scale: 0.05730853
-offset_x: 27.50369
-offset_y: -31.18626
+view_scale: 4.819248
+offset_x: 0
+offset_y: 0
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
     name: new display
     config:
       visible: true
-      collapsed: true
+      collapsed: false
       custom_sources:
         - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
           max_zoom: 19
           name: docker
           type: wmts
+        - base_url: http://127.0.0.1:8080/tile/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: docker2
+          type: wmts
       bing_api_key: ""
-      source: docker
+      source: docker2
   - type: mapviz_plugins/odometry
     name: new display
     config:

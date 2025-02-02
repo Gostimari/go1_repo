@@ -88,20 +88,23 @@ gps_waypoint_nav:
 
     ROS NOETIC:
 
-        COLLECT POINTS:
-        roslaunch gps_waypoint_nav collect_goals.launch
-        
-        SEND POINS TO NAVIGATION:
-        roslaunch gps_waypoint_nav gps_waypoint_nav.launch
-        
-        MAPVIZ:
-        roslaunch gps_waypoint_nav mapviz.launch
+    COLLECT POINTS:
+    roslaunch gps_waypoint_nav collect_goals.launch
+    
+    SEND POINS TO NAVIGATION:
+    roslaunch gps_waypoint_nav gps_waypoint_nav.launch
+    
+    MAPVIZ:
+    roslaunch gps_waypoint_nav mapviz.launch
 
-        MAP DOCKER:
-        sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy  
-        or 
-        Docker Official Desktop App
-        
-        MAPVIZ TILE-MAP LINK:
-        http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
-        Max Zoom: 19
+    MAP DOCKER:
+    sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy  
+    or 
+    Docker Official Desktop App
+    
+    MAP DOCKER LOCAL:
+    https://matrix.org/docs/older/map-tile-server/
+    
+    MAPVIZ TILE-MAP LINK:
+    http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+    Max Zoom: 19

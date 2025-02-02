@@ -15,4 +15,4 @@ exec /bin/bash
 #     echo "Service is running..."
 #     sleep 1
 # done
-#roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file
+roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file

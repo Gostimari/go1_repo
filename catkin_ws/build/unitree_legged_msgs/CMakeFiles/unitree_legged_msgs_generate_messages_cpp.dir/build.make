@@ -118,28 +118,28 @@ CMakeFiles/unitree_legged_msgs_generate_messages_cpp: /root/catkin_ws/devel/.pri
 
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg
-/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg
-/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg
+/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg
+/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/LowState.h: /opt/ros/noetic/share/gencpp/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/catkin_ws/build/unitree_legged_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Generating C++ code from unitree_legged_msgs/LowState.msg"
 	cd /root/catkin_ws/src/unitree_legged_msgs && /root/catkin_ws/build/unitree_legged_msgs/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /root/catkin_ws/src/unitree_legged_msgs/msg/LowState.msg -Iunitree_legged_msgs:/root/catkin_ws/src/unitree_legged_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Isensor_msgs:/opt/ros/noetic/share/sensor_msgs/cmake/../msg -p unitree_legged_msgs -o /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs -e /opt/ros/noetic/share/gencpp/cmake/..
 
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg
-/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /root/catkin_ws/src/unitree_legged_msgs/msg/BmsCmd.msg
+/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /root/catkin_ws/src/unitree_legged_msgs/msg/LED.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighCmd.h: /opt/ros/noetic/share/gencpp/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/catkin_ws/build/unitree_legged_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Generating C++ code from unitree_legged_msgs/HighCmd.msg"
 	cd /root/catkin_ws/src/unitree_legged_msgs && /root/catkin_ws/build/unitree_legged_msgs/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /root/catkin_ws/src/unitree_legged_msgs/msg/HighCmd.msg -Iunitree_legged_msgs:/root/catkin_ws/src/unitree_legged_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Isensor_msgs:/opt/ros/noetic/share/sensor_msgs/cmake/../msg -p unitree_legged_msgs -o /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs -e /opt/ros/noetic/share/gencpp/cmake/..
 
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg
-/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg
-/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/MotorState.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/BmsState.msg
+/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/Cartesian.msg
+/root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /root/catkin_ws/src/unitree_legged_msgs/msg/IMU.msg
 /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs/HighState.h: /opt/ros/noetic/share/gencpp/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/catkin_ws/build/unitree_legged_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Generating C++ code from unitree_legged_msgs/HighState.msg"
 	cd /root/catkin_ws/src/unitree_legged_msgs && /root/catkin_ws/build/unitree_legged_msgs/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /root/catkin_ws/src/unitree_legged_msgs/msg/HighState.msg -Iunitree_legged_msgs:/root/catkin_ws/src/unitree_legged_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Isensor_msgs:/opt/ros/noetic/share/sensor_msgs/cmake/../msg -p unitree_legged_msgs -o /root/catkin_ws/devel/.private/unitree_legged_msgs/include/unitree_legged_msgs -e /opt/ros/noetic/share/gencpp/cmake/..

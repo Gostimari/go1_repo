@@ -3,18 +3,12 @@ version: "3"
 #Create a network that links containers
 services:
 #   #Create a container for the ROS master
-  #ros-master:
-  #  image: ros:noetic-ros-core
-  #  network_mode: "host"
-  #  command: roscore
 
   #Create the Melodic Container
   # ros-melodic:
   #   build:
   #     context: .
   #     dockerfile: melodic.Dockerfile
-  # # depends_on:
-  # #   - ros-master
   #   tty: true
   #   stdin_open: true
   #   privileged: true
@@ -24,29 +18,9 @@ services:
   #   environment:
   #       - SETUP=/root/catkin_ws/devel/setup.bash
   #       - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
-  #       - ROSPACKAGE=traversability_mapping
-  #       - LAUNCHFILE=offline.launch
-  #   command: roscore
-
-  # ros-melodic-trav:
-  #   build:
-  #     context: .
-  #     dockerfile: melodic.Dockerfile
-  #   depends_on:
-  #     - ros-melodic
-  #   privileged: true
-  #   network_mode: "host"
-  #   # volumes:
-  #   #     - type: bind
-  #   #       source: ../catkin_ws/src
-  #   #       target: /root/catkin_ws/src
-  #   volumes:
-  #       - ../catkin_ws/src:/root/catkin_ws/src
-  #   environment:
-  #       - SETUP=/root/catkin_ws/devel/setup.bash
-  #       - ROSPACKAGE=traversability_mapping
-  #       - LAUNCHFILE=offline.launch
-  #   command: roslaunch traversability_mapping offline.launch
+  #       #- ROSPACKAGE=traversability_mapping
+  #       #- LAUNCHFILE=offline.launch
+  #   command: ./melodic-launch.sh
   
   # ##Create the Noetic Container
   ros-noetic:
@@ -60,10 +34,10 @@ services:
     volumes:
         - ../catkin_ws/src:/root/catkin_ws/src
         - ../catkin_ws/build:/root/catkin_ws/build
+        - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
         - /dev/dri:/dev/dri
         - /tmp/.X11-unix:/tmp/.X11-unix:rw
         - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
-        - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
     environment:
         - SETUP=/root/catkin_ws/devel/setup.bash
         - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pillot unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
@@ -72,6 +46,66 @@ services:
         - DISPLAY=${DISPLAY}
         - QT_X11_NO_MITSHM=1
     command: ./noetic-launch.sh
+
+
+  # tilemap:
+  #   build:
+  #     context: .
+  #     dockerfile: tilemap.Dockerfile
+  #   tty: true
+  #   environment:
+  #     - THREADS=24
+  #   stdin_open: true
+  #   network_mode: "host"
+  #   volumes:
+  #       - $HOME/.cache/tilemap/openstreetmap-data:/var/lib/postgresql/12/main
+  #       - $HOME/.cache/tilemap/openstreetmap-rendered-tiles:/var/lib/mod_tile
+  #   command: run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   # ros-noetic-elev:
   #   build:
