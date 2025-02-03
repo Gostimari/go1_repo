@@ -17,11 +17,14 @@ OR
 2 -> Clone this repository to you machine:
 
 2.1 -> Install git:
+
     Ubuntu:
         sudo apt install git
     Fedora:
         sudo dnf install git
+        
 2.2 -> Clone Repo
+
         git clone https://github.com/Gostimari/go1_repo.git
 
 3 -> Enter the docker directory of this cloned repository and run docker compose: (by default is elevation_mapping that will run, you can change the launch file in the docker-compose.yml file)
@@ -92,23 +95,29 @@ gps_waypoint_nav:
 ROS NOETIC:
 
 COLLECT POINTS:
+
     roslaunch gps_waypoint_nav collect_goals.launch
     
 SEND POINS TO NAVIGATION:
+
     roslaunch gps_waypoint_nav gps_waypoint_nav.launch
     
 MAPVIZ:
+
     roslaunch gps_waypoint_nav mapviz.launch
 
 MAP DOCKER:
-    sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy  
+
+    sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy
     or 
     Docker Official Desktop App
     
 MAP DOCKER LOCAL:
+
     https://matrix.org/docs/older/map-tile-server/
     
 MAPVIZ TILE-MAP LINK:
+
     http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
     Max Zoom: 19
     
