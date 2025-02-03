@@ -10,7 +10,6 @@ import copy
 from nav_msgs.msg import Odometry
 from rosgraph_msgs.msg import Clock
 from ros_map_converter import RosMapConverter
-import matplotlib.pyplot as plt
 
 # !!! COPYRIGHT NOTICE !!!:
 # This script is based on the "nav_2d_voxels" package by Dora Lourenço

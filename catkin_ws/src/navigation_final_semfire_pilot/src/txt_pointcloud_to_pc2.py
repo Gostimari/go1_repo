@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from matplotlib.colors import PowerNorm
 from sensor_msgs.msg import PointCloud2, PointField
 import struct
 import rospy

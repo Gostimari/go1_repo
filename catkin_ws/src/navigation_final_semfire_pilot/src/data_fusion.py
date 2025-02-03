@@ -4,7 +4,6 @@ import rospy
 import ros_numpy
 import numpy as np
 from nav_msgs.msg import OccupancyGrid
-import matplotlib.pyplot as plt
 from time import perf_counter
 
 class CostmapFusion:
