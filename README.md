@@ -24,7 +24,7 @@ This Repo has 3 pipelines to waypoint autonomous navigation on the Unitree Go1 E
     2.2 -> Clone Repo
             git clone https://github.com/Gostimari/go1_repo.git
 
-3 -> Enter the docker directory of this cloned repository and run docker compose:
+3 -> Enter the docker directory of this cloned repository and run docker compose: (by default is elevation_mapping that will run, you can change the launch file in the docker-compose.yml file)
 
     Official docker website:
         docker compose up
