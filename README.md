@@ -149,7 +149,8 @@ MAPVIZ TILE-MAP LINK:
     http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
     Max Zoom: 19
 
-or
+    or
+    
     http://127.0.0.1:8080/tile/{level}/{x}/{y}.png
     Max Zoom: 19
     
