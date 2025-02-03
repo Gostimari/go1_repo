@@ -37,7 +37,7 @@ RUN apt-get -y install \
     python3-rosdep \
     python3-catkin-tools
 
-RUN pip3 install matplotlib numpy
+RUN pip3 install matplotlib numpy pyquaternion
 
 #Install ROS Packages
 RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \ 
