@@ -30,12 +30,15 @@ OR
 3 -> Enter the docker directory of this cloned repository and run docker compose: (by default is elevation_mapping that will run, you can change the launch file in the docker-compose.yml file)
 
 Run this command to enable docker with GUI:
+
     xhost +local:root
 
 Official docker website:
+
     docker compose up
     
 Ubuntu/Fedora:
+
     docker-compose up
 
 Now that all the packages and workspace is ready you have three options to start the system. Every options has a different mapping algorithm.
