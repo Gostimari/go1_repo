@@ -81,6 +81,10 @@ class MetricsExtractor:
 		self.foot_force2_append = []
 		self.foot_force3_append = []
 		self.foot_force4_append = []
+		self.power_consumption = []
+		self.voltage_consumption = []
+		self.mean_power = 0
+		self.mean_voltage = 0
 		self.goal_counter = 0
 		self.last_status = 0
 		
@@ -135,10 +139,14 @@ class MetricsExtractor:
 			self.rr_calf_append = np.array([self.high_state_msg.motorState[9].tauEst])
 			self.rr_hip_append = np.array([self.high_state_msg.motorState[10].tauEst])
 			self.rr_thigh_append = np.array([self.high_state_msg.motorState[11].tauEst])
+			self.power_consumption = np.array([self.high_state_msg.bms.current])
+			self.voltage_consumption = np.array([self.high_state_msg.bms.cell_vol[0]])
 			self.once = True
 
 		self.travelled_distance = self.prev_trav_dist + np.sqrt(np.square(current_x - self.prev_x) + np.square(current_y - self.prev_y) + np.square(current_z - self.prev_z))
 		# print(f"Travelled distance = {self.travelled_distance:.3f}")
+
+		print(f"Travelled distance = {self.travelled_distance:.3f}")
 
 		self.prev_x = current_x
 		self.prev_y = current_y
@@ -151,6 +159,8 @@ class MetricsExtractor:
 		self.mean_velocity = self.total_velocity / self.velocity_count
 		##### End of section 2 #####
   
+		print(f"Mean velocity = {self.mean_velocity:.3f}")
+  
 		##### Section 3 - Instability Index #####
 		self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
 		self.imu_append_y = np.append(self.imu_append_y, [self.imu_msg.linear_acceleration.y])
@@ -162,6 +172,8 @@ class MetricsExtractor:
 		self.instalibity_index = np.sqrt(np.square(self.imu_derivation_x) + np.square(self.imu_derivation_y) + np.square(self.imu_derivation_z))
 		#print(f"Instability index = {self.instalibity_index:.3f}")
 		##### End of section 3 #####
+  
+		print(f"Instability index = {self.instalibity_index:.3f}")
   
 		##### Section 4 - Torque Mean #####
 		self.fl_calf_append = np.append(self.fl_calf_append, [self.high_state_msg.motorState[0].tauEst])
@@ -181,6 +193,8 @@ class MetricsExtractor:
 		self.mean_torque = (np.mean(self.fl_calf_append) + np.mean(self.fl_hip_append) + np.mean(self.fl_thigh_append) + np.mean(self.fr_calf_append) + np.mean(self.fr_hip_append) + np.mean(self.fr_thigh_append) + np.mean(self.rl_calf_append) + np.mean(self.rl_hip_append) + np.mean(self.rl_thigh_append) + np.mean(self.rr_calf_append) + np.mean(self.rr_hip_append) + np.mean(self.rr_thigh_append)) / 12
 		##### End of section 4 #####
   
+		print(f"Mean torque = {self.mean_torque:.3f}")
+  
 		##### Section 5 - Foot Force Mean #####
 		self.foot_force1_append = np.append(self.foot_force1_append, [self.high_state_msg.footForce[0]])
 		self.foot_force2_append = np.append(self.foot_force2_append, [self.high_state_msg.footForce[1]])
@@ -190,10 +204,21 @@ class MetricsExtractor:
 		self.mean_foot_force = (np.mean(self.foot_force1_append) + np.mean(self.foot_force2_append) + np.mean(self.foot_force3_append) + np.mean(self.foot_force4_append)) / 4
 		##### End of section 5 #####
   
+		print(f"Mean foot force = {self.mean_foot_force:.3f}")
+  
   		##### Section 6 - Power Consumption #####
-    
+		self.power_consumption = np.append(self.power_consumption, [self.high_state_msg.bms.current])
+
+		self.mean_power = np.mean(self.power_consumption)
+
+		self.voltage_consumption = np.append(self.voltage_consumption, [self.high_state_msg.bms.cell_vol[0]])
+  
+		self.mean_voltage = np.mean(self.voltage_consumption)
 		##### End of section 6 #####
 
+		print(f"Mean power = {self.mean_power:.3f}")
+  
+		print (f"Mean voltage = {self.mean_voltage:.3f}")
 
 		#toc = perf_counter()
 
@@ -209,7 +234,7 @@ class MetricsExtractor:
 		writer_raw.writerow(["%.3f" % self.prev_x, "%.3f" % self.prev_y,
 		 "%.6f" % self.prev_z, self.odom_msg.header.stamp.secs, self.odom_msg.header.stamp.nsecs])
 		writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-		writer_metrics.writerow(["%.3f" % self.travelled_distance, "%.3f" % self.mean_velocity, "%.3f" % self.instalibity_index, "%.3f" % self.mean_torque, "%.3f" % self.mean_foot_force])
+		writer_metrics.writerow(["%.3f" % self.travelled_distance, "%.3f" % self.mean_velocity, "%.3f" % self.instalibity_index, "%.3f" % self.mean_torque, "%.3f" % self.mean_foot_force, "%.3f" % self.mean_power])
 
 	def detect_end_condition(self):
 		if self.status_msg.status_list:
