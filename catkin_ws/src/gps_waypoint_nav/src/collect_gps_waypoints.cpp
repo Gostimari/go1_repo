@@ -148,6 +148,7 @@ int main(int argc, char** argv)
 					{
 						ROS_INFO("Waypoint collection Ended!");
 						continue_collection = false;
+						coordFile << std::fixed << std::setprecision(8) << lati_last << " " << longi_last << std::endl;
 					}
 					else if(activation_key == 3)
 					{

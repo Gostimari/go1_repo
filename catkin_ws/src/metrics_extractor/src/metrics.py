@@ -64,25 +64,25 @@ class MetricsExtractor:
 		self.imu_append_y = []
 		self.imu_append_z = []
 		self.mean_torque = 0
-		self.fl_calf_append = []
-		self.fl_hip_append = []
-		self.fl_thigh_append = []
-		self.fr_calf_append = []
-		self.fr_hip_append = []
-		self.fr_thigh_append = []
-		self.rl_calf_append = []
-		self.rl_hip_append = []
-		self.rl_thigh_append = []
-		self.rr_calf_append = []
-		self.rr_hip_append = []
-		self.rr_thigh_append = []
+		self.fl_calf_append = 0
+		self.fl_hip_append = 0
+		self.fl_thigh_append = 0
+		self.fr_calf_append = 0
+		self.fr_hip_append = 0
+		self.fr_thigh_append = 0
+		self.rl_calf_append = 0
+		self.rl_hip_append = 0
+		self.rl_thigh_append = 0
+		self.rr_calf_append = 0
+		self.rr_hip_append = 0
+		self.rr_thigh_append = 0
 		self.mean_foot_force = 0
-		self.foot_force1_append = []
-		self.foot_force2_append = []
-		self.foot_force3_append = []
-		self.foot_force4_append = []
-		self.power_consumption = []
-		self.voltage_consumption = []
+		self.foot_force1_append = 0
+		self.foot_force2_append = 0
+		self.foot_force3_append = 0
+		self.foot_force4_append = 0
+		self.power_consumption = 0
+		self.voltage_consumption = 0
 		self.mean_power = 0
 		self.mean_voltage = 0
 		self.goal_counter = 0
@@ -124,23 +124,23 @@ class MetricsExtractor:
 			self.prev_x = current_x
 			self.prev_y = current_y
 			self.prev_z = current_z
-			self.imu_append_x = np.array([self.imu_msg.linear_acceleration.x])
-			self.imu_append_y = np.array([self.imu_msg.linear_acceleration.y])
-			self.imu_append_z = np.array([self.imu_msg.linear_acceleration.z])
-			self.fl_calf_append = np.array([self.high_state_msg.motorState[0].tauEst])
-			self.fl_hip_append = np.array([self.high_state_msg.motorState[1].tauEst])
-			self.fl_thigh_append = np.array([self.high_state_msg.motorState[2].tauEst])
-			self.fr_calf_append = np.array([self.high_state_msg.motorState[3].tauEst])
-			self.fr_hip_append = np.array([self.high_state_msg.motorState[4].tauEst])
-			self.fr_thigh_append = np.array([self.high_state_msg.motorState[5].tauEst])
-			self.rl_calf_append = np.array([self.high_state_msg.motorState[6].tauEst])
-			self.rl_hip_append = np.array([self.high_state_msg.motorState[7].tauEst])
-			self.rl_thigh_append = np.array([self.high_state_msg.motorState[8].tauEst])
-			self.rr_calf_append = np.array([self.high_state_msg.motorState[9].tauEst])
-			self.rr_hip_append = np.array([self.high_state_msg.motorState[10].tauEst])
-			self.rr_thigh_append = np.array([self.high_state_msg.motorState[11].tauEst])
-			self.power_consumption = np.array([self.high_state_msg.bms.current])
-			self.voltage_consumption = np.array([self.high_state_msg.bms.cell_vol[0]])
+			# self.imu_append_x = np.array([self.imu_msg.linear_acceleration.x])
+			# self.imu_append_y = np.array([self.imu_msg.linear_acceleration.y])
+			# self.imu_append_z = np.array([self.imu_msg.linear_acceleration.z])
+			# self.fl_calf_append = np.array([self.high_state_msg.motorState[0].tauEst])
+			# self.fl_hip_append = np.array([self.high_state_msg.motorState[1].tauEst])
+			# self.fl_thigh_append = np.array([self.high_state_msg.motorState[2].tauEst])
+			# self.fr_calf_append = np.array([self.high_state_msg.motorState[3].tauEst])
+			# self.fr_hip_append = np.array([self.high_state_msg.motorState[4].tauEst])
+			# self.fr_thigh_append = np.array([self.high_state_msg.motorState[5].tauEst])
+			# self.rl_calf_append = np.array([self.high_state_msg.motorState[6].tauEst])
+			# self.rl_hip_append = np.array([self.high_state_msg.motorState[7].tauEst])
+			# self.rl_thigh_append = np.array([self.high_state_msg.motorState[8].tauEst])
+			# self.rr_calf_append = np.array([self.high_state_msg.motorState[9].tauEst])
+			# self.rr_hip_append = np.array([self.high_state_msg.motorState[10].tauEst])
+			# self.rr_thigh_append = np.array([self.high_state_msg.motorState[11].tauEst])
+			# self.power_consumption = np.array([self.high_state_msg.bms.current])
+			# self.voltage_consumption = np.array([self.high_state_msg.bms.cell_vol[0]])
 			self.once = True
 
 		self.travelled_distance = self.prev_trav_dist + np.sqrt(np.square(current_x - self.prev_x) + np.square(current_y - self.prev_y) + np.square(current_z - self.prev_z))
@@ -154,12 +154,13 @@ class MetricsExtractor:
 		##### End of section 1 #####
 
 		##### Section 2 - Velocity Calculation #####
-		self.total_velocity += self.vel_msg.linear.x
-		self.velocity_count += 1
-		self.mean_velocity = self.total_velocity / self.velocity_count
+		self.total_velocity = self.vel_msg.linear.x
+		#self.velocity_count += 1
+		#self.mean_velocity = self.total_velocity / self.velocity_count
+		self.mean_velocity = self.total_velocity
 		##### End of section 2 #####
   
-		print(f"Mean velocity = {self.mean_velocity:.3f}")
+		print(f"Velocity = {self.mean_velocity:.3f}")
   
 		##### Section 3 - Instability Index #####
 		self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
@@ -176,49 +177,49 @@ class MetricsExtractor:
 		print(f"Instability index = {self.instalibity_index:.3f}")
   
 		##### Section 4 - Torque Mean #####
-		self.fl_calf_append = np.append(self.fl_calf_append, [self.high_state_msg.motorState[0].tauEst])
-		self.fl_hip_append = np.append(self.fl_hip_append, [self.high_state_msg.motorState[1].tauEst])
-		self.fl_thigh_append = np.append(self.fl_thigh_append, [self.high_state_msg.motorState[2].tauEst])
-		self.fr_calf_append = np.append(self.fr_calf_append, [self.high_state_msg.motorState[3].tauEst])
-		self.fr_hip_append = np.append(self.fr_hip_append, [self.high_state_msg.motorState[4].tauEst])
-		self.fr_thigh_append = np.append(self.fr_thigh_append, [self.high_state_msg.motorState[5].tauEst])
-		self.rl_calf_append = np.append(self.rl_calf_append, [self.high_state_msg.motorState[6].tauEst])
-		self.rl_hip_append = np.append(self.rl_hip_append, [self.high_state_msg.motorState[7].tauEst])
-		self.rl_thigh_append = np.append(self.rl_thigh_append, [self.high_state_msg.motorState[8].tauEst])
-		self.rr_calf_append = np.append(self.rr_calf_append, [self.high_state_msg.motorState[9].tauEst])
-		self.rr_hip_append = np.append(self.rr_hip_append, [self.high_state_msg.motorState[10].tauEst])
-		self.rr_thigh_append = np.append(self.rr_thigh_append, [self.high_state_msg.motorState[11].tauEst])
+		self.fl_calf_append = self.high_state_msg.motorState[0].tauEst
+		self.fl_hip_append = self.high_state_msg.motorState[1].tauEst
+		self.fl_thigh_append = self.high_state_msg.motorState[2].tauEst
+		self.fr_calf_append = self.high_state_msg.motorState[3].tauEst
+		self.fr_hip_append = self.high_state_msg.motorState[4].tauEst
+		self.fr_thigh_append = self.high_state_msg.motorState[5].tauEst
+		self.rl_calf_append = self.high_state_msg.motorState[6].tauEst
+		self.rl_hip_append = self.high_state_msg.motorState[7].tauEst
+		self.rl_thigh_append = self.high_state_msg.motorState[8].tauEst
+		self.rr_calf_append = self.high_state_msg.motorState[9].tauEst
+		self.rr_hip_append = self.high_state_msg.motorState[10].tauEst
+		self.rr_thigh_append = self.high_state_msg.motorState[11].tauEst
 		#print(f"FL Calf = {self.high_state_msg.motorState[0].tauEst:.3f}")
   
-		self.mean_torque = (np.mean(self.fl_calf_append) + np.mean(self.fl_hip_append) + np.mean(self.fl_thigh_append) + np.mean(self.fr_calf_append) + np.mean(self.fr_hip_append) + np.mean(self.fr_thigh_append) + np.mean(self.rl_calf_append) + np.mean(self.rl_hip_append) + np.mean(self.rl_thigh_append) + np.mean(self.rr_calf_append) + np.mean(self.rr_hip_append) + np.mean(self.rr_thigh_append)) / 12
+		self.mean_torque = (self.fl_calf_append + self.fl_hip_append + self.fl_thigh_append + self.fr_calf_append + self.fr_hip_append + self.fr_thigh_append + self.rl_calf_append + self.rl_hip_append + self.rl_thigh_append + self.rr_calf_append + self.rr_hip_append + self.rr_thigh_append) / 12
 		##### End of section 4 #####
   
 		print(f"Mean torque = {self.mean_torque:.3f}")
   
 		##### Section 5 - Foot Force Mean #####
-		self.foot_force1_append = np.append(self.foot_force1_append, [self.high_state_msg.footForce[0]])
-		self.foot_force2_append = np.append(self.foot_force2_append, [self.high_state_msg.footForce[1]])
-		self.foot_force3_append = np.append(self.foot_force3_append, [self.high_state_msg.footForce[2]])
-		self.foot_force4_append = np.append(self.foot_force4_append, [self.high_state_msg.footForce[3]])
+		self.foot_force1_append = self.high_state_msg.footForce[0]
+		self.foot_force2_append = self.high_state_msg.footForce[1]
+		self.foot_force3_append = self.high_state_msg.footForce[2]
+		self.foot_force4_append = self.high_state_msg.footForce[3]
   
-		self.mean_foot_force = (np.mean(self.foot_force1_append) + np.mean(self.foot_force2_append) + np.mean(self.foot_force3_append) + np.mean(self.foot_force4_append)) / 4
+		self.mean_foot_force = (self.foot_force1_append + self.foot_force2_append + self.foot_force3_append + self.foot_force4_append) / 4
 		##### End of section 5 #####
   
 		print(f"Mean foot force = {self.mean_foot_force:.3f}")
   
   		##### Section 6 - Power Consumption #####
-		self.power_consumption = np.append(self.power_consumption, [self.high_state_msg.bms.current])
+		self.power_consumption = self.high_state_msg.bms.current
 
-		self.mean_power = np.mean(self.power_consumption)
+		#self.mean_power = np.mean(self.power_consumption)
 
-		self.voltage_consumption = np.append(self.voltage_consumption, [self.high_state_msg.bms.cell_vol[0]])
+		self.voltage_consumption = self.high_state_msg.bms.cell_vol[0]
   
-		self.mean_voltage = np.mean(self.voltage_consumption)
+		#self.mean_voltage = np.mean(self.voltage_consumption)
 		##### End of section 6 #####
 
-		print(f"Mean power = {self.mean_power:.3f}")
+		print(f"Mean power = {self.power_consumption:.3f}")
   
-		print (f"Mean voltage = {self.mean_voltage:.3f}")
+		print (f"Mean voltage = {self.voltage_consumption:.3f}")
 
 		#toc = perf_counter()
 
@@ -234,7 +235,7 @@ class MetricsExtractor:
 		writer_raw.writerow(["%.3f" % self.prev_x, "%.3f" % self.prev_y,
 		 "%.6f" % self.prev_z, self.odom_msg.header.stamp.secs, self.odom_msg.header.stamp.nsecs])
 		writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-		writer_metrics.writerow(["%.3f" % self.travelled_distance, "%.3f" % self.mean_velocity, "%.3f" % self.instalibity_index, "%.3f" % self.mean_torque, "%.3f" % self.mean_foot_force, "%.3f" % self.mean_power])
+		writer_metrics.writerow(["%.3f" % self.travelled_distance, "%.3f" % self.mean_velocity, "%.3f" % self.instalibity_index, "%.3f" % self.mean_torque, "%.3f" % self.mean_foot_force, "%.3f" % self.power_consumption, "%.3f" % self.voltage_consumption])
 
 	def detect_end_condition(self):
 		if self.status_msg.status_list:

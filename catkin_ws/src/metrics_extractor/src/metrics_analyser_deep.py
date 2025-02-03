@@ -21,12 +21,13 @@ plt.rcParams.update({
 def save_individual_plots(time, metrics, events, output_dir):
     """Save each metric as a separate PDF file with event markers"""
     metric_info = [
-        ('distance', 'Travelled Distance (m)', 'blue'),
-        ('velocity', 'Mean Velocity (m/s)', 'green'),
+        ('distance', 'Travelled Distance', 'blue'),
+        ('velocity', 'Velocity', 'green'),
         ('instability', 'Instability Index', 'red'),
-        ('torque', 'Mean Torque (Nm)', 'purple'),
-        ('foot_force', 'Mean Foot Force (N)', 'orange'),
-        ('power', 'Power Consumption (W)', 'brown')
+        ('torque', 'Mean Torque', 'purple'),
+        ('foot_force', 'Mean Foot Force', 'orange'),
+        ('power', 'Power Consumption ', 'brown'),
+        ('voltage', 'Voltage', 'black')
     ]
 
     for metric, title, color in metric_info:
@@ -65,7 +66,7 @@ def main():
     # Data storage
     metrics = {
         'distance': [], 'velocity': [], 'instability': [],
-        'torque': [], 'foot_force': [], 'power': []
+        'torque': [], 'foot_force': [], 'power': [], 'voltage': []
     }
     events = []
 
@@ -75,7 +76,7 @@ def main():
         line_count = 0
         
         for row in reader:
-            if len(row) == 6:
+            if len(row) == 7:
                 try:
                     metrics['distance'].append(float(row[0]))
                     metrics['velocity'].append(float(row[1]))
@@ -83,6 +84,7 @@ def main():
                     metrics['torque'].append(float(row[3]))
                     metrics['foot_force'].append(float(row[4]))
                     metrics['power'].append(float(row[5]))
+                    metrics['voltage'].append(float(row[6]))
                     line_count += 1
                 except ValueError:
                     continue
