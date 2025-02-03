@@ -40,7 +40,7 @@ services:
         - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
     environment:
         - SETUP=/root/catkin_ws/devel/setup.bash
-        - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
+        - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot ros_numpy unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
         - ROSPACKAGE= ig_lio
         - LAUNCHFILE= noetic_main_mebt.launch
         - DISPLAY=${DISPLAY}
