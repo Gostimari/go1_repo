@@ -26,6 +26,9 @@ This Repo has 3 pipelines to waypoint autonomous navigation on the Unitree Go1 E
 
 3 -> Enter the docker directory of this cloned repository and run docker compose: (by default is elevation_mapping that will run, you can change the launch file in the docker-compose.yml file)
 
+    Run this command to enable docker with GUI:
+        xhost +local:root
+
     Official docker website:
         docker compose up
     
@@ -108,3 +111,20 @@ gps_waypoint_nav:
     MAPVIZ TILE-MAP LINK:
     http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
     Max Zoom: 19
+    
+    
+metrics_extractor: 
+    
+1 -> extract metrics from the ros-bag or live and save them into a file:
+    
+    rosrun metrics_extractor metrics.py
+    
+2 -> Create plots about the extracted data and save them in ../plot directory: (navigate to /logfiles and change the name of the file)
+    
+    python3 metrics_analyser_deep.py logfile_metrics-2025-02-03-14-53.csv -o ../plots
+        
+3-> Genrate a Latex table with the extracted data:
+
+    python3 table_generator.py
+    
+
