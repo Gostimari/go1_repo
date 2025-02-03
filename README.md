@@ -117,13 +117,41 @@ MAP DOCKER:
     
 MAP DOCKER LOCAL:
 
-    https://matrix.org/docs/older/map-tile-server/
+You can download map data (PBF files) from download.geofabrik.de. For example, to download data for Portugal, run this command:
     
+    wget 'https://download.geofabrik.de/europe/portugal-latest.osm.pbf'
+
+Once we have the data, we need to import it into the tile server. Run these commands to import it to the docker:
+
+    docker volume create openstreetmap-data
+    docker volume create openstreetmap-rendered-tiles
+    docker run \
+        -v $USER/portugal-latest.osm.pbf:/data.osm.pbf \
+        -v openstreetmap-data:/var/lib/postgresql/12/main \
+        -v openstreetmap-rendered-tiles:/var/lib/mod_tile \
+        -e THREADS=24 \
+        overv/openstreetmap-tile-server:1.3.10 \
+    import
+ 
+ Once the data has been imported, you can run your server like this:
+ 
+    docker run \
+        -p 8080:80 \
+        -v openstreetmap-data:/var/lib/postgresql/12/main \
+        -v openstreetmap-rendered-tiles:/var/lib/mod_tile \
+        -e THREADS=24 \
+        -e ALLOW_CORS=enabled \
+        -d overv/openstreetmap-tile-server:1.3.10 \
+        run
+  
 MAPVIZ TILE-MAP LINK:
 
     http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
     Max Zoom: 19
-    
+
+or
+    http://127.0.0.1:8080/tile/{level}/{x}/{y}.png
+    Max Zoom: 19
     
 metrics_extractor: 
     
