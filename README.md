@@ -126,7 +126,7 @@ Once we have the data, we need to import it into the tile server. Run these comm
     docker volume create openstreetmap-data
     docker volume create openstreetmap-rendered-tiles
     docker run \
-        -v $USER/portugal-latest.osm.pbf:/data.osm.pbf \
+        -v $HOME/portugal-latest.osm.pbf:/data.osm.pbf \
         -v openstreetmap-data:/var/lib/postgresql/12/main \
         -v openstreetmap-rendered-tiles:/var/lib/mod_tile \
         -e THREADS=24 \
