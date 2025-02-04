@@ -16,8 +16,8 @@
 #   controller_frequency: 20
 
 
-base_global_planner: navfn/NavfnROS
-base_local_planner:  base_local_planner/TrajectoryPlannerROS
+#base_global_planner: navfn/NavfnROS
+#base_local_planner:  base_local_planner/TrajectoryPlannerROS
 
   
 planner_frequency:          10.0     # Global plan updates on new goal or path blocked only

@@ -15,8 +15,10 @@ RUN apt-get update \
     && apt-get install -y \
     build-essential \
     apt-utils \
+    cmake \
     curl \
     cmake \
+    vim \
     git \
     wget \
     nano \
@@ -45,6 +47,9 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-nav-core \
     ros-${ROS_DISTRO}-laser-geometry
 
+# Clean-up
+WORKDIR /
+RUN apt-get clean
 
 #Configure catkin workspace
 ENV CATKIN_WS=/root/catkin_ws

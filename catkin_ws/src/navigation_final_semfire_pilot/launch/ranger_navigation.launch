@@ -1,7 +1,6 @@
 <launch>
 
-  <!-- <param name="/use_sim_time" value="true"/> -->
-  <param name="/use_sim_time" value="true"/>
+  <param name="/use_sim_time" value="false"/>
 
   <!-- Use "g" for "gradient map" and "b" for "gradient and evident obstacles map". Better with "g" -->
   <arg name="map" default="b" />

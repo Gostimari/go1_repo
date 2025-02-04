@@ -5,22 +5,24 @@ services:
 #   #Create a container for the ROS master
 
   #Create the Melodic Container
-  # ros-melodic:
-  #   build:
-  #     context: .
-  #     dockerfile: melodic.Dockerfile
-  #   tty: true
-  #   stdin_open: true
-  #   privileged: true
-  #   network_mode: "host"
-  #   volumes:
-  #       - ../catkin_ws/src:/root/catkin_ws/src
-  #   environment:
-  #       - SETUP=/root/catkin_ws/devel/setup.bash
-  #       - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
-  #       #- ROSPACKAGE=traversability_mapping
-  #       #- LAUNCHFILE=offline.launch
-  #   command: ./melodic-launch.sh
+  ros-melodic:
+    build:
+      context: .
+      dockerfile: melodic.Dockerfile
+    privileged: true
+    network_mode: "host"
+    volumes:
+        - ../catkin_ws/src:/root/catkin_ws/src
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
+    environment:
+        - SETUP=/root/catkin_ws/devel/setup.bash
+        - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
+        - ROSPACKAGE=traversability_mapping
+        - LAUNCHFILE=offline.launch
+    command: ./melodic-launch.sh
   
   #Create the Noetic Container
   ros-noetic:
@@ -32,31 +34,39 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
-        - ../catkin_ws/src:/root/catkin_ws/src
-        - ../catkin_ws/build:/root/catkin_ws/build
-        - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
-        - /dev/dri:/dev/dri
-        - /tmp/.X11-unix:/tmp/.X11-unix:rw
-        - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - ../catkin_ws/src:/root/catkin_ws/src
+      - ../catkin_ws/build:/root/catkin_ws/build
+      - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
+      - /dev/dri:/dev/dri
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
     environment:
-        - SETUP=/root/catkin_ws/devel/setup.bash
-        - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot ros_numpy unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
-        - ROSPACKAGE= ig_lio
-        - LAUNCHFILE= noetic_main_mebt.launch
-        - DISPLAY=${DISPLAY}
-        - QT_X11_NO_MITSHM=1
+      - SETUP=/root/catkin_ws/devel/setup.bash
+      - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot ros_numpy unitree_legged_msgs kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
+      - ROSPACKAGE= ig_lio
+      - LAUNCHFILE= noetic_main_trav.launch
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
     command: ./noetic-launch.sh
 
-
-#  tilemap:
-#    build:
-#      context: .
-#      dockerfile: tilemap.Dockerfile
-#    environment:
-#      - THREADS=24
-#      - ALLOW_CORS=enabled
-#   network_mode: "host"
-#    command: run
+  #Create the Tilemap Container
+  tilemap:
+    build:
+      context: .
+      dockerfile: tilemap.Dockerfile
+    environment:
+      - THREADS=24
+      - ALLOW_CORS=enabled
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
+    network_mode: "host"
+    command: run
 
 
 

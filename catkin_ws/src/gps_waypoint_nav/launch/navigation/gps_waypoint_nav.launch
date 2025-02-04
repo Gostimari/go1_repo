@@ -9,7 +9,7 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_gps_broadcaster" args="0 0 0 0 0 0 base gps" />
     <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_map_broadcaster" args="0 0 0 0 0 0 utm map" /> -->
 
-    <param name="use_sim_time" value="true" />
+    <param name="use_sim_time" value="false" />
 
     <!-- Collect Goals-->
     <!-- <include file="$(find gps_waypoint_nav)/launch/include/collect_goals.launch" /> -->
