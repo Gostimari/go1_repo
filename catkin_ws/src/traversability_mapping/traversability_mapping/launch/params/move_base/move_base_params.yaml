@@ -25,9 +25,11 @@ controller_frequency:       10.0   #10
 planner_patience:           5.0
 controller_patience:        10.0
 conservative_reset_dist:    2.0
-recovery_behavior_enabled:  true
+recovery_behavior_enabled:  false
 clearing_rotation_allowed:  true
-recovery_behaviors: [{name: rotate_recovery, type: rotate_recovery/RotateRecovery}, {name: clear_costmap_recovery, type: clear_costmap_recovery/ClearCostmapRecovery}]
+recovery_behaviors: 
+    #- {name: rotate_recovery, type: rotate_recovery/RotateRecovery}
+    - {name: clear_costmap_recovery, type: clear_costmap_recovery/ClearCostmapRecovery}
 shutdown_costmaps:          false
 oscillation_timeout:        0.0
 oscillation_distance:       0.5
@@ -69,7 +71,7 @@ TrajectoryPlannerROS:
   # # Forward Simulation Parameters
   sim_time: 3.5 #2.0
   sim_granularity: 0.02 #0.025
-  # angular_sim_granularity: 0.02
+  angular_sim_granularity: 0.02
   vx_samples: 20
   vtheta_samples: 20
   controller_frequency: 10.0
@@ -89,7 +91,7 @@ TrajectoryPlannerROS:
   heading_lookahead: 0.325  #How far to look ahead in meters when scoring different in-place-rotation trajectories
   heading_scoring: false  #Whether to score based on the robot's heading to the path or its distance from the path. default false
   heading_scoring_timestep: 0.8   #How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
-  dwa: true #Whether to use the Dynamic Window Approach (DWA) or whether to use Trajectory Rollout
+  #dwa: true #Whether to use the Dynamic Window Approach (DWA) or whether to use Trajectory Rollout
   simple_attractor: false
   publish_cost_grid_pc: true
 
@@ -99,12 +101,12 @@ TrajectoryPlannerROS:
   escape_reset_theta: 0.1
   
   ########################################## local plan DWAPlannerROS ###########################
-  DWAPlannerROS: 
+  
+DWAPlannerROS: 
 
   acc_lim_th: 0.7
   acc_lim_x: 0.7
   acc_lim_y: 0.0
-
 
   max_vel_x: 0.4
   min_vel_x: -0.4 
@@ -132,7 +134,7 @@ TrajectoryPlannerROS:
   max_scaling_factor: 0.2 
 
   vx_samples: 10
-  vy_samples: 0 
+  vy_samples: 0.0
   vtheta_samples: 20 
 
   sim_period: 0.1 

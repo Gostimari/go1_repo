@@ -68,7 +68,7 @@ public:
     TraversabilityFilter()
         : nh("~")
     {
-        subCloud = nh.subscribe<sensor_msgs::PointCloud2>("/rslidar_points", 5, &TraversabilityFilter::cloudHandler, this); // /full_cloud_info
+        subCloud = nh.subscribe<sensor_msgs::PointCloud2>("/rslidar_points_filtered", 5, &TraversabilityFilter::cloudHandler, this); // /full_cloud_info
         pubFullCloud = nh.advertise<sensor_msgs::PointCloud2>("/full_cloud_info", 5);
 
 
