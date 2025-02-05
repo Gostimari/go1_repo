@@ -4,8 +4,8 @@
 
     <include file="$(find ig_lio)/launch/lio_velodyne_Bpearl.launch" />
 
-    <!-- <include file="$(find navigation_final_semfire_pilot)/launch/ranger_navigation.launch" />
+    <include file="$(find navigation_final_semfire_pilot)/launch/ranger_navigation.launch" />
 
-    <include file="$(find gps_waypoint_nav)/launch/navigation/gps_waypoint_nav.launch" /> -->
+    <include file="$(find gps_waypoint_nav)/launch/navigation/gps_waypoint_nav.launch" />
 
 </launch>
