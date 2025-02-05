@@ -6,7 +6,7 @@ robot_pose_cache_size:                      10
 input_sources:
   front: # A name to identify the input source
     type: pointcloud # Supported types: pointcloud
-    topic: /rslidar_points
+    topic: /rslidar_points_filtered
     queue_size: 10
     publish_on_update: true # Wheter to publish the elevation map after a callback from this source.
     sensor_processor:
