@@ -63,7 +63,7 @@ local_costmap:
       {
         sensor_frame: rslidar,
         data_type: PointCloud2,
-        topic: /rslidar_points,
+        topic: /rslidar_points_filtered,
         marking: true,
         clearing: true,
         min_obstacle_height: 0.05,
@@ -73,4 +73,4 @@ local_costmap:
       }
 
   inflater_layer:
-    inflation_radius: 0.3
+    inflation_radius: 0.2

@@ -25,8 +25,8 @@ controller_frequency:       10.0   #10
 planner_patience:           5.0
 controller_patience:        10.0
 conservative_reset_dist:    2.0
-recovery_behavior_enabled:  false
-clearing_rotation_allowed:  true
+recovery_behavior_enabled:  true
+clearing_rotation_allowed:  false
 recovery_behaviors: 
     #- {name: rotate_recovery, type: rotate_recovery/RotateRecovery}
     - {name: clear_costmap_recovery, type: clear_costmap_recovery/ClearCostmapRecovery}
@@ -69,8 +69,8 @@ TrajectoryPlannerROS:
   latch_xy_goal_tolerance: false
 
   # # Forward Simulation Parameters
-  sim_time: 3.5 #2.0
-  sim_granularity: 0.02 #0.025
+  sim_time: 4.0 #2.0
+  sim_granularity: 0.025 #0.025
   angular_sim_granularity: 0.02
   vx_samples: 20
   vtheta_samples: 20
