@@ -54,16 +54,16 @@ services:
     command: ./noetic-launch.sh
 
   # #Create the Tilemap Container
-  tilemap:
-    build:
-      context: .
-      dockerfile: tilemap.Dockerfile
-    environment:
-      - THREADS=24
-      - ALLOW_CORS=enabled
-    ulimits:
-      nofile:
-        soft: 1024
-        hard: 524288
-    network_mode: "host"
-    command: run
+  # tilemap:
+  #   build:
+  #     context: .
+  #     dockerfile: tilemap.Dockerfile
+  #   environment:
+  #     - THREADS=24
+  #     - ALLOW_CORS=enabled
+  #   ulimits:
+  #     nofile:
+  #       soft: 1024
+  #       hard: 524288
+  #   network_mode: "host"
+  #   command: run
