@@ -119,6 +119,8 @@ DWAPlannerROS:
   #min_trans_vel: 0.01
   max_vel_trans: 2.1
   min_vel_trans: 0.1
+  
+  escape_vel: 0.0 #-0.5
 
   #max_rot_vel: 0.7
   #min_rot_vel: -0.7
@@ -134,7 +136,7 @@ DWAPlannerROS:
 
   occdist_scale: 0.1 
   stop_time_buffer: 0.2 
-  oscillation_reset_dist: 0.05 
+  oscillation_reset_dist: 0.0 #0.05
   forward_point_distance: 0.325 
   scaling_speed: 0.25 
   max_scaling_factor: 0.2 
