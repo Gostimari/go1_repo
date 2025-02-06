@@ -55,21 +55,24 @@ services:
 
   # #Create the Tilemap Container
   tilemap:
-     build:
-       context: .
-       dockerfile: tilemap.Dockerfile
-     ports:
+      build:
+        context: .
+        dockerfile: tilemap.Dockerfile
+      ports:
         - 8080:80
-     volumes:
+      volumes:
         - openstreetmap-data:/var/lib/postgresql/12/main
         - openstreetmap-rendered-tiles:/var/lib/mod_tile
-     environment:
-       - THREADS=24
-       - ALLOW_CORS=enabled
-     container_name: overv/openstreetmap-tile-server:1.3.10
-     ulimits:
-       nofile:
-         soft: 1024
-         hard: 524288
-     network_mode: "host"
-     command: run
+      environment:
+        - THREADS=24
+        - ALLOW_CORS=enabled
+      ulimits:
+        nofile:
+          soft: 1024
+          hard: 524288
+      network_mode: "host"
+      command: run
+
+volumes:
+  openstreetmap-data:
+  openstreetmap-rendered-tiles:
