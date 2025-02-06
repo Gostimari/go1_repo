@@ -54,15 +54,15 @@ services:
     command: ./noetic-launch.sh
 
   # #Create the Tilemap Container
-   tilemap:
+  tilemap:
      build:
        context: .
        dockerfile: tilemap.Dockerfile
      ports:
-     	- 8080:80
+        - 8080:80
      volumes:
-	- openstreetmap-data:/var/lib/postgresql/12/main
-	- openstreetmap-rendered-tiles:/var/lib/mod_tile
+        - openstreetmap-data:/var/lib/postgresql/12/main
+        - openstreetmap-rendered-tiles:/var/lib/mod_tile
      environment:
        - THREADS=24
        - ALLOW_CORS=enabled
