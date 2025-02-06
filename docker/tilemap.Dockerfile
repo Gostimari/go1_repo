@@ -1,13 +1,8 @@
-FROM overv/openstreetmap-tile-server:1.3.10
+# tilemap.dockerfile
+FROM overv/openstreetmap-tile-server:latest
 
-RUN apt install -y wget
-
-RUN wget 'https://download.geofabrik.de/europe/portugal-latest.osm.pbf'
-
-RUN mv portugal-latest.osm.pbf /data.osm.pbf
+RUN sed -i 's/\luxembourg\>/portugal/g' run.sh
 
 ENV THREADS 24
-
-ENV ALLOW_CORS true
 
 RUN ./run.sh import

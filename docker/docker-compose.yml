@@ -53,26 +53,19 @@ services:
       - QT_X11_NO_MITSHM=1
     command: ./noetic-launch.sh
 
-  # #Create the Tilemap Container
-  tilemap:
-      build:
-        context: .
-        dockerfile: tilemap.Dockerfile
-      ports:
-        - 8080:80
-      volumes:
-        - openstreetmap-data:/var/lib/postgresql/12/main
-        - openstreetmap-rendered-tiles:/var/lib/mod_tile
-      environment:
-        - THREADS=24
-        - ALLOW_CORS=enabled
-      ulimits:
-        nofile:
-          soft: 1024
-          hard: 524288
-      network_mode: "host"
-      command: run
 
-volumes:
-  openstreetmap-data:
-  openstreetmap-rendered-tiles:
+  #Create the Tile Server Container
+  tile-server:
+    build:
+      context: .
+      dockerfile: tilemap.Dockerfile
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 524288
+    environment:
+    #  UPDATES: enabled
+      THREADS: 24
+    ports:
+      - "8080:80"
+    command: run  # Runs the server after the data is imported
