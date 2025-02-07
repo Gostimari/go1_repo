@@ -18,8 +18,7 @@ fi
 
 source $SETUP
 
-xhost +local:root
-
+cd /
 #exec /bin/bash
 exec ./app_launcher_melodic.sh
 #!/bin/bash

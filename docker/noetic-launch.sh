@@ -16,8 +16,7 @@ else
 fi
 source $SETUP
 
-xhost +local:root
-
+cd /
 exec ./app_launcher_noetic.sh
 #exec /bin/bash
 #!/bin/bash
