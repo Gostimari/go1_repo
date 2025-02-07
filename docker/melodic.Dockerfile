@@ -65,5 +65,8 @@ RUN apt-get clean
 COPY melodic-launch.sh /melodic-launch.sh
 RUN chmod +x /melodic-launch.sh
 
+COPY app_launcher_melodic.sh /app_launcher_melodic.sh
+RUN chmod +x /app_launcher_melodic.sh
+
 #ENTRYPOINT ["/melodic-launch.sh"]
 CMD ["bash"]

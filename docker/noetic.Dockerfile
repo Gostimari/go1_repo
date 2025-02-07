@@ -74,5 +74,8 @@ RUN apt-get clean
 COPY noetic-launch.sh /noetic-launch.sh
 RUN chmod +x /noetic-launch.sh
 
+COPY app_launcher_noetic.sh /app_launcher_noetic.sh
+RUN chmod +x /app_launcher_noetic.sh
+
 #ENTRYPOINT ["/noetic-launch.sh"]
 CMD ["bash"]
