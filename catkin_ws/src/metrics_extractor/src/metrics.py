@@ -87,9 +87,13 @@ class MetricsExtractor:
 		self.mean_voltage = 0
 		self.goal_counter = 0
 		self.last_status = 0
+  
+		# Get the current directory and navigate to "src/metrics_extractor"
+		self.current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+		self.logfiles_path = os.path.join(self.current_path, "logfiles")
 		
-		self.file_raw = open(os.path.join(os.getcwd(), 'src/metrics_extractor/logfiles', f'{self.filename_raw}.csv'), mode='a')
-		self.file_metrics = open(os.path.join(os.getcwd(), 'src/metrics_extractor/logfiles', f'{self.filename_metrics}.csv'), mode='a')
+		self.file_raw = open(os.path.join(self.logfiles_path, f'{self.filename_raw}.csv'), mode='a')
+		self.file_metrics = open(os.path.join(self.logfiles_path, f'{self.filename_metrics}.csv'), mode='a')
 
 	def read_odom_and_goal(self):
 		"""
@@ -124,9 +128,9 @@ class MetricsExtractor:
 			self.prev_x = current_x
 			self.prev_y = current_y
 			self.prev_z = current_z
-			# self.imu_append_x = np.array([self.imu_msg.linear_acceleration.x])
-			# self.imu_append_y = np.array([self.imu_msg.linear_acceleration.y])
-			# self.imu_append_z = np.array([self.imu_msg.linear_acceleration.z])
+			self.imu_append_x = np.array([self.imu_msg.linear_acceleration.x])
+			self.imu_append_y = np.array([self.imu_msg.linear_acceleration.y])
+			self.imu_append_z = np.array([self.imu_msg.linear_acceleration.z])
 			# self.fl_calf_append = np.array([self.high_state_msg.motorState[0].tauEst])
 			# self.fl_hip_append = np.array([self.high_state_msg.motorState[1].tauEst])
 			# self.fl_thigh_append = np.array([self.high_state_msg.motorState[2].tauEst])

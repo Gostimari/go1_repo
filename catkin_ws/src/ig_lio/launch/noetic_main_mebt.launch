@@ -7,5 +7,7 @@
     <include file="$(find navigation_final_semfire_pilot)/launch/ranger_navigation.launch" />
 
     <include file="$(find gps_waypoint_nav)/launch/navigation/gps_waypoint_nav.launch" />
+    
+    <node pkg="metrics_extractor" type="metrics.py" name="metrics" />
 
 </launch>

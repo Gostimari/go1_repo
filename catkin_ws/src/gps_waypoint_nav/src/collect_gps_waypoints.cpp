@@ -24,6 +24,7 @@ double lati_point=0, longi_point=0, lati_last=0, longi_last=0;
 double ori_point_x=0, ori_point_y=0;
 
 int activation_key = 0;
+int points_counter = 1;
 
 double min_coord_change = 10 * pow(10,-6);
 std::string end_button_sym, collect_button_sym;
@@ -56,8 +57,8 @@ int main(int argc, char** argv)
 		ros::Duration duration_min(1);
 
 	// Get button numbers to collect waypoints and end collection
-		ros::param::get("/gps_waypoint_nav/collect_button_num", collect_button_num);
-		ros::param::get("/gps_waypoint_nav/end_button_num", end_button_num);
+		// ros::param::get("/gps_waypoint_nav/collect_button_num", collect_button_num);
+		// ros::param::get("/gps_waypoint_nav/end_button_num", end_button_num);
 
     //Initiate subscribers
 		ros::Subscriber sub_gps = n.subscribe("/mapviz/gps_waypoint", 100, filtered_gps_CB); ///gps_waypoint_nav/gps/filtered
@@ -73,29 +74,32 @@ int main(int argc, char** argv)
 		ROS_INFO("Saving coordinates to: %s", path_abs.c_str());
 		
 	// Give instructions:
-		ros::param::get("/gps_waypoint_nav/collect_button_sym", collect_button_sym);
-		ros::param::get("/gps_waypoint_nav/end_button_sym", end_button_sym);
-		std::cout << std::endl;
-		std::cout << "Press " << collect_button_sym.c_str() << " button to collect and store waypoint." << std::endl;
-		std::cout << "Press " << end_button_sym.c_str() << " button to end waypoint collection." << std::endl;
-		std::cout << std::endl;
+		// ros::param::get("/gps_waypoint_nav/collect_button_sym", collect_button_sym);
+		// ros::param::get("/gps_waypoint_nav/end_button_sym", end_button_sym);
+		// std::cout << std::endl;
+		// std::cout << "Press " << collect_button_sym.c_str() << " button to collect and store waypoint." << std::endl;
+		// std::cout << "Press " << end_button_sym.c_str() << " button to end waypoint collection." << std::endl;
+		// std::cout << std::endl;
 
 	// Select a start key
-		while(activation_key != 1)
-		{
-			std::cin >> activation_key;
+		// while(activation_key != 1)
+		// {
+		// 	std::cin >> activation_key;
 
-			if(activation_key == 1)
-			{
-				ROS_INFO("Waypoint collection started!");
-				continue_collection = true;
-			}
-			else
-			{
-				continue_collection = false;
-				ROS_INFO("Invalid key");
-			}
-		}
+		// 	if(activation_key == 1)
+		// 	{
+		// 		ROS_INFO("Waypoint collection started!");
+		// 		continue_collection = true;
+		// 	}
+		// 	else
+		// 	{
+		// 		continue_collection = false;
+		// 		ROS_INFO("Invalid key");
+		// 	}
+		// }
+
+	ROS_INFO("Waypoint collection started!");
+	continue_collection = true;
 
 	if(coordFile.is_open())
 	{
@@ -137,30 +141,37 @@ int main(int argc, char** argv)
 				else{}
 				gps_received = false;
 
-				ROS_INFO("Press %s button to end waypoint collection or 3 to continue:", end_button_sym.c_str());
-				activation_key = 0;
+				//ROS_INFO("Press %s button to end waypoint collection or 3 to continue:", end_button_sym.c_str());
+				//activation_key = 0;
 
-				while (activation_key != 2 && activation_key != 3)
+				//while (activation_key != 2 && activation_key != 3)
+				//{
+					//std::cin >> activation_key;
+				if (points_counter == 3)	
 				{
-					std::cin >> activation_key;
-
-					if(activation_key == 2)
-					{
+					// if(activation_key == 2)
+					// {
 						ROS_INFO("Waypoint collection Ended!");
 						continue_collection = false;
 						coordFile << std::fixed << std::setprecision(8) << lati_last << " " << longi_last << std::endl;
-					}
-					else if(activation_key == 3)
-					{
-						ROS_INFO("Waypoint collection continued!");
-						continue_collection = true;
-					}
-					else
-					{
-						ROS_INFO("Invalid Option!");
-					}
-				}
 
+					// }
+					// else if(activation_key == 3)
+					// {
+					// 	ROS_INFO("Waypoint collection continued!");
+					// 	continue_collection = true;
+					// }
+					// else
+					// {
+					// 	ROS_INFO("Invalid Option!");
+					// }
+				}
+				else
+				{
+					ROS_INFO("Waypoint collection continued!");
+					continue_collection = true;
+				}
+				points_counter += 1;
 				ros::spinOnce();
 			}
 			else
@@ -187,3 +198,4 @@ int main(int argc, char** argv)
 	ros::shutdown();
 	return 0;
 }
+
