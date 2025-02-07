@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 
 <launch>
-    <include file="$(find gps_waypoint_nav)/launch/navigation/collect_goals.launch" />
+    <include file="$(find gps_waypoint_nav)/launch/include/collect_goals.launch" />
 </launch>
