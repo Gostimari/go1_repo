@@ -16,8 +16,8 @@
          heading: 0.0},
 
        { name: origin_bag,
-         latitude: 40.28441815666667,
-         longitude: -8.457143873333333,
+         latitude: 40.18559772172283,
+         longitude: -8.415321658306611,
          altitude: 57.8489990234375,
          heading: 0.0}]
     </rosparam>
