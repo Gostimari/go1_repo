@@ -109,12 +109,6 @@ MAPVIZ:
 
     roslaunch gps_waypoint_nav mapviz.launch
 
-MAP DOCKER:
-
-    sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy
-    or 
-    Docker Official Desktop App
-    
 MAP DOCKER LOCAL:
 
 You can download map data (PBF files) from download.geofabrik.de. For example, to download data for Portugal, run this command:

@@ -41,7 +41,7 @@ while true; do
         --buttons-layout=spread \
         --text="Click a button to execute a launchfile or Kill to stop it."
     
-    BUTTON_CLICKED=$?
+    BUTTON_EXIT_CODE=$?
     
     # If the dialog was closed (you might check for a specific exit code), exit the loop.
     # For example, if the user presses the window close button, YAD might return 1 (this can vary).
@@ -50,6 +50,6 @@ while true; do
         exit 0
     fi
     
-    execute_command $BUTTON_CLICKED
+    execute_command $BUTTON_EXIT_CODE
 done
 
