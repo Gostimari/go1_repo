@@ -55,7 +55,7 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-mapviz-plugins \
     ros-${ROS_DISTRO}-tile-map \
     ros-${ROS_DISTRO}-rviz \
-    yard
+    yad
 
 # Clean-up
 WORKDIR /
