@@ -9,19 +9,26 @@ services:
     build:
      context: .
      dockerfile: melodic.Dockerfile
+    tty: true
+    stdin_open: true
     privileged: true
     network_mode: "host"
     volumes:
-       - ../catkin_ws/src:/root/catkin_ws/src
+      - ../catkin_ws/src:/root/catkin_ws/src
+      - /dev/dri:/dev/dri
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
     ulimits:
      nofile:
        soft: 1024
        hard: 524288
     environment:
-       - SETUP=/root/catkin_ws/devel/setup.bash
-       - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
-       - ROSPACKAGE=traversability_mapping
-       - LAUNCHFILE=offline.launch
+      - SETUP=/root/catkin_ws/devel/setup.bash
+      - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
+      - ROSPACKAGE=traversability_mapping
+      - LAUNCHFILE=offline.launch
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
     command: ./melodic-launch.sh
 
   #Create the Noetic Container

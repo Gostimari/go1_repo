@@ -45,7 +45,8 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-interactive-markers \
     ros-${ROS_DISTRO}-nav-core \
-    ros-${ROS_DISTRO}-laser-geometry
+    ros-${ROS_DISTRO}-laser-geometry \
+    yard
 
 # Clean-up
 WORKDIR /

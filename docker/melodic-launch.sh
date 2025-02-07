@@ -18,8 +18,6 @@ fi
 
 source $SETUP
 
-sudo apt install yard
-
 xhost +local:root
 
 #exec /bin/bash
