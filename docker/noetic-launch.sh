@@ -16,8 +16,9 @@ else
 fi
 source $SETUP
 
-
 sudo apt install yard
+
+xhost +local:root
 
 exec ./app_launcher_noetic.sh
 #exec /bin/bash

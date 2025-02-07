@@ -20,6 +20,8 @@ source $SETUP
 
 sudo apt install yard
 
+xhost +local:root
+
 #exec /bin/bash
 exec ./app_launcher_melodic.sh
 #!/bin/bash
