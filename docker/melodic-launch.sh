@@ -19,10 +19,10 @@ fi
 source $SETUP
 
 #exec /bin/bash
-
+exec ./app_launcher_melodic.sh
 #!/bin/bash
 # while true; do
 #     echo "Service is running..."
 #     sleep 1
 # done
-roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file
+#roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file
