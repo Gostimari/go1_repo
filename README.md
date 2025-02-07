@@ -114,30 +114,29 @@ MAP DOCKER LOCAL:
 You can download map data (PBF files) from download.geofabrik.de. For example, to download data for Portugal, run this command:
     
     wget 'https://download.geofabrik.de/europe/portugal-latest.osm.pbf'
+    wget 'https://download.geofabrik.de/europe/portugal.poly'
 
 Once we have the data, we need to import it into the tile server. Run these commands to import it to the docker:
 
-    docker volume create openstreetmap-data
-    docker volume create openstreetmap-rendered-tiles
+    docker volume create osm-data
+    docker volume create osm-tiles
     docker run \
-        -v $HOME/portugal-latest.osm.pbf:/data.osm.pbf \
-        -v openstreetmap-data:/var/lib/postgresql/12/main \
-        -v openstreetmap-rendered-tiles:/var/lib/mod_tile \
-        -e THREADS=24 \
-        overv/openstreetmap-tile-server:1.3.10 \
-    import
+        -e UPDATES=enabled \
+        -v /absolute/path/to/portugal-latest.osm.pbf:/data/region.osm.pbf \
+        -v /absolute/path/to/portugal.poly:/data/region.poly \
+        -v osm-data:/data/database/ \
+        overv/openstreetmap-tile-server \
+        import
  
  Once the data has been imported, you can run your server like this:
  
     docker run \
         -p 8080:80 \
-        -v openstreetmap-data:/var/lib/postgresql/12/main \
-        -v openstreetmap-rendered-tiles:/var/lib/mod_tile \
-        -e THREADS=24 \
-        -e ALLOW_CORS=enabled \
-        -d overv/openstreetmap-tile-server:1.3.10 \
+        -v osm-data:/data/database/ \
+        -v osm-tiles:/data/tiles/ \
+        -d overv/openstreetmap-tile-server \
         run
-  
+      
 MAPVIZ TILE-MAP LINK:
 
     http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
