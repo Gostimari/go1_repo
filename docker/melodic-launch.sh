@@ -18,6 +18,8 @@ fi
 
 source $SETUP
 
+sudo apt install yard
+
 #exec /bin/bash
 exec ./app_launcher_melodic.sh
 #!/bin/bash
