@@ -1,164 +1,167 @@
-# Waypoint Navigation on Unitree Go1 Edu in Irregular Outdoor Terrains
+Here's the improved README.md ready to copy/paste:
 
-This Repo has 3 pipelines to waypoint autonomous navigation on the Unitree Go1 Edu version. To install this on your system you have to follow this steps:
+```markdown
+# 🚀 Autonomous Waypoint Navigation on Unitree Go1 Edu in Irregular Outdoor Terrains
 
-1 -> Install docker on you machine:
+This repository provides three robust pipelines for autonomous waypoint navigation on the Unitree Go1 Edu robot, tailored for irregular outdoor terrains. Below is a step-by-step guide to set up and utilize the system effectively.
 
-Official docker website: https://docs.docker.com/desktop/
+---
 
-OR
+## 📦 Installation
 
-    Ubuntu:
-        sudo apt install docker docker-compose
-    
-    Fedora:
-        sudo dnf install docker docker-compose
+### 1. Install Docker
+Follow the official Docker installation guide for your OS:  
+[https://docs.docker.com/desktop/](https://docs.docker.com/desktop/)
 
-2 -> Clone this repository to you machine:
+**OR** use package managers:  
+```bash
+# Ubuntu
+sudo apt install docker docker-compose
 
-2.1 -> Install git:
+# Fedora
+sudo dnf install docker docker-compose
+```
 
-    Ubuntu:
-        sudo apt install git
-    Fedora:
-        sudo dnf install git
-        
-2.2 -> Clone Repo
+### 2. Clone the Repository
+#### Install Git
+```bash
+# Ubuntu
+sudo apt install git
 
-        git clone https://github.com/Gostimari/go1_repo.git
+# Fedora
+sudo dnf install git
+```
 
-3 -> Enter the docker directory of this cloned repository and run docker compose: (by default is elevation_mapping that will run, you can change the launch file in the docker-compose.yml file)
+#### Clone the Repo
+```bash
+git clone https://github.com/Gostimari/go1_repo.git
+```
 
-Run this command to enable docker with GUI:
+---
 
-    xhost +local:root
+## 🐳 Docker Setup
+1. Enable Docker GUI access:
+   ```bash
+   xhost +local:root
+   ```
+2. Navigate to the `docker` directory and start the containers:
+   ```bash
+   docker-compose up
+   ```
+   *By default, `elevation_mapping` is launched. Modify `docker-compose.yml` to change the startup configuration.*
 
-Official docker website:
+---
 
-    docker compose up
-    
-Ubuntu/Fedora:
+## 🧭 Navigation Pipelines
 
-    docker-compose up
+### Option 1: Elevation Mapping
+```bash
+# ROS Noetic
+roslaunch ig_lio noetic_main_elev.launch
+```
 
-Now that all the packages and workspace is ready you have three options to start the system. Every options has a different mapping algorithm.
+### Option 2: Mechanical Effort-Based Traversability (MEBT)
+```bash
+# ROS Noetic
+roslaunch ig_lio noetic_main_mebt.launch
+```
 
-Navigation with elevation_mapping:
+### Option 3: Traversability Mapping
+```bash
+# ROS Noetic
+roslaunch ig_lio noetic_main_trav.launch
 
-ROS NOETIC:
+# ROS Melodic
+roslaunch traversability_mapping offline.launch
+```
 
-    roslaunch ig_lio noetic_main_elev.launch
+---
 
-Navigation with Mechanical Effort Based Traversability:
+## 🛠️ Launch Individual Components
 
-ROS NOETIC:
+### LIDAR-Inertial Odometry (LIO)
+```bash
+roslaunch ig_lio lio_velodyne_Bpearl.launch
+```
 
-    roslaunch ig_lio noetic_main_mebt.launch
+### Elevation Mapping Demos
+```bash
+roslaunch elevation_mapping_demos go1_elevation.launch
+```
 
-Navigation with traversability_mapping:
+### Navigation Stack
+```bash
+roslaunch navigation_final_semfire_pilot ranger_navigation.launch
+```
 
-ROS NOETIC:
+---
 
-    roslaunch ig_lio noetic_main_trav.launch
+## 🗺️ GPS Waypoint Navigation
 
-ROS MELODIC:
+### Collect Waypoints
+```bash
+roslaunch gps_waypoint_nav collect_goals.launch
+```
 
-    roslaunch traversability_mapping offline.launch
+### Start Navigation
+```bash
+roslaunch gps_waypoint_nav gps_waypoint_nav.launch
+```
 
+### Visualize with MapViz
+```bash
+roslaunch gps_waypoint_nav mapviz.launch
+```
 
-To run individually all the algorithms you have bellow the launch files to the different packages:
+---
 
-ig_lio:
-    
-ROS NOETIC:
+## 🌍 Map Server Setup (Docker)
 
-    roslaunch ig_lio lio_velodyne_Bpearl.launch
+1. Download map data (e.g., Portugal):
+   ```bash
+   wget 'https://download.geofabrik.de/europe/portugal-latest.osm.pbf'
+   wget 'https://download.geofabrik.de/europe/portugal.poly'
+   ```
 
-traversability_mapping:
+2. Create Docker volumes and import data:
+   ```bash
+   docker volume create osm-data
+   docker volume create osm-tiles
+   docker run -e UPDATES=enabled \
+      -v /absolute/path/to/portugal-latest.osm.pbf:/data/region.osm.pbf \
+      -v /absolute/path/to/portugal.poly:/data/region.poly \
+      -v osm-data:/data/database/ \
+      overv/openstreetmap-tile-server import
+   ```
 
-ROS MELODIC:
+3. Start the tile server:
+   ```bash
+   docker run -p 8080:80 \
+      -v osm-data:/data/database/ \
+      -v osm-tiles:/data/tiles/ \
+      -d overv/openstreetmap-tile-server run
+   ```
 
-    roslaunch traversability_mapping offline.launch
+**Tile URLs** (Max Zoom: 19):  
+- `http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png`  
+- `http://127.0.0.1:8080/tile/{level}/{x}/{y}.png`
 
+---
 
-elevation_mapping:
+## 📊 Metrics & Analysis
 
-ROS NOETIC:
+### 1. Extract Metrics
+```bash
+rosrun metrics_extractor metrics.py
+```
 
-    roslaunch elevation_mapping_demos go1_elevation.launch
-    
-navigation_final_semfire_pilot:
+### 2. Generate Plots
+```bash
+# Navigate to /logfiles first
+python3 metrics_analyser_deep.py logfile_metrics-2025-02-03-14-53.csv -o ../plots
+```
 
-ROS NOETIC:
-
-    roslaunch navigation_final_semfire_pilot ranger_navigation.launch
-    
-gps_waypoint_nav:
-
-ROS NOETIC:
-
-COLLECT POINTS:
-
-    roslaunch gps_waypoint_nav collect_goals.launch
-    
-SEND POINS TO NAVIGATION:
-
-    roslaunch gps_waypoint_nav gps_waypoint_nav.launch
-    
-MAPVIZ:
-
-    roslaunch gps_waypoint_nav mapviz.launch
-
-MAP DOCKER LOCAL:
-
-You can download map data (PBF files) from download.geofabrik.de. For example, to download data for Portugal, run this command:
-    
-    wget 'https://download.geofabrik.de/europe/portugal-latest.osm.pbf'
-    wget 'https://download.geofabrik.de/europe/portugal.poly'
-
-Once we have the data, we need to import it into the tile server. Run these commands to import it to the docker:
-
-    docker volume create osm-data
-    docker volume create osm-tiles
-    docker run \
-        -e UPDATES=enabled \
-        -v /absolute/path/to/portugal-latest.osm.pbf:/data/region.osm.pbf \
-        -v /absolute/path/to/portugal.poly:/data/region.poly \
-        -v osm-data:/data/database/ \
-        overv/openstreetmap-tile-server \
-        import
- 
- Once the data has been imported, you can run your server like this:
- 
-    docker run \
-        -p 8080:80 \
-        -v osm-data:/data/database/ \
-        -v osm-tiles:/data/tiles/ \
-        -d overv/openstreetmap-tile-server \
-        run
-      
-MAPVIZ TILE-MAP LINK:
-
-    http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
-    Max Zoom: 19
-
-    or
-    
-    http://127.0.0.1:8080/tile/{level}/{x}/{y}.png
-    Max Zoom: 19
-    
-metrics_extractor: 
-    
-1 -> extract metrics from the ros-bag or live and save them into a file:
-    
-    rosrun metrics_extractor metrics.py
-    
-2 -> Create plots about the extracted data and save them in ../plot directory: (navigate to /logfiles and change the name of the file)
-    
-    python3 metrics_analyser_deep.py logfile_metrics-2025-02-03-14-53.csv -o ../plots
-        
-3-> Genrate a Latex table with the extracted data:
-
-    python3 table_generator.py
-    
-
+### 3. Create LaTeX Tables
+```bash
+python3 table_generator.py
+```
