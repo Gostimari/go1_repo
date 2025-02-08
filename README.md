@@ -44,9 +44,7 @@ git clone https://github.com/Gostimari/go1_repo.git
 2. Navigate to the `docker` directory and start the containers:
    ```bash
    docker-compose up
-   ```
-**OR** If you use official docker:
-   ```bash
+   # or
    docker compose up
    ```
 ---
