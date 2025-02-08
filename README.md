@@ -45,6 +45,10 @@ git clone https://github.com/Gostimari/go1_repo.git
    ```bash
    docker-compose up
    ```
+**OR** If you use official docker:
+   ```bash
+   docker compose up
+   ```
 ---
 
 ## 🧭 Navigation Pipelines
