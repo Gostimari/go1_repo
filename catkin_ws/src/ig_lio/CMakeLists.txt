@@ -86,3 +86,8 @@ install(DIRECTORY rviz/
   
 add_executable(scan2map src/scan2map.cpp)
 target_link_libraries(scan2map ${catkin_LIBRARIES})
+
+catkin_install_python(PROGRAMS
+  Unitree_tranformer.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
