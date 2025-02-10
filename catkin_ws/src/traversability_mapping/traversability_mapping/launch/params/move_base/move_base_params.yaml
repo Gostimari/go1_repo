@@ -110,15 +110,15 @@ DWAPlannerROS:
   acc_lim_y: 0.0
 
   max_vel_x: 1
-  min_vel_x: 0.1 
+  min_vel_x: -0.5 
 
   max_vel_y: 0.3
   min_vel_y: -0.3 
 
   #max_trans_vel: 0.5
   #min_trans_vel: 0.01
-  max_vel_trans: 2.1
-  min_vel_trans: 0.1
+  max_vel_trans: 0.5
+  min_vel_trans: 0.01
   
   escape_vel: 0.0 #-0.5
 
@@ -149,7 +149,7 @@ DWAPlannerROS:
   controller_frequency: 20
 
   xy_goal_tolerance: 0.5
-  yaw_goal_tolerance: 3.14
+  yaw_goal_tolerance: 6.2832
   #rot_stopped_vel: 0.01
   theta_stopped_vel: 0.01
   trans_stopped_vel: 0.01
