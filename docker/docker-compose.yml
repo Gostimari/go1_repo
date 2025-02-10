@@ -23,13 +23,13 @@ services:
        soft: 1024
        hard: 524288
     environment:
+      - .bashrc:/root/.bashrc
       - SETUP=/root/catkin_ws/devel/setup.bash
       - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
       - ROSPACKAGE=traversability_mapping
       - LAUNCHFILE=offline.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-      - .bashrc:/root/.bashrc
     command: ./melodic-launch.sh
 
   #Create the Noetic Container
@@ -42,13 +42,13 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
+      - .bashrc:/root/.bashrc
       - ../catkin_ws/src:/root/catkin_ws/src
       - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
-      - .bashrc:/root/.bashrc
     ulimits:
       nofile:
         soft: 1024
