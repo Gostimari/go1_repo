@@ -25,7 +25,7 @@ local_costmap:
     - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
     #- {name: 3d_obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
     #- {name: lidar_obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
-    - {name: cameras_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
+    #- {name: cameras_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
     #- {name: static_layer,  type: "costmap_2d::StaticLayer"}
 
   # 2d_obstacles_layer:

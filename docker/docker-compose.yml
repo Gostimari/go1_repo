@@ -23,13 +23,13 @@ services:
        soft: 1024
        hard: 524288
     environment:
-      - .bashrc:/root/.bashrc
       - SETUP=/root/catkin_ws/devel/setup.bash
       - BUILDLIST= elevation_msgs traversability_mapping #Only these packages will be build
       - ROSPACKAGE=traversability_mapping
       - LAUNCHFILE=offline.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
+      - ROS_MASTER_URI=http://192.168.123.161:11311/
     command: ./melodic-launch.sh
 
   #Create the Noetic Container
@@ -42,8 +42,6 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
-      - .bashrc:/root/.bashrc
-      - source.sh:/root/source.sh
       - ../catkin_ws/src:/root/catkin_ws/src
       - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
@@ -61,7 +59,8 @@ services:
       - LAUNCHFILE= noetic_main_elev.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-    command: ./source.sh && ./noetic-launch.sh
+      - ROS_MASTER_URI=http://192.168.123.161:11311/
+    command: ./noetic-launch.sh
 
   #Create the Tile Server Container
   tile-server:
