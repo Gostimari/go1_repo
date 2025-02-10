@@ -60,7 +60,7 @@ services:
       - LAUNCHFILE= noetic_main_elev.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-    command: ["source .bashrc && ./noetic-launch.sh"]
+    command: bash -c "source .bashrc && ./noetic-launch.sh"
 
   #Create the Tile Server Container
   tile-server:
