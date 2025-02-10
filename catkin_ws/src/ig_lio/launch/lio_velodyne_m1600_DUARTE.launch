@@ -6,7 +6,7 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster" args="0.16 0 0.06 0 0 0 base camera_link" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom" />
     <node pkg="ig_lio" type="Unitree_tranformer.py" name="Unitree_tranformer" output="screen" />
-    <!-- <node pkg="python_executables" type="imu_filter.py" name="imu_filter" output="screen" /> -->
+    <node pkg="ig_lio" type="imu_filter.py" name="imu_filter" output="screen" />
     
 
     <!-- Load configuration parameters -->
@@ -28,7 +28,7 @@
         <param name="~target_frame" value="base" /> <!-- camera_gyro_frame -->
         
         <!-- Remap input and output topics to match your setup -->
-        <remap from="imu_in/data" to="/go1_imu" /> <!-- /camera/imu -->
+        <remap from="imu_in/data" to="/go1_imu_filtered" /> <!-- /camera/imu -->
         <remap from="imu_out/data" to="/imu/data_transformed" />
     </node>
 
@@ -54,6 +54,4 @@
 
     <!-- RViz Visualization -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ig_lio)/rviz/lio_show_mine.rviz" required="true" />
-</launch>
-
 </launch>
