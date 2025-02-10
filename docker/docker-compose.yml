@@ -29,6 +29,7 @@ services:
       - LAUNCHFILE=offline.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
+      - .bashrc:/root/.bashrc
     command: ./melodic-launch.sh
 
   #Create the Noetic Container
@@ -47,6 +48,7 @@ services:
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - .bashrc:/root/.bashrc
     ulimits:
       nofile:
         soft: 1024

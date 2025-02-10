@@ -24,8 +24,8 @@ local_costmap:
   plugins:
     - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
     #- {name: 3d_obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
-    - {name: lidar_obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
-    #- {name: cameras_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
+    #- {name: lidar_obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
+    - {name: cameras_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
     #- {name: static_layer,  type: "costmap_2d::StaticLayer"}
 
   # 2d_obstacles_layer:
@@ -40,17 +40,17 @@ local_costmap:
     track_unknown_space: true
     observation_sources: depth_face depth_left depth_right scan
     depth_face: {data_type: PointCloud2,
-      topic: /cam1/point_cloud_face,
+      topic: /camera1/point_cloud_face,
       min_obstacle_height: 1,
       marking: true,
       clearing: true}
     depth_left: {data_type: PointCloud2,
-      topic: /cam3/point_cloud_left,
+      topic: /camera3/point_cloud_left,
       min_obstacle_height: 1,
       marking: true,
       clearing: true}
     depth_right: {data_type: PointCloud2,
-      topic: /cam4/point_cloud_right,
+      topic: /camera4/point_cloud_right,
       min_obstacle_height: 1,
       marking: true,
       clearing: true}
@@ -91,4 +91,4 @@ local_costmap:
   #   track_unknown_space: true # flag to decide wether unknown space is treated as free or unknown
 
   inflater_layer:
-    inflation_radius: 0.3
+    inflation_radius: 0.1
