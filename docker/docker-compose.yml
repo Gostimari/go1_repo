@@ -14,6 +14,7 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
+      - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src:/root/catkin_ws/src
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
@@ -29,7 +30,7 @@ services:
       - LAUNCHFILE=offline.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-      - ROS_MASTER_URI=http://192.168.123.161:11311/
+      #- ROS_MASTER_URI=http://192.168.123.161:11311/
     command: ./melodic-launch.sh
 
   #Create the Noetic Container
@@ -42,6 +43,7 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
+      - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src:/root/catkin_ws/src
       - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
@@ -59,7 +61,7 @@ services:
       - LAUNCHFILE= noetic_main_elev.launch
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-      - ROS_MASTER_URI=http://192.168.123.161:11311/
+      #- ROS_MASTER_URI=http://192.168.123.161:11311/
     command: ./noetic-launch.sh
 
   #Create the Tile Server Container
