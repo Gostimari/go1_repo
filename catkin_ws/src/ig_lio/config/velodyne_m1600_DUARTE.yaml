@@ -1,6 +1,6 @@
 lidar_topic: /lidar_0/m1600/pcl2
 #lidar_topic: /livox/lidar
-imu_topic: /madgwick_filtered_imu
+imu_topic: /go1_imu_filtered #/madgwick_filtered_imu
 lidar_type: M1600 # livox velodyne ouster
 #lidar_type: livox
 min_radius: 1
