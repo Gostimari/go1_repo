@@ -2,8 +2,8 @@
 
 <launch>
 
-    <!-- <include file="$(find ig_lio)/launch/lio_velodyne_Bpearl.launch" /> -->
-    <include file="$(find ig_lio)/launch/lio_velodyne_m1600_DUARTE.launch" />
+    <include file="$(find ig_lio)/launch/lio_velodyne_Bpearl.launch" />
+    <!-- <include file="$(find ig_lio)/launch/lio_velodyne_m1600_DUARTE.launch" /> -->
 
     <include file="$(find navigation_final_semfire_pilot)/launch/ranger_navigation.launch" />
 

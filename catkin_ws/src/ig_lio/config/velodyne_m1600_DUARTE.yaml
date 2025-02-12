@@ -13,7 +13,6 @@ enable_acc_correct: false
 scan_resolution: 0.5
 voxel_map_resolution: 0.5
 max_iterations: 20
-
 acc_cov: 0.01
 gyr_cov: 0.01
 ba_cov: 0.0001
