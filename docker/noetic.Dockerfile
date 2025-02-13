@@ -23,7 +23,8 @@ RUN apt-get update \
     vim \
     nano \
     libtbb-dev \
-    libgoogle-glog-dev
+    libgoogle-glog-dev \
+    packagekit-gtk3-module
 
 
 # Install some python packages
