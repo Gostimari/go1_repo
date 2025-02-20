@@ -78,8 +78,8 @@ RUN chmod +x /noetic-launch.sh
 COPY app_launcher_noetic.sh /app_launcher_noetic.sh
 RUN chmod +x /app_launcher_noetic.sh
 
-COPY duarte.sh /duarte.sh
-RUN chmod +x /duarte.sh
+COPY startup.sh /startup.sh
+RUN chmod +x /startup.sh
 
 #ENTRYPOINT ["/noetic-launch.sh"]
 CMD ["bash"]
