@@ -148,7 +148,6 @@ class MetricsExtractor:
 			self.once = True
 
 		self.travelled_distance = self.prev_trav_dist + np.sqrt(np.square(current_x - self.prev_x) + np.square(current_y - self.prev_y) + np.square(current_z - self.prev_z))
-		# print(f"Travelled distance = {self.travelled_distance:.3f}")
 
 		print(f"Travelled distance = {self.travelled_distance:.3f}")
 
@@ -224,11 +223,6 @@ class MetricsExtractor:
 		print(f"Mean power = {self.power_consumption:.3f}")
   
 		print (f"Mean voltage = {self.voltage_consumption:.3f}")
-
-		#toc = perf_counter()
-
-		#if toc - self.tic >= self.timeout:
-		#	self.trigger_end = True
 
 
 	def fill_logfile(self):
