@@ -54,16 +54,16 @@
   </node>
 
   <!-- Filter out the points that are too far away -->
-  <node pkg="nodelet" type="nodelet" name="crop_box" args="load pcl/CropBox pcl_manager" output="screen">
+  <node pkg="nodelet" type="nodelet" name="crop_box_2" args="load pcl/CropBox pcl_manager" output="screen">
     <remap from="~input" to="rslidar_points" />
     <remap from="~output" to="rslidar_points_filtered" />
     <rosparam>
-          min_x: -100.0
-          max_x: 100.0
+          min_x: -2.0
+          max_x: 2.0
           min_y: -100.0
           max_y: 100.0
-          min_z: -2.0
-          max_z: 2.0 <!--30.0-->
+          min_z: -100.0
+          max_z: 100.0 <!--30.0-->
           keep_organized: false
           negative: false
     </rosparam>
