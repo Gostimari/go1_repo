@@ -6,11 +6,11 @@ UNSAFE_COMMAND_USED=""  # Flag to track if an unsafe command has been run
 
 # Function to send zero velocity and null goal for safe stopping
 send_safe_stop() {
-  echo "Sending zero velocity command to /cmd_vel"
-  rostopic pub -1 --use-rostime /cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
-  
   echo "Sending null goal to move_base to cancel any active goals"
   rostopic pub -1 --use-rostime /move_base/cancel actionlib_msgs/GoalID -- {}
+  
+  echo "Sending zero velocity command to /cmd_vel"
+  rostopic pub -1 --use-rostime /cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
 }
 
 # Function to display command output in real-time
@@ -76,6 +76,15 @@ execute_command() {
         3)
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
+                case "$UNSAFE_COMMAND_USED" in
+                    1)
+                        send_safe_stop
+                        UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
+                        ;;
+                    *)
+                        echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
+                        ;;
+                esac
                 echo "Sending SIGINT to process group $COMMAND_PID"
                 kill -SIGINT -- -$COMMAND_PID
                 COMMAND_PID=""
@@ -89,20 +98,20 @@ execute_command() {
             else
                 echo "No specific process to kill."
             fi
-            case "$UNSAFE_COMMAND_USED" in
-                1)
-                    send_safe_stop
-                    UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
-                    ;;
-                *)
-                    echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
-                    ;;
-            esac
             ;;
         252)
             echo "Window closed by user. Exiting."
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
+                case "$UNSAFE_COMMAND_USED" in
+                    1)
+                        send_safe_stop
+                        UNSAFE_COMMAND_USED=252  # Mark that an unsafe command was used
+                        ;;
+                    *)
+                        echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
+                        ;;
+                esac
                 echo "Sending SIGINT to process group $COMMAND_PID"
                 kill -SIGINT -- -$COMMAND_PID
                 COMMAND_PID=""
@@ -116,15 +125,6 @@ execute_command() {
             else
                 echo "No specific process to kill."
             fi
-            case "$UNSAFE_COMMAND_USED" in
-                1)
-                    send_safe_stop
-                    UNSAFE_COMMAND_USED=252  # Mark that an unsafe command was used
-                    ;;
-                *)
-                    echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
-                    ;;
-            esac
             echo "Cleaning up all log files..."
             rm -f custom_output_*.log  # Remove all log files matching the pattern
             exit 0
