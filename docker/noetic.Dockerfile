@@ -24,7 +24,11 @@ RUN apt-get update \
     nano \
     libtbb-dev \
     libgoogle-glog-dev \
-    packagekit-gtk3-module
+    packagekit-gtk3-module \
+    libyaml-cpp-dev \
+    libpcap-dev \
+    libpthread-stubs0-dev \
+    libeigen3-dev
 
 
 # Install some python packages
@@ -56,6 +60,8 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-mapviz-plugins \
     ros-${ROS_DISTRO}-tile-map \
     ros-${ROS_DISTRO}-rviz \
+    ros-${ROS_DISTRO}-roslib \
+    ros-${ROS_DISTRO}- \
     yad
 
 # Clean-up
