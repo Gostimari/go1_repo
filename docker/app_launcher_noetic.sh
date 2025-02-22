@@ -16,10 +16,10 @@ show_command_output() {
   local log_file="$1"
   # Display the command output with tail and two buttons
   tail -f "$log_file" | yad --title="Command Output" --width=600 --height=400 \
-      --text-info --listen --button="Stop":8 --button="Back":6
+      --text-info --listen --button="Stop":9 --button="Back":10
   local ret=$?
   
-  if [ $ret -eq 8 ]; then
+  if [ $ret -eq 9 ]; then
     # "Stop" button clicked
     if [ -n "$COMMAND_PID" ]; then
       echo "Stopping command with PID $COMMAND_PID"
@@ -29,7 +29,7 @@ show_command_output() {
     # Immediately show the static log file content in a new YAD window
     yad --title="Command Output (Stopped)" --width=600 --height=400 \
         --text-info --filename="$log_file" --button="Back":6
-  elif [ $ret -eq 6 ]; then
+  elif [ $ret -eq 10 ]; then
     # "Back" button clicked
     if [ -n "$COMMAND_PID" ]; then
       echo "Stopping command with PID $COMMAND_PID"
@@ -61,7 +61,12 @@ execute_command() {
             roslaunch ig_lio noetic_main_trav.launch &
             COMMAND_PID=$!
             ;;
-        6)
+        6)  
+            echo "Startup drivers Script clicker"
+            ./startup.sh &
+            COMMAND_PID=$!
+            ;;
+        7)
             echo "Custom command clicked"
             cmd=$(yad --entry --title="Custom Command" --width=400 --text="Type a command:")
             if [[ -n "$cmd" ]]; then
@@ -83,7 +88,7 @@ execute_command() {
                 show_command_output "$LOG_FILE"
             fi
             ;;
-        7)
+        8)
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
                 echo "Sending SIGINT to process group $COMMAND_PID"
@@ -138,8 +143,9 @@ while true; do
         --button="MEBT:3" \
         --button="Elevation:4" \
         --button="Traversability:5" \
-        --button="Custom Command:6" \
-        --button="Kill:7" \
+        --button="Startup Drivers:6" \
+        --button="Custom Command:7" \
+        --button="Kill:8" \
         --buttons-layout=spread \
         --text="Click a button to execute a command or Kill to stop the process. If you want to launch the traversability_mapping, you need to launch it on the Roslaunch Melodic App too. The 'Custom Command' button is to launch a terminal command, like 'rostopic list' with built-in terminal output."
     
