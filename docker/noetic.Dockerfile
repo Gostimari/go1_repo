@@ -78,6 +78,7 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-realsense2-camera \
     ros-${ROS_DISTRO}-realsense2-description \
     ros-${ROS_DISTRO}-librealsense2 \
+    ros-${ROS_DISTRO}-robot-state-publisher \
     yad
 
 # Clean-up
