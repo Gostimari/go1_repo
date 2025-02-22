@@ -56,7 +56,7 @@ services:
         hard: 524288
     environment:
       - SETUP=/root/catkin_ws/devel/setup.bash
-      - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot ros_numpy unitree_legged_msgs unitree_legged_sdk rslidar_sdk go1_ros_interface kindr kindr_ros message_logger point_cloud_io #Only these packages will be build
+      - BUILDLIST= elevation_mapping elevation_mapping_demos gps_waypoint_nav ig_lio metrics_extractor navigation_final_semfire_pilot ros_numpy unitree_legged_msgs unitree_legged_sdk rslidar_sdk go1_ros_interface kindr kindr_ros message_logger point_cloud_io go1_description #Only these packages will be build
       - ROSPACKAGE= ig_lio
       - LAUNCHFILE= noetic_main_elev.launch
       - DISPLAY=${DISPLAY}
