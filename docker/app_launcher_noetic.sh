@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# Global variables
 COMMAND_PID=""
+UNSAFE_COMMAND_USED=""  # Flag to track if an unsafe command has been run
 
 # Function to send zero velocity and null goal for safe stopping
 send_safe_stop() {
@@ -45,26 +47,31 @@ execute_command() {
             echo "Collect GPS clicked"
             roslaunch ig_lio noetic_main_collect.launch &
             COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=2  # Mark that an unsafe command was used
             ;;
         3)
             echo "MEBT clicked"
             roslaunch ig_lio noetic_main_mebt.launch &
             COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
             ;;
         4)
             echo "Elevation clicked"
             roslaunch ig_lio noetic_main_elev.launch &
             COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=4  # Mark that an unsafe command was used
             ;;
         5)
             echo "Traversability clicked"
             roslaunch ig_lio noetic_main_trav.launch &
             COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=5  # Mark that an unsafe command was used
             ;;
         6)  
             echo "Startup drivers Script clicker"
             ./startup.sh &
             COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=6  # Mark that an unsafe command was used
             ;;
         7)
             echo "Custom command clicked"
@@ -87,6 +94,7 @@ execute_command() {
                 # Display the log file in YAD
                 show_command_output "$LOG_FILE"
             fi
+            UNSAFE_COMMAND_USED=7  # Mark that an unsafe command was used
             ;;
         8)
             # Kill existing process if any
@@ -104,7 +112,15 @@ execute_command() {
             else
                 echo "No specific process to kill."
             fi
-            send_safe_stop
+            case "$UNSAFE_COMMAND_USED" in
+                3|4|5)
+                    send_safe_stop
+                    UNSAFE_COMMAND_USED=8  # Mark that an unsafe command was used
+                    ;;
+                *)
+                    echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
+                    ;;
+            esac
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -123,7 +139,15 @@ execute_command() {
             else
                 echo "No specific process to kill."
             fi
-            send_safe_stop
+            case "$UNSAFE_COMMAND_USED" in
+                3|4|5)
+                    send_safe_stop
+                    UNSAFE_COMMAND_USED=252  # Mark that an unsafe command was used
+                    ;;
+                *)
+                    echo "UNSAFE_COMMAND_USED=$UNSAFE_COMMAND_USED; skipping safe stop"
+                    ;;
+            esac
             echo "Cleaning up all log files..."
             rm -f custom_output_*.log  # Remove all log files matching the pattern
             exit 0
