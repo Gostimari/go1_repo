@@ -40,7 +40,8 @@ RUN apt-get -y install \
     python3-rosinstall-generator \
     python3-wstool \
     python3-rosdep \
-    python3-catkin-tools
+    python3-catkin-tools \
+    python3-rosunit
 
 RUN pip3 install "numpy>=1.20" pyquaternion
 
@@ -61,6 +62,22 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-tile-map \
     ros-${ROS_DISTRO}-rviz \
     ros-${ROS_DISTRO}-roslib \
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-message-generation \
+    ros-${ROS_DISTRO}-message-runtime \
+    ros-${ROS_DISTRO}-nav-msgs \
+    ros-${ROS_DISTRO}-sensor-msgs \
+    ros-${ROS_DISTRO}-std-msgs \
+    ros-${ROS_DISTRO}-std-srvs \
+    ros-${ROS_DISTRO}-nodelet \
+    ros-${ROS_DISTRO}-cv-bridge \
+    ros-${ROS_DISTRO}-image-transport \
+    ros-${ROS_DISTRO}-tf \
+    ros-${ROS_DISTRO}-ddynamic-reconfigure \
+    ros-${ROS_DISTRO}-diagnostic-updater \
+    ros-${ROS_DISTRO}-realsense2-camera \
+    ros-${ROS_DISTRO}-realsense2-description \
+    ros-${ROS_DISTRO}-librealsense2 \
     yad
 
 # Clean-up
