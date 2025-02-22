@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<launch>
+
+<arg name="feedback_frequency" default="20.0" />
+<arg name="connection_type" default="wireless" />
+<arg name="ethernet_ip" default="192.168.123.161" />
+<arg name="wireless_ip" default="192.168.12.1" />
+<arg name="publish_tf_tree" default="true"/>
+
+<!-- Conditional group for wireless connection -->
+<group if="$(eval connection_type == 'wireless')">
+    <node pkg="go1_ros_interface" type="publish_robot_state" name="node_ros_udp" output="screen">
+        <param name="high_state_publish_frequency" type="double" value="$(arg feedback_frequency)" />
+        <param name="ip_address" type="string" value="$(arg wireless_ip)" />
+    </node>
+</group>
+
+<!-- Conditional group for ethernet connection -->
+<group if="$(eval connection_type == 'ethernet')">
+    <node pkg="go1_ros_interface" type="publish_robot_state" name="node_ros_udp" output="screen">
+        <param name="high_state_publish_frequency" type="double" value="$(arg feedback_frequency)" />
+        <param name="ip_address" type="string" value="$(arg ethernet_ip)" />
+    </node>
+</group>
+
+<!-- Conditional group for tf tree publication -->
+<group if="$(arg publish_tf_tree)">
+    <include file="$(find go1_ros_interface)/launch/robotTF.launch"/>
+</group>
+
+</launch>
