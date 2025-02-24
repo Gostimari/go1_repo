@@ -88,16 +88,15 @@ execute_command() {
                 echo "Sending SIGINT to process group $COMMAND_PID"
                 kill -SIGINT -- -$COMMAND_PID
                 COMMAND_PID=""
-                # Kill all ROS nodes and processes
-                echo "Killing all ROS nodes and roscore..."
-                rosnode kill -a 2>/dev/null
-                sleep 1
-                killall -9 roscore rosmaster rosout 2>/dev/null
-                pkill -9 -f "ros/master" 2>/dev/null
-                pkill -9 -f "ros/launch" 2>/dev/null
             else
                 echo "No specific process to kill."
             fi
+            # Kill all ROS nodes and processes
+            echo "Killing all ROS nodes and roscore..."
+            rosnode kill -a 2>/dev/null &
+            # Kill all rosmaster instances
+            pkill -f "rosmaster --core"
+            pkill -f "rosmaster"
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -115,16 +114,15 @@ execute_command() {
                 echo "Sending SIGINT to process group $COMMAND_PID"
                 kill -SIGINT -- -$COMMAND_PID
                 COMMAND_PID=""
-                # Kill all ROS nodes and processes
-                echo "Killing all ROS nodes and roscore..."
-                rosnode kill -a 2>/dev/null
-                sleep 1
-                killall -9 roscore rosmaster rosout 2>/dev/null
-                pkill -9 -f "ros/master" 2>/dev/null
-                pkill -9 -f "ros/launch" 2>/dev/null
             else
                 echo "No specific process to kill."
             fi
+            # Kill all ROS nodes and processes
+            echo "Killing all ROS nodes and roscore..."
+            rosnode kill -a 2>/dev/null &
+            # Kill all rosmaster instances
+            pkill -f "rosmaster --core"
+            pkill -f "rosmaster"
             echo "Cleaning up all log files..."
             rm -f custom_output_*.log  # Remove all log files matching the pattern
             exit 0
