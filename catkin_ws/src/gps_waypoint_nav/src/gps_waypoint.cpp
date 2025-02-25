@@ -264,7 +264,8 @@ int main(int argc, char** argv)
                 ROS_INFO("Sending goal: x: %.2f, y: %.2f", map_point.point.x, map_point.point.y);
                 //ac.sendGoal(goal); //push goal to move_base node
                 geometry_msgs::PoseStamped pose_msg;
-                pose_msg.header = map_point.header;
+                pose_msg.header.frame_id = "map";
+                pose_msg.header.stamp = ros::Time::now();
                 pose_msg.pose.position.x = map_point.point.x;
                 pose_msg.pose.position.y = map_point.point.y;
                 pose_msg.pose.position.z = 0.0;
@@ -274,7 +275,8 @@ int main(int argc, char** argv)
                 pose_msg.pose.orientation.w = 1.0;
                 vizualize_goal_pub.publish(pose_msg);
 
-                pose_msg.header = map_point.header;
+                pose_msg.header.frame_id = "map";
+                pose_msg.header.stamp = ros::Time::now();
                 pose_msg.pose.position.x = -map_point.point.x;
                 pose_msg.pose.position.y = map_point.point.y;
                 pose_msg.pose.position.z = 0.0;
