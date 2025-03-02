@@ -120,6 +120,8 @@ execute_command() {
             # Kill all rosmaster instances
             pkill -f "rosmaster --core"
             pkill -f "rosmaster"
+            pkill -9 -f "ig_lio"
+            pkill -9 -f "gps_waypoint_nav"
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -146,6 +148,8 @@ execute_command() {
             # Kill all rosmaster instances
             pkill -f "rosmaster --core"
             pkill -f "rosmaster"
+            pkill -9 -f "ig_lio"
+            pkill -9 -f "gps_waypoint_nav"
             echo "Cleaning up all log files..."
             rm -f custom_output_*.log  # Remove all log files matching the pattern
             exit 0
