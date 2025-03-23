@@ -23,7 +23,7 @@ echo "Target string detected. Starting ROS launch..."
 
 sleep 5
 
-roslaunch traversability_mapping offline_sim.launch &
+roslaunch traversability_mapping offline.launch &
 
 sleep 5
 
