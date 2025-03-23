@@ -8,8 +8,8 @@ import tf
 from pyquaternion import Quaternion
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 import struct
-from gazebo_msgs.msg import ModelStates
-from geometry_msgs.msg import Pose
+#from gazebo_msgs.msg import ModelStates
+#from geometry_msgs.msg import Pose
 
 # !!! COPYRIGHT NOTICE !!!:
 # This script is based on the "nav_2d_voxels" package by Dora Lourenço
