@@ -23,7 +23,10 @@ RUN apt-get update \
     wget \
     nano \
     libboost-all-dev \
-    packagekit-gtk3-module
+    packagekit-gtk3-module \
+    psmisc \
+    gcc \
+    g++
 
 # Install some python packages
 RUN apt-get -y install \

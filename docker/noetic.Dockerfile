@@ -28,7 +28,9 @@ RUN apt-get update \
     libyaml-cpp-dev \
     libpcap-dev \
     libpthread-stubs0-dev \
-    libeigen3-dev
+    libeigen3-dev \
+    liblcm-dev \
+    psmisc
 
 
 # Install some python packages
