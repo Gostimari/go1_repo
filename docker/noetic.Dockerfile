@@ -82,6 +82,8 @@ RUN apt-get install -y ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-librealsense2 \
     ros-${ROS_DISTRO}-robot-state-publisher \
     ros-${ROS_DISTRO}-rqt-tf-tree \
+    ros-${ROS_DISTRO}-octomap-ros \
+    ros-${ROS_DISTRO}-octomap-msgs \
     yad
 
 # Clean-up
