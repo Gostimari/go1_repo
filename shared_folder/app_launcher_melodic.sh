@@ -111,8 +111,6 @@ execute_command() {
         pkill -9 -f "robot_state_publisher"
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
-        # Verify cleanup
-        pgrep -f "ros|gazebo|unitree" # Check if any ROS or Gazebo processes are still running
         WORKDIR=/root/shared_folder
         rm -f $WORKDIR/noetic_trav-log.txt
         rm -f $WORKDIR/melodic_trav-log.txt
@@ -149,8 +147,6 @@ execute_command() {
         pkill -9 -f "robot_state_publisher"
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
-        # Verify cleanup
-        pgrep -f "ros|gazebo|unitree" # Check if any ROS or Gazebo processes are still running
         echo "Cleaning up all log files..."
         rm -f custom_output_*.log # Remove all log files matching the pattern
         WORKDIR=/root/shared_folder
