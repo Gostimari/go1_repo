@@ -137,17 +137,21 @@ execute_command() {
             fi
             # Kill all ROS nodes and processes
             echo "Killing all ROS nodes and roscore..."
-            rosnode kill --all 2>/dev/null
+            rosnode kill --all 2>/dev/null &
             # Force-kill roscore/rosmaster
-            killall -9 roscore rosmaster roslaunch
+            killall -9 roscore rosmaster roslaunch rosout &
             # Kill Gazebo servers and clients
-            pkill -9 -f "gzserver\|gzclient"
-            killall -9 gzserver gzclient
-            pkill -9 -f "junior_ctrl"
-            pkill -9 -f "gps_waypoint_nav"
-            pkill -9 -f "ig_lio"
-            pkill -9 -f "robot_state_publisher"
-            pkill -9 -f "navigation_final_semfire_pilot"
+            pkill -9 -f "gzserver\|gzclient" &
+            killall -9 gzserver gzclient &
+            pkill -9 -f "junior_ctrl" &
+            pkill -9 -f "gps_waypoint_nav" &
+            pkill -9 -f "ig_lio" &
+            pkill -9 -f "robot_state_publisher" &
+            pkill -9 -f "navigation_final_semfire_pilot" &
+            pkill -9 -f "nodelet" &
+            pkill -9 -f "go1_ros_interface" &
+            pkill -9 -f "realsense2_camera" &
+            pkill -9 -f "rslidar_sdk" &
             # Clear zombie processes
             ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
             WORKDIR=/root/shared_folder
@@ -175,18 +179,21 @@ execute_command() {
             fi
             # Kill all ROS nodes and processes
             echo "Killing all ROS nodes and roscore..."
-            rosnode kill --all 2>/dev/null
+            rosnode kill --all 2>/dev/null &
             # Force-kill roscore/rosmaster
-            killall -9 roscore rosmaster roslaunch rosout
+            killall -9 roscore rosmaster roslaunch rosout &
             # Kill Gazebo servers and clients
-            pkill -9 -f "gzserver\|gzclient"
-            killall -9 gzserver gzclient
-            pkill -9 -f "junior_ctrl"
-            pkill -9 -f "gps_waypoint_nav"
-            pkill -9 -f "ig_lio"
-            pkill -9 -f "robot_state_publisher"
-            pkill -9 -f "navigation_final_semfire_pilot"
-            pkill -9 -f "nodelet"
+            pkill -9 -f "gzserver\|gzclient" &
+            killall -9 gzserver gzclient &
+            pkill -9 -f "junior_ctrl" &
+            pkill -9 -f "gps_waypoint_nav" &
+            pkill -9 -f "ig_lio" &
+            pkill -9 -f "robot_state_publisher" &
+            pkill -9 -f "navigation_final_semfire_pilot" &
+            pkill -9 -f "nodelet" &
+            pkill -9 -f "go1_ros_interface" &
+            pkill -9 -f "realsense2_camera" &
+            pkill -9 -f "rslidar_sdk" &
             # Clear zombie processes
             ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
             echo "Cleaning up all log files..."

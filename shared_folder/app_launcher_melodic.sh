@@ -99,16 +99,19 @@ execute_command() {
         fi
         # Kill all ROS nodes and processes
         echo "Killing all ROS nodes and roscore..."
-        rosnode kill --all 2>/dev/null
+        rosnode kill --all 2>/dev/null &
         # Force-kill roscore/rosmaster
-        killall -9 roscore rosmaster roslaunch
+        killall -9 roscore rosmaster roslaunch &
         # Kill Gazebo servers and clients
-        pkill -9 -f "gzserver\|gzclient"
-        killall -9 gzserver gzclient
-        pkill -9 -f "junior_ctrl"
-        pkill -9 -f "gps_waypoint_nav"
-        pkill -9 -f "ig_lio"
-        pkill -9 -f "robot_state_publisher"
+        pkill -9 -f "gzserver\|gzclient" &
+        killall -9 gzserver gzclient &
+        pkill -9 -f "junior_ctrl" &
+        pkill -9 -f "gps_waypoint_nav" &
+        pkill -9 -f "ig_lio" &
+        pkill -9 -f "robot_state_publisher" &
+        pkill -9 -f "go1_ros_interface" &
+        pkill -9 -f "realsense2_camera" &
+        pkill -9 -f "rslidar_sdk" &
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
         WORKDIR=/root/shared_folder
@@ -135,16 +138,19 @@ execute_command() {
         fi
         # Kill all ROS nodes and processes
         echo "Killing all ROS nodes and roscore..."
-        rosnode kill --all 2>/dev/null
+        rosnode kill --all 2>/dev/null &
         # Force-kill roscore/rosmaster
-        killall -9 roscore rosmaster roslaunch
+        killall -9 roscore rosmaster roslaunch &
         # Kill Gazebo servers and clients
-        pkill -9 -f "gzserver\|gzclient"
-        killall -9 gzserver gzclient
-        pkill -9 -f "junior_ctrl"
-        pkill -9 -f "gps_waypoint_nav"
-        pkill -9 -f "ig_lio"
-        pkill -9 -f "robot_state_publisher"
+        pkill -9 -f "gzserver\|gzclient" &
+        killall -9 gzserver gzclient &
+        pkill -9 -f "junior_ctrl" &
+        pkill -9 -f "gps_waypoint_nav" &
+        pkill -9 -f "ig_lio" &
+        pkill -9 -f "robot_state_publisher" &
+        pkill -9 -f "go1_ros_interface" &
+        pkill -9 -f "realsense2_camera" &
+        pkill -9 -f "rslidar_sdk" &
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
         echo "Cleaning up all log files..."
@@ -167,8 +173,8 @@ while true; do
         --width=300 --height=200 \
         --button="Traversability:1" \
         --button="Catkin Build:6" \
-        --button="Ros Purge:7" \
         --button="Custom Command:2" \
+        --button="Ros Purge:7" \
         --button="Kill:3" \
         --buttons-layout=spread \
         --text="Click a button to execute a command or Kill to stop the process. The 'Custom Command' button is to launch a terminal command, like 'rostopic list' with built-in terminal output."
