@@ -134,9 +134,9 @@ class RosMapConverter:
 
 		# listener = tf.TransformListener()
 
-		self.listener.waitForTransform("map", "odom", rospy.Time(0),rospy.Duration(4.0)) # map to base_link
+		self.listener.waitForTransform("odom", "base", rospy.Time(0),rospy.Duration(4.0)) # map to base_link
 
-		translation = self.listener.lookupTransform("map", "odom", rospy.Time(0))[0] # map to base_link
+		translation = self.listener.lookupTransform("odom", "base", rospy.Time(0))[0] # map to base_link
 
 		return translation
 
@@ -163,7 +163,7 @@ class RosMapConverter:
 
 		# Complete the information to publish in the message
 		grid.header.stamp = time
-		grid.header.frame_id = "map"
+		grid.header.frame_id = "map" #map
 
 		grid.info.resolution = resolution
 		grid.info.width = int(dimension/resolution)

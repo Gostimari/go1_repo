@@ -31,6 +31,7 @@ def main():
 	dimension = rospy.get_param('~dimension', 50)
 	resolution = rospy.get_param('~resolution', 1)
 	meters = rospy.get_param('~meters', 9)
+
 	threshold = 2.5
 	bool_plot = False
 	main.variance_threshold = rospy.get_param('~variance_threshold', 0.5)

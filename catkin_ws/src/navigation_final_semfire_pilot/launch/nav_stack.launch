@@ -1,10 +1,18 @@
 <!-- move_base.launch: launch move_base with our navigation node -->
 <launch>
 
+  <arg name="use_fused_map_local" default="false" />
+
    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/global_costmap_params.yaml" command="load" /> 
-    <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/move_base_params.yaml" command="load" />
+      <!-- Local costmap: Conditional loading -->
+      <!-- <group if="$(arg use_fused_map_local)">
+         <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/local_costmap_params_local.yaml" command="load" />
+      </group>
+      <group unless="$(arg use_fused_map_local)"> -->
+      <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/local_costmap_params.yaml" command="load" />
+      <!-- </group> -->
+      <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/global_costmap_params.yaml" command="load" /> 
+      <rosparam file="$(find navigation_final_semfire_pilot)/navigation_configs/move_base_params.yaml" command="load" />
    </node>
 
 </launch>

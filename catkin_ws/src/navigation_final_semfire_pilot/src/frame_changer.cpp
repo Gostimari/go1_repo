@@ -61,7 +61,7 @@ public:
 			{
 				//try to lookup the map -> bobcat_base transform; this will test if
 				// a valid transform chain has been published from bobcat_base to map
-				tfListener->lookupTransform("base", "map", ros::Time(0), bobcatBaseToMap); // bobcat_base -> map
+				tfListener->lookupTransform("base", "odom", ros::Time(0), bobcatBaseToMap); // bobcat_base -> map
 			}
 
 			catch(tf::TransformException &exception) 

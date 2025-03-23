@@ -8,6 +8,8 @@ import tf
 from pyquaternion import Quaternion
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 import struct
+from gazebo_msgs.msg import ModelStates
+from geometry_msgs.msg import Pose
 
 # !!! COPYRIGHT NOTICE !!!:
 # This script is based on the "nav_2d_voxels" package by Dora Lourenço
@@ -37,6 +39,39 @@ class LaserInterface2:
 	def __init__(self):
 		self.listener_octomap = tf.TransformListener()
 		self.listener_bobcat = tf.TransformListener()
+		self.tf_broadcaster_map_odom = tf.TransformBroadcaster() #add
+		self.initial_z = None
+	
+	# def broadcast_base_to_odom(self):
+	# 	"""
+    #     Broadcasts the base to odom transform.
+    #     """
+	# 	robot_pose = rospy.wait_for_message('/gazebo/model_states', ModelStates)
+
+	# 	current_pose = robot_pose.pose[-1]
+
+	# 	# Set the initial z-coordinate if it's the first time
+	# 	if self.initial_z is None:
+	# 		self.initial_z = current_pose.position.z
+
+    #     # Use geometry_msgs.msg.Pose
+	# 	base_to_odom_pose = Pose()
+	# 	base_to_odom_pose.position.x = robot_pose.pose[-1].position.x
+	# 	base_to_odom_pose.position.y = robot_pose.pose[-1].position.y
+	# 	base_to_odom_pose.position.z = robot_pose.pose[-1].position.z - self.initial_z
+	# 	base_to_odom_pose.orientation.x = robot_pose.pose[-1].orientation.x
+	# 	base_to_odom_pose.orientation.y = robot_pose.pose[-1].orientation.y
+	# 	base_to_odom_pose.orientation.z = robot_pose.pose[-1].orientation.z
+	# 	base_to_odom_pose.orientation.w = robot_pose.pose[-1].orientation.w
+
+    #     # Broadcast the transform
+	# 	self.tf_broadcaster_map_odom.sendTransform(
+	# 		(base_to_odom_pose.position.x, base_to_odom_pose.position.y, base_to_odom_pose.position.z),
+	# 		(base_to_odom_pose.orientation.x, base_to_odom_pose.orientation.y, base_to_odom_pose.orientation.z, base_to_odom_pose.orientation.w),
+	# 		rospy.Time.now(),
+	# 		"base",
+	# 		"odom"
+	# 	)
 
 	def listen_map_tf(self):
 		"""
@@ -44,9 +79,9 @@ class LaserInterface2:
 		"""
 		# listener_bobcat = tf.TransformListener()
 
-		self.listener_bobcat.waitForTransform("map","odom", rospy.Time(0),rospy.Duration(4.0)) #map to bobcat_base
+		self.listener_bobcat.waitForTransform("odom","base", rospy.Time(0),rospy.Duration(4.0)) #map to bobcat_base
 
-		translation, orientation = self.listener_bobcat.lookupTransform("map", "odom", rospy.Time(0)) # map to bobcat_base
+		translation, orientation = self.listener_bobcat.lookupTransform("odom", "base", rospy.Time(0)) # map to bobcat_base
 
 		orientation_list = [orientation[0], orientation[1], orientation[2], orientation[3]]
 
@@ -70,10 +105,10 @@ class LaserInterface2:
 		"""
 		# listener_octomap = tf.TransformListener()
 
-		time = self.listener_octomap.getLatestCommonTime("map", "base") #map to base_footprint
-		self.listener_octomap.waitForTransform("map", "base", time, rospy.Duration(4.0)) #map to base_footprint
+		time = self.listener_octomap.getLatestCommonTime("odom", "base") #map to base_footprint
+		self.listener_octomap.waitForTransform("odom", "base", time, rospy.Duration(4.0)) #map to base_footprint
 
-		translation, orientation = self.listener_octomap.lookupTransform("map", "base", time) # map to base_footprint
+		translation, orientation = self.listener_octomap.lookupTransform("odom", "base", time) # map to base_footprint
 
 		orientation_list = [orientation[0], orientation[1], orientation[2], orientation[3]]
 
@@ -112,7 +147,7 @@ class LaserInterface2:
 		for point in range(xyz_octomap.shape[0]):
 			point_transpose = np.transpose(xyz_octomap[point,:])
 
-			#point_rot = rotation*point_transpose
+			#point_rot = rotation*poinrobot_pose = rospy.wait_for_message('/gazebo/model_states', ModelStates)t_transpose
 			point_rot = np.dot(rotation, point_transpose)
 
 			xyz_rotated[point] = np.transpose(point_rot)

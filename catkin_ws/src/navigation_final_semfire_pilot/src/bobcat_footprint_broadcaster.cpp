@@ -37,7 +37,7 @@ public:
 
 			try 
 			{
-				tfListener->lookupTransform("map", "base", ros::Time(0), mapToBobcatBase); // map -> bobcat_base
+				tfListener->lookupTransform("odom", "base", ros::Time(0), mapToBobcatBase); // map -> bobcat_base
 			}
 
 			catch(tf::TransformException &exception) 
@@ -61,7 +61,7 @@ public:
 
 		while(ros::ok())
 		{
-			tfListener->lookupTransform("map", "base", ros::Time(0), mapToBobcatBase); // map -> bobcat_base
+			tfListener->lookupTransform("odom", "base", ros::Time(0), mapToBobcatBase); // map -> bobcat_base
 
 			tf::Transform tf(mapToBobcatBase.getBasis(),mapToBobcatBase.getOrigin());
 

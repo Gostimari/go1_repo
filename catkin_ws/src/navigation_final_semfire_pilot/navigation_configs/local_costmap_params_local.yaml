@@ -68,5 +68,5 @@ local_costmap:
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap
     track_unknown_space: false # flag to decide wether unknown space is treated as free or unknown
 
-  inflation_layer:
-    inflation_radius: 0.5
+  inflater_layer:
+    inflation_radius: 0.02

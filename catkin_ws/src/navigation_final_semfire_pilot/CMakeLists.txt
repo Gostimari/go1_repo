@@ -14,12 +14,14 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf2_ros
   pcl_ros
+  gazebo_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-find_package(PCL 1.10 REQUIRED)
+find_package(PCL 1.10 REQUIRED outofcore)
 find_package(Eigen3 REQUIRED)
 
 
@@ -124,6 +126,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
 include_directories(${PCL_INCLUDE_DIRS})
