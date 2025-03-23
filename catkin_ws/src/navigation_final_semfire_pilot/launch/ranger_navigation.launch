@@ -38,7 +38,7 @@
       filter_limit_min: -100
       filter_limit_max: 100
       filter_limit_negative: False
-      leaf_size: 0.05
+      leaf_size: 0.25
     </rosparam>
   </node>
 
@@ -113,7 +113,7 @@
           dimension_local: $(arg dimension_local)
           use_fused_map_local: $(arg use_fused_map_local)
           meters: $(arg meters)
-          gradient_threshold: 0.35 <!--0.35-->
+          gradient_threshold: 0.40 <!--0.35-->
     </rosparam>
   </node>
   

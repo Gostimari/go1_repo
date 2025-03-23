@@ -24,7 +24,7 @@ global_costmap:
     map_topic: /fused_costmap
     subscribe_to_updates: true
     static_map: true
-    trinary_costmap: false # flag to switch between trinary costmap (unknown/free/occ) or full range costmap
+    trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap
     track_unknown_space: false # flag to decide wether unknown space is treated as free or unknown
 
   inflation_layer:
