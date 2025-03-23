@@ -17,7 +17,7 @@
 std::vector <std::pair<double, double>> waypointVect;
 std::vector<std::pair < double, double> > ::iterator iter; //init. iterator
 geometry_msgs::PointStamped UTM_point, map_point, UTM_next, map_next;
-int count = 0, waypointCount = 0, wait_count = 0;
+int count = 0, waypointCount = 0, wait_count = 0, status = 0;
 double numWaypoints = 0;
 double latiGoal, longiGoal, latiNext, longiNext;
 std::string utm_zone;
