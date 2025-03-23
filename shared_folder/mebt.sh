@@ -1,8 +1,6 @@
 #!/bin/bash
 
-roslaunch unitree_gazebo robot_simulation.launch &
-sleep 20
-rosrun unitree_guide junior_ctrl &
+roslaunch ig_lio lio_velodyne_Bpearl.launch &
 sleep 10
 roslaunch octomap_server octomap_mapping.launch &
 sleep 2

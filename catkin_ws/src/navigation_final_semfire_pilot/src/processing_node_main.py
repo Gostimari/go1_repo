@@ -20,7 +20,6 @@ def run_once(dimension, resolution, meters, bool_plot, choose_map, source):
 	"""
 	Obtain a pointcloud from LIDARs. Build, design and publish a map.
 	"""
-	
 
 	# Object build
 	laser_interface = LaserInterface2()
@@ -70,6 +69,8 @@ def run_loop(dimension, resolution, meters, bool_plot, choose_map, source):
 
 	while not rospy.is_shutdown():
 
+		#laser_interface.broadcast_base_to_odom()
+
 		# Obtain pointcloud
 		if source == 'l':
 			xyz_cloud, roll, pitch = laser_interface.get_point_cloud_lidar()
@@ -94,6 +95,11 @@ def run_loop(dimension, resolution, meters, bool_plot, choose_map, source):
 				translation, rotation, tf_time = laser_interface.listen_octomap_tf()
 				map_ = mapper.build_map(last_xyz_cloud, dimension, resolution, meters, threshold, bool_plot, choose_map, roll, pitch, translation, mapper.combine_cell_values)
 				converter.publish_map(map_, dimension, resolution, threshold, choose_map, translation, tf_time, 'new_local_costmap')
+				
+				if use_fused_map_local == True:
+					map_local = mapper.build_map(last_xyz_cloud, dimension, resolution, meters, threshold, bool_plot, choose_map, roll, pitch, translation, mapper.combine_cell_values)
+					converter.publish_map(map_local, dimension_local, resolution, threshold, choose_map, translation, tf_time, 'new_local_costmap_local')
+
 			else:
 				roll, pitch = laser_interface.listen_map_tf()[1:]	# The slice from a tuple has the first index inclusive and the second exclusive!
 			
@@ -102,6 +108,10 @@ def run_loop(dimension, resolution, meters, bool_plot, choose_map, source):
 
 				# Publish in ROS
 				converter.publish_map(map_, dimension, resolution, threshold, choose_map, translation, tf_time, 'new_local_costmap')
+
+				if use_fused_map_local == True:
+					map_local = mapper.build_map(xyz_cloud, dimension_local, resolution, meters, threshold, bool_plot, choose_map, roll, pitch, translation, mapper.combine_cell_values)
+					converter.publish_map(map_local, dimension_local, resolution, threshold, choose_map, translation, tf_time, 'new_local_costmap_local')
 
 			elapsed = time.perf_counter() - t
 
@@ -122,8 +132,11 @@ if __name__ == "__main__":
 	source = rospy.get_param('~source', 'octo')
 	frequency = rospy.get_param('~frequency', 'loop')
 	dimension = rospy.get_param('~dimension', 50)
+	dimension_local = rospy.get_param('~dimension_local', 10)
 	resolution = rospy.get_param('~resolution', 1)
 	meters = rospy.get_param('~meters', 9)
+	use_fused_map_local = rospy.get_param('~use_fused_map_local', "false")
+	
 
 	if frequency == "loop" and not frequency == "once":
 		run_loop(dimension, resolution, meters, frequency, choose_map, source)

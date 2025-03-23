@@ -56,18 +56,18 @@ RUN apt-get clean
 #Configure catkin workspace
 ENV CATKIN_WS=/root/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
-WORKDIR $CATKIN_WS
+#WORKDIR $CATKIN_WS
 
 # Clean-up
 WORKDIR /
 RUN apt-get clean
 
 #RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
-COPY melodic-launch.sh /melodic-launch.sh
-RUN chmod +x /melodic-launch.sh
+#COPY melodic-launch.sh /melodic-launch.sh
+#RUN chmod +x /melodic-launch.sh
 
-COPY app_launcher_melodic.sh /app_launcher_melodic.sh
-RUN chmod +x /app_launcher_melodic.sh
+#COPY app_launcher_melodic.sh /app_launcher_melodic.sh
+#RUN chmod +x /app_launcher_melodic.sh
 
 #ENTRYPOINT ["/melodic-launch.sh"]
 CMD ["bash"]

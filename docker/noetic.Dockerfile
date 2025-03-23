@@ -95,14 +95,14 @@ WORKDIR /
 RUN apt-get clean
 
 #RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
-COPY noetic-launch.sh /noetic-launch.sh
-RUN chmod +x /noetic-launch.sh
+#COPY noetic-launch.sh /noetic-launch.sh
+#RUN chmod +x /noetic-launch.sh
 
-COPY app_launcher_noetic.sh /app_launcher_noetic.sh
-RUN chmod +x /app_launcher_noetic.sh
+#COPY app_launcher_noetic.sh /app_launcher_noetic.sh
+#RUN chmod +x /app_launcher_noetic.sh
 
-COPY startup.sh /startup.sh
-RUN chmod +x /startup.sh
+#COPY startup.sh /startup.sh
+#RUN chmod +x /startup.sh
 
 #ENTRYPOINT ["/noetic-launch.sh"]
 CMD ["bash"]

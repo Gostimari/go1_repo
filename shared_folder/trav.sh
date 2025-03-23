@@ -5,9 +5,7 @@ WORKDIR=/root/shared_folder
 FILE="$WORKDIR/melodic_trav-log.txt"
 STRING="melodic ready"
 
-roslaunch unitree_gazebo robot_simulation.launch &
-sleep 15
-rosrun unitree_guide junior_ctrl &
+roslaunch ig_lio lio_velodyne_Bpearl.launch &
 sleep 10
 
 echo "noetic ready" >>$WORKDIR/noetic_trav-log.txt

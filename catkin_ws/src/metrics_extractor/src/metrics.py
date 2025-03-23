@@ -91,6 +91,9 @@ class MetricsExtractor:
 		# Get the current directory and navigate to "src/metrics_extractor"
 		self.current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 		self.logfiles_path = os.path.join(self.current_path, "logfiles")
+
+		# Create directory if it doesn't exist
+		os.makedirs(self.logfiles_path, exist_ok=True)
 		
 		self.file_raw = open(os.path.join(self.logfiles_path, f'{self.filename_raw}.csv'), mode='a')
 		self.file_metrics = open(os.path.join(self.logfiles_path, f'{self.filename_metrics}.csv'), mode='a')

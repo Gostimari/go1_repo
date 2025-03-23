@@ -22,8 +22,8 @@ sensor_processor/ignore_points_above:       0.4 #0.4
 robot_motion_map_update/covariance_scale:   0.01
 
 # Map.
-length_in_x:                                30.0 # 6.0
-length_in_y:                                30.0 # 6.0
+length_in_x:                                25.0 # 6.0
+length_in_y:                                25.0 # 6.0
 position_x:                                 0.0
 position_y:                                 0.0
 resolution:                                 0.1
@@ -34,14 +34,14 @@ multi_height_noise:                         0.001
 surface_normal_positive_axis:               z
 fused_map_publishing_rate:                  0.5
 enable_visibility_cleanup:                  true
-visibility_cleanup_rate:                    1.0
+visibility_cleanup_rate:                    0.5 #1.0
 scanning_duration:                          1.0
 
 # Init submap
-initialize_elevation_map:                   false  # false
-initialization_method:                      0
-length_in_x_init_submap:                    1.6
-length_in_y_init_submap:                    1.6
+initialize_elevation_map:                   true  # false
+initialization_method:                      1
+length_in_x_init_submap:                    6
+length_in_y_init_submap:                    6
 init_submap_height_offset:                  0.01
 init_submap_variance:                       0.001
 target_frame_init_submap:                   base

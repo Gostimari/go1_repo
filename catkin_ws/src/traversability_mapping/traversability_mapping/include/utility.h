@@ -114,7 +114,7 @@ extern const float large_log_odds = 100;
 extern const float max_log_odds_for_belief = 20; // 20
 
 // 2D Map Publish Params
-extern const int localMapLength = 20; // length of the local occupancy grid map (meter)
+extern const int localMapLength = 25; // length of the local occupancy grid map (meter)
 extern const int localMapArrayLength = localMapLength / mapResolution;
 
 // Visualization Params

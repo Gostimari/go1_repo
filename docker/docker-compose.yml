@@ -19,6 +19,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
       - /run/user/1000/at-spi/bus:/run/user/1000/at-spi/bus:ro
+      - /var/run/dbus:/var/run/dbus
     ulimits:
      nofile:
        soft: 1024
@@ -31,7 +32,7 @@ services:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       #- ROS_MASTER_URI=http://192.168.123.161:11311/
-    command: ./melodic-launch.sh
+    command: ./root/shared_folder/melodic-launch.sh
 
   #Create the Noetic Container
   ros-noetic:
@@ -64,7 +65,7 @@ services:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       #- ROS_MASTER_URI=http://192.168.123.161:11311/
-    command: ./noetic-launch.sh
+    command: ./root/shared_folder/noetic-launch.sh
 
   #Create the Tile Server Container
   tile-server:

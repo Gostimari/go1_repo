@@ -182,6 +182,18 @@ void odometry_CB(const nav_msgs::Odometry::ConstPtr& odom_msg)
     waypoint_start = true;
 }
 
+void goal_status(const actionlib_msgs::GoalStatusArray::ConstPtr& status_msg)
+{
+    // Check if the status_list is not empty
+    if (!status_msg->status_list.empty()) 
+    {
+        // Access the last element of status_list
+        int status_size = status_msg->status_list.size();
+        int status_size_idx = status_size - 1;
+        status = status_msg->status_list[status_size_idx].status;
+    }
+}
+
 void waitToReachGoal(double map_x, double map_y, double goal_tolerance);
 
 int main(int argc, char** argv)
@@ -199,6 +211,7 @@ int main(int argc, char** argv)
     ros::Publisher vizualize_goal_pub = n.advertise<geometry_msgs::PoseStamped>("/gps_waypoint_nav/vizualize_goal", 1000);
 
     ros::Subscriber sub_odom = n.subscribe("/gps_waypoint_nav/odometry/gps", 1000, odometry_CB); // change to the navsat odometry
+    ros::Subscriber move_base_status = n.subscribe("/move_base/status", 1000, goal_status);
 
     ros::Subscriber sub_gps = n.subscribe("/reach/fix", 1000, gps);
 
@@ -357,10 +370,10 @@ void waitToReachGoal(double map_x, double map_y, double goal_tolerance)
         ROS_WARN("Distance to goal not changing, switching to next goal");
         goal_reached = false;
     }
-    else
+    else if (status == 3)
     {
-        //ROS_INFO("Goal tolerance reached");
+        ROS_INFO("Goal Reached");
         goal_reached = true;
-        return;
     }
+    return;
 }

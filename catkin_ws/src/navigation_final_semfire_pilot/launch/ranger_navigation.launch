@@ -11,10 +11,18 @@
   <arg name="dimension" default="35" />
   <arg name="resolution" default="0.25" />
   <arg name="meters" default="9" />
+  <arg name="fused_map_topic" default="fused_costmap" />
+  
+  <!-- Local map parameters -->
+  <arg name="dimension_local" default="6" />
+  <arg name="fused_map_local_topic" default="fused_costmap_local" />
+  <arg name="use_fused_map_local" default="true" />
 
   <!-- <node pkg="navigation_final_semfire_pilot" type="txt_pointcloud_to_pc2.py" name="txt_pointcloud_to_pc2" output="screen">
     <param name="file_path" value="/media/data/Final Pilot/45_facedown_merged.txt"/>
   </node> -->
+
+  <!-- <node pkg="navigation_final_semfire_pilot" type="frame_publisher.py" name="frame_publisher" output="screen" /> -->
 
   <!-- Just to be able to move a robot along the generated paths in simulation -->
   <!-- <include file="$(find husky_gazebo)/launch/husky_empty_world.launch"/> -->
@@ -24,7 +32,7 @@
   <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
   <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
     <!-- <remap from="~input" to="octomap_point_cloud_centers" /> -->
-    <remap from="~input" to="map_cloud" /> <!-- current_scan -->
+    <remap from="~input" to="/octomap_point_cloud_centers" /> <!-- current_scan || map_cloud-->
     <remap from="~output" to="decimated_pointclouds" />
     <rosparam>
       filter_field_name: z
@@ -109,6 +117,9 @@
   
   <node pkg="navigation_final_semfire_pilot" type="data_fusion.py" name="data_fusion" output="screen">
     <param name="fusion_type" value="$(arg fusion_type)"/>
+    <param name="fused_map_topic" value="$(arg fused_map_topic)"/>
+    <param name="fused_map_local_topic" value="$(arg fused_map_local_topic)" />
+    <param name="use_fused_map_local" value="$(arg use_fused_map_local)"/>
   </node>
 
 </launch> 

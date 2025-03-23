@@ -11,16 +11,22 @@ class CostmapFusion:
 	def __init__(self):
 
 		self.roughness = OccupancyGrid()
+		if use_fused_map_local == True:
+			self.roughness_local = OccupancyGrid()
 		self.obstacles = OccupancyGrid()
 
 	def get_costmaps(self, choose_map):
 		
 		if choose_map == "both":
 			self.roughness = rospy.wait_for_message('new_local_costmap', OccupancyGrid)
+			if use_fused_map_local == True:
+				self.roughness_local = rospy.wait_for_message('new_local_costmap_local', OccupancyGrid)
 			self.obstacles = rospy.wait_for_message('evident_obstacles_map', OccupancyGrid)
 			return "both"
 		elif choose_map == "roughness":
 			self.roughness = rospy.wait_for_message('new_local_costmap', OccupancyGrid)
+			if use_fused_map_local == True:
+				self.roughness_local = rospy.wait_for_message('new_local_costmap_local', OccupancyGrid)
 			return "roughness"
 		elif choose_map == "evident":
 			self.obstacles = rospy.wait_for_message('evident_obstacles_map', OccupancyGrid)
@@ -48,6 +54,9 @@ class CostmapFusion:
 		elif map_type == "roughness":
 			self.roughness.data = [-1 if elem == 0 else elem for elem in self.roughness.data]
 			self.publish_map(self.roughness.data)
+			if use_fused_map_local == True:
+				self.roughness_local.data = [-1 if elem == 0 else elem for elem in self.roughness_local.data]
+				self.publish_map_local(self.roughness_local.data)
 
 		elif map_type == "evident":
 			self.publish_map(self.obstacles.data)
@@ -78,7 +87,33 @@ class CostmapFusion:
 
 		grid.data = np.array(fused_costmap).astype('int8')
 
-		pub = rospy.Publisher("fused_costmap", OccupancyGrid, queue_size=10)
+		pub = rospy.Publisher(map_topic, OccupancyGrid, queue_size=10)
+
+		pub.publish(grid)
+
+	def publish_map_local(self, fused_costmap):
+
+		# Create an OccupancyGrid variable
+		grid = OccupancyGrid()
+
+		# Complete the information to publish in the message
+		grid.header.stamp = self.roughness_local.header.stamp
+		grid.header.frame_id = self.roughness_local.header.frame_id
+
+		grid.info.resolution = self.roughness_local.info.resolution
+		grid.info.width = self.roughness_local.info.width
+		grid.info.height = self.roughness_local.info.height
+		grid.info.origin.position.x = self.roughness_local.info.origin.position.x
+		grid.info.origin.position.y = self.roughness_local.info.origin.position.y
+		grid.info.origin.position.z = self.roughness_local.info.origin.position.z
+		grid.info.origin.orientation.x = self.roughness_local.info.origin.orientation.x
+		grid.info.origin.orientation.y = self.roughness_local.info.origin.orientation.y
+		grid.info.origin.orientation.z = self.roughness_local.info.origin.orientation.z
+		grid.info.origin.orientation.w = self.roughness_local.info.origin.orientation.w
+
+		grid.data = np.array(fused_costmap).astype('int8')
+
+		pub = rospy.Publisher(map_local_topic, OccupancyGrid, queue_size=10)
 
 		pub.publish(grid)
 
@@ -101,6 +136,9 @@ if __name__ == "__main__":
 	rospy.init_node('costmap_fusion')
 
 	choose_map = rospy.get_param('~fusion_type', "both")
+	map_topic = rospy.get_param('~fused_map_topic', "fused_costmap")
+	map_local_topic = rospy.get_param('~fused_map_local_topic', "fused_costmap_local")
+	use_fused_map_local = rospy.get_param('~use_fused_map_local', "false")
 
 	fusion = CostmapFusion()
 	fusion.main(choose_map)

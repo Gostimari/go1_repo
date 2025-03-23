@@ -17,52 +17,80 @@
 
 
 #base_global_planner: navfn/NavfnROS
+#base_global_planner: global_planner/GlobalPlanner
 base_local_planner:  base_local_planner/TrajectoryPlannerROS
 #base_local_planner: dwa_local_planner/DWAPlannerROS
 
-  
-planner_frequency:          10.0     # Global plan updates on new goal or path blocked only
+
+planner_frequency:          2.0     # Global plan updates on new goal or path blocked only
 controller_frequency:       10.0   #10
-planner_patience:           5.0
+planner_patience:           10.0
 controller_patience:        10.0
 conservative_reset_dist:    2.0
-recovery_behavior_enabled:  true
-clearing_rotation_allowed:  false
-recovery_behaviors: 
-    #- {name: rotate_recovery, type: rotate_recovery/RotateRecovery}
-    - {name: clear_costmap_recovery, type: clear_costmap_recovery/ClearCostmapRecovery}
+recovery_behavior_enabled:  false
+clearing_rotation_allowed:  true
+recovery_behaviors: [{name: rotate_recovery, type: rotate_recovery/RotateRecovery}, {name: clear_costmap_recovery, type: clear_costmap_recovery/ClearCostmapRecovery}]
 shutdown_costmaps:          false
 oscillation_timeout:        0.0
-oscillation_distance:       0.5
+oscillation_distance:       0.1
+
+
+
+########################################## global plan navfn ###########################
+
+NavfnROS:
+  allow_unknown:         true #false
+  use_dijkstra:          false #false
+  use_quadratic:         false
+  use_grid_path:         false
+  old_navfn_behavior:    false 
+  visualize_potential:   false
+  cost_factor:           0.0
+  neutral_cost:           66 #66 50
+  lethal_cost:           255 #255  100
+  planner_frequency:     2.0 #planner only run when path is blocked or new goal is set
+
+########################################## global plan GlobalPlanner ###########################
+
+GlobalPlanner:
+  allow_unknown:         true #false
+  use_dijkstra:          false #false
+  use_quadratic:         false
+  use_grid_path:         false
+  old_navfn_behavior:    false 
+  visualize_potential:   false
+  planner_frequency:     2.0 #planner only run when path is blocked or new goal is set
+
+  
   
 ########################################## local plan TrajectoryPlannerROS ###########################
 TrajectoryPlannerROS:
 
   # Robot Configuration Parameters
-  acc_lim_x: 0.7 #1.7
-  acc_lim_y: 0.7 #0.0
-  acc_lim_theta: 2.0 #3.0
-  acc_lim_trans: 1.0 #1.7
+  acc_lim_x: 2.5 #1.7 0.3
+  acc_lim_y: 2.5 #0.0 0.3
+  acc_lim_theta: 2.5 #3.0 0.6
+  acc_lim_trans: 1.5 #1.7 0.5
 
-  max_vel_x: 0.4  #0.5
-  min_vel_x: -0.4 #0.1 -0.025
-  #  max_vel_y: 5.5  #0.5
-  #  min_vel_y: -5.0  #0.1
-  min_vel_y: -0.4
-  max_vel_y: 0.4
+  max_vel_x: 0.8  #0.5
+  min_vel_x: -0.8 #0.1 -0.025 -0.4
+#  max_vel_y: 5.5  #0.5
+#  min_vel_y: -5.0  #0.1
+  max_vel_y: 0.8 #0.3
+  min_vel_y: -0.8 #0.3
 
-  max_vel_trans: 0.5 #0.5
-  min_vel_trans: 0.01 #0.01
+  max_vel_trans: 0.8 #0.5
+  min_vel_trans: -0.8 #0.01
 
-  max_vel_theta: 2.0 #1.0 0.7
-  min_vel_theta: -2.0  #-1.0 0.7
-  min_in_place_vel_theta: 0.5 #0.01
+  max_vel_theta: 0.8 #1.0 0.7 2.0 0.3
+  min_vel_theta: -0.8  #-1.0 0.7 -2.0 -0.3
+  min_in_place_vel_theta: 0.5 #0.01 0.5
 
-  trans_stopped_vel: 0.1 #0.1
-  theta_stopped_vel: 0.1 #0.1
+  trans_stopped_vel: 0.8 #0.1
+  theta_stopped_vel: 0.8 #0.1
 
-  holonomic_robot: false
-  escape_vel: 0.0 #-0.5
+  holonomic_robot: true
+  escape_vel: -0.5 #-0.5
 
   # Goal Tolerance Parameters
   yaw_goal_tolerance: 6.2832 # 2pi
@@ -80,9 +108,12 @@ TrajectoryPlannerROS:
 
   # # Trajectory scoring parameters
   meter_scoring: true # Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default (false).
-  occdist_scale:  0.5 #0.1 The weighting for how much the controller should attempt to avoid obstacles. default 0.01 /0.1 good result
-  path_distance_bias: 40  # 0.4 40 1   The weighting for how much the controller should stay close to the path it was given . default 0.6
-  goal_distance_bias: 24 # 0.8 24 0.1  The weighting for how much the controller should attempt to reach its local goal, also controls speed  default 0.8
+  occdist_scale:  0.3 #0.1 The weighting for how much the controller should attempt to avoid obstacles. default 0.01 /0.1 good result
+  path_distance_bias: 1.0  # 0.4 40 1   The weighting for how much the controller should stay close to the path it was given . default 0.6
+  goal_distance_bias: 0.8 # 0.8 24 0.1  The weighting for how much the controller should attempt to reach its local goal, also controls speed  default 0.8
+
+  pdist_scale: 1.0
+  gdist_scale: 0.8
 
   forward_point_distance: 0.1 #0.2
   stop_time_buffer: 0.5
@@ -93,66 +124,86 @@ TrajectoryPlannerROS:
   heading_lookahead: 0.325  #How far to look ahead in meters when scoring different in-place-rotation trajectories
   heading_scoring: false  #Whether to score based on the robot's heading to the path or its distance from the path. default false
   heading_scoring_timestep: 0.8   #How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
+  simple_attractor: false
+  publish_cost_grid_pc: true
+
+  # #Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05 #How far the robot must travel in meters before oscillation flags are reset (double, default: 0.05)
+  escape_reset_dist: 0.1 #0.1
+  escape_reset_theta: 0.1
+
+  dwa: true
+
+  #prune_plan: true
+
+########################################## local plan DWAPlannerROS ###########################
+DWAPlannerROS:
+
+  # Robot Configuration Parameters
+  acc_lim_x: 10 #1.7
+  acc_lim_y: 10 #0.0
+  acc_lim_theta: 5 #3.0
+  acc_lim_trans: 5 #1.7
+
+  max_vel_x: 0.4  #0.5
+  min_vel_x: -0.0 #0.1 -0.025 -0.4
+#  max_vel_y: 5.5  #0.5
+#  min_vel_y: -5.0  #0.1
+  max_vel_y: 0.3
+  min_vel_y: -0.3
+
+  max_vel_trans: 0.7 #0.5
+  min_vel_trans: 0.1 #0.01
+
+  max_vel_theta: 0.3 #1.0 0.7 2.0
+  min_vel_theta: -0.3  #-1.0 0.7 -2.0
+  min_in_place_vel_theta: 0.2 #0.01 0.5
+
+  trans_stopped_vel: 0.1 #0.1
+  theta_stopped_vel: 0.1 #0.1
+
+  holonomic_robot: true
+  escape_vel: -0.5 #-0.5
+
+  # Goal Tolerance Parameters
+  yaw_goal_tolerance: 6.2832 # 2pi
+  xy_goal_tolerance: 0.5 # 0.5
+  # latch_xy_goal_tolerance: false
+
+  # # Forward Simulation Parameters
+  sim_time: 3.5 #2.0
+  sim_granularity: 0.1 #0.025
+  # angular_sim_granularity: 0.02
+  vx_samples: 20
+  vy_samples: 0
+  vtheta_samples: 40
+  controller_frequency: 20.0
+
+  # # Trajectory scoring parameters
+  meter_scoring: true # Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default (false).
+  occdist_scale:  0.3 #0.1 The weighting for how much the controller should attempt to avoid obstacles. default 0.01 /0.1 good result
+  path_distance_bias: 1.0  # 0.4 40 1   The weighting for how much the controller should stay close to the path it was given . default 0.6
+  goal_distance_bias: 0.8 # 0.8 24 0.1  The weighting for how much the controller should attempt to reach its local goal, also controls speed  default 0.8
+
+  pdist_scale: 1.0
+  gdist_scale: 0.8
+
+  forward_point_distance: 0.1 #0.2
+  stop_time_buffer: 0.5
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
+
+
+  heading_lookahead: 0.325  #How far to look ahead in meters when scoring different in-place-rotation trajectories
+  heading_scoring: true  #Whether to score based on the robot's heading to the path or its distance from the path. default false
+  heading_scoring_timestep: 0.8   #How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
   #dwa: true #Whether to use the Dynamic Window Approach (DWA) or whether to use Trajectory Rollout
   simple_attractor: false
   publish_cost_grid_pc: true
 
   # #Oscillation Prevention Parameters
   oscillation_reset_dist: 0.05 #How far the robot must travel in meters before oscillation flags are reset (double, default: 0.05)
-  escape_reset_dist: 0.0 #0.1
+  escape_reset_dist: 0.1 #0.1
   escape_reset_theta: 0.1
 
-  prune_plan: false
-  
-  ########################################## local plan DWAPlannerROS ###########################
-  
-DWAPlannerROS: 
-
-  acc_lim_th: 10
-  acc_lim_x: 10
-  acc_lim_y: 10 #0.0
-
-  max_vel_x: 1
-  min_vel_x: -0.5 
-
-  max_vel_y: 0.5 #0.3
-  min_vel_y: -0.5 #-0.3 
-
-  #max_trans_vel: 0.5
-  #min_trans_vel: 0.01
-  max_vel_trans: 0.5
-  min_vel_trans: -0.5 #0.01
-  
-  escape_vel: 0.0 #-0.5
-
-  #max_rot_vel: 0.7
-  #min_rot_vel: -0.7
-  
-  max_vel_theta: 3.0 #2.0
-  min_vel_theta: -3.0 #-2.0
-
-  sim_time: 2.0
-  sim_granularity: 0.025 
-
-  goal_distance_bias: 40 #3.0
-  path_distance_bias: 24 #0.1
- 
-  occdist_scale: 0.1 
-  stop_time_buffer: 0.2 
-  oscillation_reset_dist: 0.0 #0.05
-  forward_point_distance: 0.325 
-  scaling_speed: 0.25 
-  max_scaling_factor: 0.2 
-
-  vx_samples: 10
-  vy_samples: 0.0
-  vtheta_samples: 20 
-
-  sim_period: 0.1 
-  controller_frequency: 20
-
-  xy_goal_tolerance: 0.5
-  yaw_goal_tolerance: 6.2832
-  #rot_stopped_vel: 0.01
-  theta_stopped_vel: 0.01
-  trans_stopped_vel: 0.01
+  prune_plan: true
