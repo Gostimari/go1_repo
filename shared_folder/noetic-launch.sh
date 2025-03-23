@@ -16,7 +16,7 @@ else
 fi
 source $SETUP
 
-cd /
+cd ../shared_folder
 exec ./app_launcher_noetic.sh
 #exec /bin/bash
 #!/bin/bash

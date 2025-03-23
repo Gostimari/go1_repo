@@ -14,6 +14,7 @@ services:
     volumes:
       #- ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src:/root/catkin_ws/src
+      - ../shared_folder:/root/shared_folder
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
@@ -45,6 +46,7 @@ services:
       - ../catkin_ws/src:/root/catkin_ws/src
       - ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config
+      - ../shared_folder:/root/shared_folder
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw

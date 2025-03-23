@@ -18,7 +18,7 @@ fi
 
 source $SETUP
 
-cd /
+cd ../shared_folder
 #exec /bin/bash
 exec ./app_launcher_melodic.sh
 #!/bin/bash

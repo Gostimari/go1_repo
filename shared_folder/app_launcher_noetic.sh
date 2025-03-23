@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export GDK_BACKEND=x11
+export XDG_SESSION_TYPE=x11
+
 # Global variables
 COMMAND_PID=""
 UNSAFE_COMMAND_USED=""  # Flag to track if an unsafe command has been run
@@ -18,10 +21,10 @@ show_command_output() {
   local log_file="$1"
   # Display the command output with tail and two buttons
   tail -f "$log_file" | yad --title="Command Output" --width=600 --height=400 \
-      --text-info --listen --button="Stop":9 --button="Back":10
+      --text-info --listen --button="Stop":12 --button="Back":13
   local ret=$?
   
-  if [ $ret -eq 9 ]; then
+  if [ $ret -eq 12 ]; then
     # "Stop" button clicked
     if [ -n "$COMMAND_PID" ]; then
       echo "Stopping command with PID $COMMAND_PID"
@@ -31,7 +34,7 @@ show_command_output() {
     # Immediately show the static log file content in a new YAD window
     yad --title="Command Output (Stopped)" --width=600 --height=400 \
         --text-info --filename="$log_file" --button="Back":6
-  elif [ $ret -eq 10 ]; then
+  elif [ $ret -eq 13 ]; then
     # "Back" button clicked
     if [ -n "$COMMAND_PID" ]; then
       echo "Stopping command with PID $COMMAND_PID"
@@ -45,25 +48,25 @@ execute_command() {
     case "$1" in
         2)
             echo "Collect GPS clicked"
-            roslaunch ig_lio noetic_main_collect.launch &
+            ./collect_gps.sh &
             COMMAND_PID=$!
             UNSAFE_COMMAND_USED=2  # Mark that an unsafe command was used
             ;;
         3)
             echo "MEBT clicked"
-            roslaunch ig_lio noetic_main_mebt.launch &
+            ./mebt.sh &
             COMMAND_PID=$!
-            UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
+            UNSAFE_COMMAND_USED=3 # Mark that an unsafe command was used
             ;;
         4)
             echo "Elevation clicked"
-            roslaunch ig_lio noetic_main_elev.launch &
+            ./elevation.sh &
             COMMAND_PID=$!
             UNSAFE_COMMAND_USED=4  # Mark that an unsafe command was used
             ;;
         5)
             echo "Traversability clicked"
-            roslaunch ig_lio noetic_main_trav.launch &
+            ./trav.sh &
             COMMAND_PID=$!
             UNSAFE_COMMAND_USED=5  # Mark that an unsafe command was used
             ;;
@@ -74,6 +77,20 @@ execute_command() {
             UNSAFE_COMMAND_USED=6  # Mark that an unsafe command was used
             ;;
         7)
+            echo "Catkin Build clicked"
+            cd ../catkin_ws
+            SHELL=/bin/bash command catkin build &
+            cd ../shared_folder
+            COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=13 # Mark that an unsafe command was used
+            ;;
+        8)
+            echo "Rqt Tf Tree clicked"
+            rosrun rqt_tf_tree rqt_tf_tree &
+            COMMAND_PID=$!
+            UNSAFE_COMMAND_USED=14 # Mark that an unsafe command was used
+            ;;
+        9)
             echo "Custom command clicked"
             cmd=$(yad --entry --title="Custom Command" --width=400 --text="Type a command:")
             if [[ -n "$cmd" ]]; then
@@ -96,7 +113,11 @@ execute_command() {
             fi
             UNSAFE_COMMAND_USED=7  # Mark that an unsafe command was used
             ;;
-        8)
+        10)
+            echo "Ros Purge clicked"
+            rosclean purge -y
+            ;;
+        11)
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
                 case "$UNSAFE_COMMAND_USED" in
@@ -116,12 +137,22 @@ execute_command() {
             fi
             # Kill all ROS nodes and processes
             echo "Killing all ROS nodes and roscore..."
-            rosnode kill -a 2>/dev/null &
-            # Kill all rosmaster instances
-            pkill -f "rosmaster --core"
-            pkill -f "rosmaster"
-            pkill -9 -f "ig_lio"
+            rosnode kill --all 2>/dev/null
+            # Force-kill roscore/rosmaster
+            killall -9 roscore rosmaster roslaunch
+            # Kill Gazebo servers and clients
+            pkill -9 -f "gzserver\|gzclient"
+            killall -9 gzserver gzclient
+            pkill -9 -f "junior_ctrl"
             pkill -9 -f "gps_waypoint_nav"
+            pkill -9 -f "ig_lio"
+            pkill -9 -f "robot_state_publisher"
+            pkill -9 -f "navigation_final_semfire_pilot"
+            # Clear zombie processes
+            ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
+            WORKDIR=/root/shared_folder
+            rm -f $WORKDIR/noetic_trav-log.txt
+            rm -f $WORKDIR/melodic_trav-log.txt
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -144,14 +175,26 @@ execute_command() {
             fi
             # Kill all ROS nodes and processes
             echo "Killing all ROS nodes and roscore..."
-            rosnode kill -a 2>/dev/null &
-            # Kill all rosmaster instances
-            pkill -f "rosmaster --core"
-            pkill -f "rosmaster"
-            pkill -9 -f "ig_lio"
+            rosnode kill --all 2>/dev/null
+            # Force-kill roscore/rosmaster
+            killall -9 roscore rosmaster roslaunch rosout
+            # Kill Gazebo servers and clients
+            pkill -9 -f "gzserver\|gzclient"
+            killall -9 gzserver gzclient
+            pkill -9 -f "junior_ctrl"
             pkill -9 -f "gps_waypoint_nav"
+            pkill -9 -f "ig_lio"
+            pkill -9 -f "robot_state_publisher"
+            pkill -9 -f "navigation_final_semfire_pilot"
+            pkill -9 -f "nodelet"
+            # Clear zombie processes
+            ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
+
             echo "Cleaning up all log files..."
-            rm -f custom_output_*.log  # Remove all log files matching the pattern
+            rm -f custom_output_*.log # Remove all log files matching the pattern
+            WORKDIR=/root/shared_folder
+            rm -f $WORKDIR/noetic_trav-log.txt
+            rm -f $WORKDIR/melodic_trav-log.txt
             exit 0
             ;;
         *)
@@ -170,8 +213,11 @@ while true; do
         --button="Elevation:4" \
         --button="Traversability:5" \
         --button="Startup Drivers:6" \
-        --button="Custom Command:7" \
-        --button="Kill:8" \
+        --button="Catkin Build:7" \
+        --button="Rqt tf tree:8" \
+        --button="Custom Command:9" \
+        --button="Ros Purge:10" \
+        --button="Kill:11" \
         --buttons-layout=spread \
         --text="Click a button to execute a command or Kill to stop the process. If you want to launch the traversability_mapping, you need to launch it on the Roslaunch Melodic App too. The 'Custom Command' button is to launch a terminal command, like 'rostopic list' with built-in terminal output."
     
