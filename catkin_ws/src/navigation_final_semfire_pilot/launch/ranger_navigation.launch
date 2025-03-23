@@ -21,7 +21,7 @@
     <param name="file_path" value="/media/data/Final Pilot/45_facedown_merged.txt"/>
   </node> -->
 
-  <node pkg="navigation_final_semfire_pilot" type="frame_publisher.py" name="frame_publisher" output="screen" />
+  <!-- <node pkg="navigation_final_semfire_pilot" type="frame_publisher.py" name="frame_publisher" output="screen" /> -->
 
   <!-- Just to be able to move a robot along the generated paths in simulation -->
   <!-- <include file="$(find husky_gazebo)/launch/husky_empty_world.launch"/> -->
