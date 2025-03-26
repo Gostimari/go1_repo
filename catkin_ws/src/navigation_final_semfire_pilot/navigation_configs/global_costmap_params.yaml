@@ -5,15 +5,15 @@ global_costmap:
   publish_frequency: 5.0
   static_map: true
   rolling_window: false
-  width: 100
-  height: 100
+  width: 30
+  height: 30
   transform_tolerance: 1.0 #0.5
   footprint: [[-0.40, -0.165], [-0.40, 0.165], [0.35, 0.165], [0.35, -0.165]]
   footprint_padding: 0.1
 
   origin_z: 0.0
-  origin_y: -50
-  origin_x: -50
+  origin_y: -15
+  origin_x: -15
 
   plugins: 
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
@@ -28,4 +28,4 @@ global_costmap:
     track_unknown_space: false # flag to decide wether unknown space is treated as free or unknown
 
   inflation_layer:
-    inflation_radius: 0.01
+    inflation_radius: 0.05
