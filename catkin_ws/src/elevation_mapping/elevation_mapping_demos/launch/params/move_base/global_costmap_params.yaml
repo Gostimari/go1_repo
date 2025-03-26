@@ -5,19 +5,22 @@ global_costmap:
   publish_frequency: 5.0
   static_map: true
   rolling_window: false
-  width: 100
-  height: 100
+  width: 10
+  height: 10
   transform_tolerance: 1.0 #0.5
   footprint: [[-0.40, -0.165], [-0.40, 0.165], [0.35, 0.165], [0.35, -0.165]]
   footprint_padding: 0.1
+
+  origin_z: 0.0
+  origin_y: -5
+  origin_x: -5
 
   plugins: 
   - {name: static_layer,  type: "costmap_2d::StaticLayer"}
   - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
 
-
   static_layer:
-    map_topic: /elevation_map_fused_visualization/elevation_grid
+    map_topic: /elevation/elevation_map_fused_visualization/elevation_grid
     subscribe_to_updates: true
     static_map: true
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap
