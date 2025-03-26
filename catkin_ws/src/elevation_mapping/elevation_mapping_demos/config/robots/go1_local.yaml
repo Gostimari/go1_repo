@@ -1,7 +1,7 @@
 # Unitree GO1
 map_frame_id:                               map
 robot_base_frame_id:                        base
-robot_pose_with_covariance_topic:           /gazebo/odom #/gazebo/odom  #/gazebo/model_states  #/lio_pose
+robot_pose_with_covariance_topic:           /lio_pose #/gazebo/odom  #/gazebo/model_states  #/lio_pose
 robot_pose_cache_size:                      10
 input_sources:
   front: # A name to identify the input source
@@ -22,8 +22,8 @@ sensor_processor/ignore_points_above:       0.4 #0.4
 robot_motion_map_update/covariance_scale:   0.01
 
 # Map.
-length_in_x:                                2.0 # 6.0 30.0
-length_in_y:                                2.0 # 6.0 30.0
+length_in_x:                                6.0 # 6.0 30.0
+length_in_y:                                6.0 # 6.0 30.0
 position_x:                                 0.0
 position_y:                                 0.0
 resolution:                                 0.1
@@ -32,13 +32,13 @@ max_variance:                               0.05
 mahalanobis_distance_threshold:             2.5 #2.5
 multi_height_noise:                         0.001
 surface_normal_positive_axis:               z
-fused_map_publishing_rate:                  0.5
+fused_map_publishing_rate:                  1.0 #0.5
 enable_visibility_cleanup:                  true
-visibility_cleanup_rate:                    0.5 #1.0
+visibility_cleanup_rate:                    1.0 #1.0
 scanning_duration:                          1.0
 
 # Init submap
-initialize_elevation_map:                   true  # false
+initialize_elevation_map:                   false  # false
 initialization_method:                      1
 length_in_x_init_submap:                    6
 length_in_y_init_submap:                    6
