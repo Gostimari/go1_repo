@@ -71,12 +71,12 @@ typedef struct kdtree kdtree_t;
 typedef struct kdres kdres_t;
 
 // Environment
-extern const bool urbanMapping = false;
+extern const bool urbanMapping = true;
 
 // Using velodyne cloud "ring" channel for image projection (other lidar may have different name for this channel, change "PointXYZIR" below)
 extern const bool useCloudRing = false; // if true, ang_res_y and ang_bottom are not used
 
-extern const float sensorMinimumRange = 0.2; // 1.0
+extern const float sensorMinimumRange = 1.0; // 1.0
 
 // RS-32
 extern const int N_SCAN = 32;
@@ -108,7 +108,7 @@ extern const bool predictionEnableFlag = true;
 extern const float predictionKernalSize = 0.3; // predict elevation within x meters 0.2
 
 // Occupancy Params
-extern const float p_occupied_when_laser = 0.6; // 0.9 0.65
+extern const float p_occupied_when_laser = 0.7; // 0.9 0.65
 extern const float p_occupied_when_no_laser = 0.2;
 extern const float large_log_odds = 100;
 extern const float max_log_odds_for_belief = 20; // 20
