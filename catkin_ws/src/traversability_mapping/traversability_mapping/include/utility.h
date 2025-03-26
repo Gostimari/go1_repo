@@ -74,9 +74,9 @@ typedef struct kdres kdres_t;
 extern const bool urbanMapping = false;
 
 // Using velodyne cloud "ring" channel for image projection (other lidar may have different name for this channel, change "PointXYZIR" below)
-extern const bool useCloudRing = true; // if true, ang_res_y and ang_bottom are not used
+extern const bool useCloudRing = false; // if true, ang_res_y and ang_bottom are not used
 
-extern const float sensorMinimumRange = 1.0;
+extern const float sensorMinimumRange = 0.2; // 1.0
 
 // RS-32
 extern const int N_SCAN = 32;
@@ -123,7 +123,7 @@ extern const float visualizationFrequency = 2; // n, skip n scans then publish, 
 
 // Robot Params
 extern const float robotRadius = 0.25; //0.2
-extern const float sensorHeight = 0.75; //0.5
+extern const float sensorHeight = 0.80; //0.5
 
 // Traversability Params
 extern const int traversabilityObserveTimeTh = 10;

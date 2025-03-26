@@ -19,7 +19,7 @@
 		<!-- data source to integrate (PointCloud2) -->
 		<remap from="cloud_in" to="/rslidar_points" /> 
 
-		<remap from="projected_map" to="map" />
+		<remap from="projected_map" to="rslidar" /> <!-- map -->
 	
 	</node>
 </launch>
