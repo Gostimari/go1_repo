@@ -67,9 +67,9 @@ GlobalPlanner:
 TrajectoryPlannerROS:
 
   # Robot Configuration Parameters
-  acc_lim_x: 2.5 #1.7 0.3
-  acc_lim_y: 2.5 #0.0 0.3
-  acc_lim_theta: 2.5 #3.0 0.6
+  acc_lim_x: 5 #1.7 0.3 2.5
+  acc_lim_y: 5 #0.0 0.3 2.5
+  acc_lim_theta: 5 #3.0 0.6 2.5
   acc_lim_trans: 1.5 #1.7 0.5
 
   max_vel_x: 0.8  #0.5
@@ -90,7 +90,7 @@ TrajectoryPlannerROS:
   theta_stopped_vel: 0.8 #0.1
 
   holonomic_robot: true
-  escape_vel: -0.5 #-0.5
+  escape_vel: 0.0 #-0.5
 
   # Goal Tolerance Parameters
   yaw_goal_tolerance: 6.2832 # 2pi
