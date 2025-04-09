@@ -69,8 +69,6 @@ RUN mkdir -p $CATKIN_WS/src
 WORKDIR /
 RUN apt-get clean
 
-#RUN python /root/catkin_ws/src/depends/ethzasl_xsens_driver/nodes/mtdevice.py -l --output-mode=sotac --output-settings=tqMAG
-
 #RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
 #COPY melodic-launch.sh /melodic-launch.sh
 #RUN chmod +x /melodic-launch.sh

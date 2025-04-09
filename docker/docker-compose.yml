@@ -26,7 +26,7 @@ services:
        hard: 524288
     environment:
       - SETUP=/root/catkin_ws/devel/setup.bash
-      - BUILDLIST= elevation_msgs traversability_mapping ethzasl_xsens_driver #Only these packages will be build
+      - BUILDLIST= elevation_msgs traversability_mapping xsens_driver #Only these packages will be build
       - ROSPACKAGE=traversability_mapping
       - LAUNCHFILE=offline.launch
       - DISPLAY=${DISPLAY}
