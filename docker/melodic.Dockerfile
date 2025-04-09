@@ -38,7 +38,8 @@ RUN apt-get -y install \
     python-rosinstall-generator \
     python-wstool \
     python-rosdep \
-    python-catkin-tools
+    python-catkin-tools \
+    python-setuptools
 
 #Install ROS Packages
 RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
@@ -50,6 +51,9 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-interactive-markers \
     ros-${ROS_DISTRO}-nav-core \
     ros-${ROS_DISTRO}-laser-geometry \
+    ros-${ROS_DISTRO}-sensor-msgs \
+    ros-${ROS_DISTRO}-std-msgs \
+    ros-${ROS_DISTRO}-diagnostic-msgs \
     yad
 
 # Clean-up
@@ -64,6 +68,8 @@ RUN mkdir -p $CATKIN_WS/src
 # Clean-up
 WORKDIR /
 RUN apt-get clean
+
+#RUN python /root/catkin_ws/src/depends/ethzasl_xsens_driver/nodes/mtdevice.py -l --output-mode=sotac --output-settings=tqMAG
 
 #RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
 #COPY melodic-launch.sh /melodic-launch.sh

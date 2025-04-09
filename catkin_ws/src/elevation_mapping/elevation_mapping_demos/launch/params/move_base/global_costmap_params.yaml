@@ -1,8 +1,8 @@
 global_costmap:
   global_frame: map
   robot_base_frame: base # bobcat_base
-  update_frequency: 5.0 #2.0
-  publish_frequency: 5.0
+  update_frequency: 8.0 #2.0
+  publish_frequency: 8.0
   static_map: true
   rolling_window: false
   width: 25
