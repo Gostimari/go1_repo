@@ -35,11 +35,17 @@ init_bg_cov: 0.0001
 
 #t_imu_lidar : [-0.011775 -0.006253 -0.0438256454]
 
-t_imu_lidar: [0.002, 0.006, 0.065]
+t_imu_lidar: [0.037, 0, 0.081]
 # Rotation in Pitch 90º
-R_imu_lidar: [0, 0, 1,
-             0, 1, 0,
-             -1, 0, 0]
+R_imu_lidar: [0, -1, 0,
+             1, 0, 0,
+             0, 0, -1]
+
+# t_imu_lidar: [0.002, 0.006, 0.065]
+# # Rotation in Pitch 90º
+# R_imu_lidar: [0, 0, 1,
+#              0, 1, 0,
+#              -1, 0, 0]
 
 # Rotation Identity
 # R_imu_lidar: [1, 0, 0,

@@ -24,8 +24,8 @@
     <node pkg="nodelet" type="nodelet" name="imu_transformer" args="load imu_transformer/imu_transformer_nodelet nodelet_manager" output="screen">
         <param name="~target_frame" value="camera_gyro_frame" />
         
-        <!-- Remap input and output topics to match your setup -->
-        <remap from="imu_in/data" to="/camera/imu" />
+        <!-- Remap input and output topics to match your setup --> <!--/camera/imu-->
+        <remap from="imu_in/data" to="/imu/data" />
         <remap from="imu_out/data" to="/imu/data_transformed" />
     </node>
 
