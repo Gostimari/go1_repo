@@ -50,11 +50,17 @@ execute_command() {
         SHELL=/bin/bash command catkin build &
         cd ../shared_folder
         COMMAND_PID=$!
-        UNSAFE_COMMAND_USED=13 # Mark that an unsafe command was used
+        UNSAFE_COMMAND_USED=6 # Mark that an unsafe command was used
         ;;
     7)
         echo "Ros Purge clicked"
         rosclean purge -y
+        ;;
+    8)
+        echo "xsens driver clicked"
+        roslaunch xsens_driver xsens_driver.launch &
+        COMMAND_PID=$!
+        UNSAFE_COMMAND_USED=8 # Mark that an unsafe command was used
         ;;
     2)
         echo "Custom command clicked"
@@ -172,6 +178,7 @@ while true; do
         --form \
         --width=300 --height=200 \
         --button="Traversability:1" \
+        --button="xsens driver:8"  \
         --button="Catkin Build:6" \
         --button="Custom Command:2" \
         --button="Ros Purge:7" \

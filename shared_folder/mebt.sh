@@ -20,9 +20,6 @@ roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_freq
 roslaunch rslidar_sdk start.launch &
 
 sleep 10
-roslaunch xsens_driver xsens_driver.launch &
-
-sleep 10
 
 roslaunch ig_lio lio_velodyne_Bpearl.launch &
 sleep 10
