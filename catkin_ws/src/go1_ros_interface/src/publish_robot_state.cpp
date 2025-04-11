@@ -88,7 +88,7 @@ public:
         
         memcpy(&keyData, &high_state.wirelessRemote[0], 40);
         
-        std::cout << (float)keyData.lx << std::endl;
+        // std::cout << (float)keyData.lx << std::endl;
         
         // Update joint state timestamps and names
         jointStates.header.stamp = ros::Time::now();
