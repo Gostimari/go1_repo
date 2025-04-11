@@ -346,12 +346,12 @@ void Process() {
   timer.Evaluate([&] { lio_ptr->MeasurementUpdate(sensor_measurement); },
                  "measurement update");
 
-  LOG(INFO) << "iter_num: " << lio_ptr->GetFinalIterations() << std::endl
-            << "ba: " << lio_ptr->GetCurrentBa().transpose()
-            << " ba_norm: " << lio_ptr->GetCurrentBa().norm()
-            << " bg: " << lio_ptr->GetCurrentBg().transpose() * 180.0 / M_PI
-            << " bg_norm: " << lio_ptr->GetCurrentBg().norm() * 180.0 / M_PI
-            << std::endl;
+  // LOG(INFO) << "iter_num: " << lio_ptr->GetFinalIterations() << std::endl
+  //           << "ba: " << lio_ptr->GetCurrentBa().transpose()
+  //           << " ba_norm: " << lio_ptr->GetCurrentBa().norm()
+  //           << " bg: " << lio_ptr->GetCurrentBg().transpose() * 180.0 / M_PI
+  //           << " bg_norm: " << lio_ptr->GetCurrentBg().norm() * 180.0 / M_PI
+  //           << std::endl;
 
   // Setp 5: Send to rviz for visualization
   Eigen::Matrix4d result_pose = lio_ptr->GetCurrentPose();
@@ -527,8 +527,8 @@ int main(int argc, char** argv) {
   int point_filter_num;
   nh.param<double>("time_scale", time_scale, 1.0);
   nh.param<int>("point_filter_num", point_filter_num, 1);
-  LOG(INFO) << "time_scale: " << time_scale << std::endl
-            << "point_filter_num: " << point_filter_num;
+  // LOG(INFO) << "time_scale: " << time_scale << std::endl
+  //           << "point_filter_num: " << point_filter_num;
   PointCloudPreprocess::Config cloud_preprocess_config;
   cloud_preprocess_config.lidar_type = lidar_type;
   cloud_preprocess_config.point_filter_num = point_filter_num;
@@ -571,30 +571,30 @@ int main(int argc, char** argv) {
   nh.param<double>("min_radius", min_radius, 1.0);
   nh.param<double>("max_radius", max_radius, 1.0);
 
-  LOG(INFO) << "scan_resoultion: " << scan_resolution << std::endl
-            << "voxel_map_resolution: " << voxel_map_resolution << std::endl
-            << "max_iterations: " << max_iterations << std::endl
-            << "acc_cov: " << acc_cov << std::endl
-            << "gyr_cov: " << gyr_cov << std::endl
-            << "ba_cov: " << ba_cov << std::endl
-            << "bg_cov: " << bg_cov << std::endl
-            << "gravity: " << gravity << std::endl
-            << "init_ori_cov: " << init_ori_cov << std::endl
-            << "init_pos_cov: " << init_pos_cov << std::endl
-            << "init_vel_cov: " << init_vel_cov << std::endl
-            << "init_ba_cov: " << init_ba_cov << std::endl
-            << "init_bg_cov: " << init_bg_cov << std::endl
-            << "gicp_constraints_gain: " << gicp_constraints_gain << std::endl
-            << "point2plane_constraints_gain: " << point2plane_constraints_gain
-            << std::endl
-            << "enable_undistort: " << enable_undistort << std::endl
-            << "enable_acc_correct: " << enable_acc_correct << std::endl
-            << "enable_outlier_rejection: " << enable_outlier_rejection
-            << std::endl
-            << "enable_ahrs_initalization: " << enable_ahrs_initalization
-            << std::endl
-            << "min_radius: " << min_radius << std::endl
-            << "max_radius: " << max_radius;
+  // LOG(INFO) << "scan_resoultion: " << scan_resolution << std::endl
+  //           << "voxel_map_resolution: " << voxel_map_resolution << std::endl
+  //           << "max_iterations: " << max_iterations << std::endl
+  //           << "acc_cov: " << acc_cov << std::endl
+  //           << "gyr_cov: " << gyr_cov << std::endl
+  //           << "ba_cov: " << ba_cov << std::endl
+  //           << "bg_cov: " << bg_cov << std::endl
+  //           << "gravity: " << gravity << std::endl
+  //           << "init_ori_cov: " << init_ori_cov << std::endl
+  //           << "init_pos_cov: " << init_pos_cov << std::endl
+  //           << "init_vel_cov: " << init_vel_cov << std::endl
+  //           << "init_ba_cov: " << init_ba_cov << std::endl
+  //           << "init_bg_cov: " << init_bg_cov << std::endl
+  //           << "gicp_constraints_gain: " << gicp_constraints_gain << std::endl
+  //           << "point2plane_constraints_gain: " << point2plane_constraints_gain
+  //           << std::endl
+  //           << "enable_undistort: " << enable_undistort << std::endl
+  //           << "enable_acc_correct: " << enable_acc_correct << std::endl
+  //           << "enable_outlier_rejection: " << enable_outlier_rejection
+  //           << std::endl
+  //           << "enable_ahrs_initalization: " << enable_ahrs_initalization
+  //           << std::endl
+  //           << "min_radius: " << min_radius << std::endl
+  //           << "max_radius: " << max_radius;
 
   // 3. load extrinsic
   T_imu_lidar = Eigen::Matrix4d::Identity();
@@ -610,7 +610,7 @@ int main(int argc, char** argv) {
   T_imu_lidar.block<3, 3>(0, 0) =
       Eigen::Map<const Eigen::Matrix<double, -1, -1, Eigen::RowMajor>>(
           R_imu_lidar_v.data(), 3, 3);
-  LOG(INFO) << "Extrinsic: " << std::endl << T_imu_lidar << std::endl;
+  // LOG(INFO) << "Extrinsic: " << std::endl << T_imu_lidar << std::endl;
 
   LIO::Config lio_config;
   lio_config.acc_cov = acc_cov;

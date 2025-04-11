@@ -152,10 +152,5 @@
     <xacro:ultraSound name="face">
         <origin rpy="0 0 0" xyz="0.2747 0.0 -0.0088"/>
     </xacro:ultraSound>
-    
-    <xacro:include filename="$(find go1_description)/xacro/RS-32.urdf.xacro"/>
-    <xacro:RS-32 parent="trunk" name="robosense" hz="20" lasers="32" samples="900" gpu="${gpu}" topic="/rslidar_points" collision_range="0.1" min_range="1" max_range="100.0" min_angle="-${M_PI}" max_angle="${M_PI}">
-        <origin xyz="0.15 0 0.13" rpy="0 0 0" /> <!-- 0.05 0 0.065 --> <!-- 0 0.37 0 || 1.57 -->
-    </xacro:RS-32>
 
 </robot>
