@@ -4,18 +4,26 @@
 
   <!-- Use "g" for "gradient map" and "b" for "gradient and evident obstacles map". Better with "g" -->
   <arg name="map" default="b" />
+  <!-- Use "roughness" for "roughness map" or "evident" for "evident obstacle map" and "both" to use both map simultaneously.  -->
   <arg name="fusion_type" default="roughness" />
   <arg name="source" default="octo" />
+  <!-- Use "once" to run only one time or "loop" to run continuously. -->
   <arg name="frequency" default="loop" />
-  <arg name="dimension" default="30" /> <!-- 35 -->
-  <arg name="resolution" default="0.25" /> <!-- 0.25 -->
+  <arg name="resolution" default="0.40" /> <!-- 0.25 -->
   <arg name="meters" default="9" />
+
+  <!-- Roughness parameters -->
+  <arg name="dimension" default="10" /> <!-- 35 -->
   <arg name="fused_map_topic" default="fused_costmap" />
-  
+
+  <!-- Evident obstacles parameters -->
+  <arg name="dimension_evident" default="6" />
+  <arg name="fused_map_evident_topic" default="fused_costmap_evident" />
+
   <!-- Local map parameters -->
+  <arg name="use_fused_map_local" default="false" />
   <arg name="dimension_local" default="6" />
   <arg name="fused_map_local_topic" default="fused_costmap_local" />
-  <arg name="use_fused_map_local" default="true" />
 
   <!-- <node pkg="navigation_final_semfire_pilot" type="txt_pointcloud_to_pc2.py" name="txt_pointcloud_to_pc2" output="screen">
     <param name="file_path" value="/media/data/Final Pilot/45_facedown_merged.txt"/>
@@ -38,7 +46,7 @@
       filter_limit_min: -100
       filter_limit_max: 100
       filter_limit_negative: False
-      leaf_size: 0.15
+      leaf_size: 0.50
     </rosparam>
   </node>
 
@@ -79,9 +87,9 @@
 
   <!-- <node pkg="navigation_final_semfire_pilot" type="bobcat_footprint_broadcaster" name="bobcat_footprint_broadcaster" />  -->
 
-  <include file="$(find navigation_final_semfire_pilot)/launch/nav_stack.launch">
+  <!-- <include file="$(find navigation_final_semfire_pilot)/launch/nav_stack.launch">
     <arg name="use_fused_map_local" value="$(arg use_fused_map_local)" />
-  </include>
+  </include> -->
 
   <!--Start rviz-->
   <!-- <node name="rviz" type="rviz" pkg="rviz" args="-d $(find navigation_final_semfire_pilot)/rviz_config/final_semfire_pilot.rviz" /> -->
@@ -113,7 +121,7 @@
           dimension_local: $(arg dimension_local)
           use_fused_map_local: $(arg use_fused_map_local)
           meters: $(arg meters)
-          gradient_threshold: 0.25 <!--0.35-->
+          gradient_threshold: 0.75 <!--0.35-->
     </rosparam>
   </node>
   

@@ -7,6 +7,8 @@ export XDG_SESSION_TYPE=x11
 COMMAND_PID=""
 UNSAFE_COMMAND_USED="" # Flag to track if an unsafe command has been run
 
+WORKDIR=/root/shared_folder
+
 # Function to display command output in real-time
 show_command_output() {
     local log_file="$1"
@@ -109,6 +111,7 @@ execute_command() {
         # Force-kill roscore/rosmaster
         killall -9 roscore rosmaster roslaunch &
         # Kill Gazebo servers and clients
+        pkill -9 -f "rosout" &
         pkill -9 -f "gzserver\|gzclient" &
         killall -9 gzserver gzclient &
         pkill -9 -f "junior_ctrl" &
@@ -120,10 +123,11 @@ execute_command() {
         pkill -9 -f "rslidar_sdk" &
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
-        WORKDIR=/root/shared_folder
-        rm -f $WORKDIR/noetic_trav-log.txt
-        rm -f $WORKDIR/melodic_trav-log.txt
+        rosclean purge -y
+        rm -f $WORKDIR/noetic_trav.log
+        rm -f $WORKDIR/melodic_trav.log
         rm -f $WORKDIR/gps_waypoint.log
+        rm -f $WORKDIR/fail.log
         ;;
     252)
         # Kill existing process if any
@@ -149,6 +153,7 @@ execute_command() {
         # Force-kill roscore/rosmaster
         killall -9 roscore rosmaster roslaunch &
         # Kill Gazebo servers and clients
+        pkill -9 -f "rosout" &
         pkill -9 -f "gzserver\|gzclient" &
         killall -9 gzserver gzclient &
         pkill -9 -f "junior_ctrl" &
@@ -160,12 +165,11 @@ execute_command() {
         pkill -9 -f "rslidar_sdk" &
         # Clear zombie processes
         ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
-        echo "Cleaning up all log files..."
-        rm -f custom_output_*.log # Remove all log files matching the pattern
-        WORKDIR=/root/shared_folder
-        rm -f $WORKDIR/noetic_trav-log.txt
-        rm -f $WORKDIR/melodic_trav-log.txt
+        rosclean purge -y
+        rm -f $WORKDIR/noetic_trav.log
+        rm -f $WORKDIR/melodic_trav.log
         rm -f $WORKDIR/gps_waypoint.log
+        rm -f $WORKDIR/fail.log
         exit 0
         ;;
     *)

@@ -7,6 +7,8 @@ export XDG_SESSION_TYPE=x11
 COMMAND_PID=""
 UNSAFE_COMMAND_USED=""  # Flag to track if an unsafe command has been run
 
+WORKDIR=/root/shared_folder
+
 # Function to send zero velocity and null goal for safe stopping
 send_safe_stop() {
   echo "Sending null goal to move_base to cancel any active goals"
@@ -154,10 +156,11 @@ execute_command() {
             pkill -9 -f "rslidar_sdk" &
             # Clear zombie processes
             ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
-            WORKDIR=/root/shared_folder
-            rm -f $WORKDIR/noetic_trav-log.txt
-            rm -f $WORKDIR/melodic_trav-log.txt
+            rosclean purge -y
+            rm -f $WORKDIR/noetic_trav.log
+            rm -f $WORKDIR/melodic_trav.log
             rm -f $WORKDIR/gps_waypoint.log
+            rm -f $WORKDIR/fail.log
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -199,10 +202,11 @@ execute_command() {
             ps -aux | grep -E 'defunct|Z' | awk '{print $2}' | xargs kill -9 2>/dev/null
             echo "Cleaning up all log files..."
             rm -f custom_output_*.log # Remove all log files matching the pattern
-            WORKDIR=/root/shared_folder
-            rm -f $WORKDIR/noetic_trav-log.txt
-            rm -f $WORKDIR/melodic_trav-log.txt
+            rosclean purge -y
+            rm -f $WORKDIR/noetic_trav.log
+            rm -f $WORKDIR/melodic_trav.log
             rm -f $WORKDIR/gps_waypoint.log
+            rm -f $WORKDIR/fail.log
             exit 0
             ;;
         *)

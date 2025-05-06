@@ -30,7 +30,10 @@ RUN apt-get update \
     libpthread-stubs0-dev \
     libeigen3-dev \
     liblcm-dev \
-    psmisc
+    psmisc \
+    zsh \
+    fonts-powerline \
+    autojump
 
 
 # Install some python packages

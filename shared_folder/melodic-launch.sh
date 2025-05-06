@@ -18,6 +18,8 @@ fi
 
 source $SETUP
 
+apt install zsh -y
+
 python /root/catkin_ws/src/depends/ethzasl_xsens_driver/nodes/mtdevice.py -l --output-mode=sotac --output-settings=tqMAG
 
 cd ../shared_folder

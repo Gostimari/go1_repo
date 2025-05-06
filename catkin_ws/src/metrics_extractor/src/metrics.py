@@ -169,12 +169,18 @@ class MetricsExtractor:
 		print(f"Velocity = {self.mean_velocity:.3f}")
   
 		##### Section 3 - Instability Index #####
-		self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
-		self.imu_append_y = np.append(self.imu_append_y, [self.imu_msg.linear_acceleration.y])
-		self.imu_append_z = np.append(self.imu_append_z, [self.imu_msg.linear_acceleration.z])
+		# self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
+		# self.imu_append_y = np.append(self.imu_append_y, [self.imu_msg.linear_acceleration.y])
+		# self.imu_append_z = np.append(self.imu_append_z, [self.imu_msg.linear_acceleration.z])
+		# self.imu_derivation_x = np.std(self.imu_append_x)
+		# self.imu_derivation_y = np.std(self.imu_append_y)
+		# self.imu_derivation_z = np.std(self.imu_append_z)
+		self.imu_append_x = self.imu_msg.linear_acceleration.x
+		self.imu_append_y = self.imu_msg.linear_acceleration.y
+		self.imu_append_z = self.imu_msg.linear_acceleration.z
 		self.imu_derivation_x = np.std(self.imu_append_x)
 		self.imu_derivation_y = np.std(self.imu_append_y)
-		self.imu_derivation_z = np.std(self.imu_append_z)
+		self.imu_derivation_z = np.std(self.imu_append_z)		
 
 		self.instalibity_index = np.sqrt(np.square(self.imu_derivation_x) + np.square(self.imu_derivation_y) + np.square(self.imu_derivation_z))
 		#print(f"Instability index = {self.instalibity_index:.3f}")

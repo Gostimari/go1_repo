@@ -26,7 +26,10 @@ RUN apt-get update \
     packagekit-gtk3-module \
     psmisc \
     gcc \
-    g++
+    g++ \
+    zsh \
+    fonts-powerline \
+    autojump
 
 # Install some python packages
 RUN apt-get -y install \

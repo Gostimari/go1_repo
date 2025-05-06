@@ -16,6 +16,8 @@ else
 fi
 source $SETUP
 
+apt install zsh -y
+
 cd ../shared_folder
 exec ./app_launcher_noetic.sh
 #exec /bin/bash
