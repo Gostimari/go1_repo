@@ -207,7 +207,7 @@ void goal_status(const actionlib_msgs::GoalStatusArray::ConstPtr& status_msg)
     }
 }
 
-void waitToReachGoal(double map_x, double map_y, double goal_tolerance);
+bool waitToReachGoal(double map_x, double map_y, double goal_tolerance);
 
 int main(int argc, char** argv)
 {
