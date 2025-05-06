@@ -157,6 +157,7 @@ execute_command() {
             WORKDIR=/root/shared_folder
             rm -f $WORKDIR/noetic_trav-log.txt
             rm -f $WORKDIR/melodic_trav-log.txt
+            rm -f $WORKDIR/gps_waypoint.log
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -201,6 +202,7 @@ execute_command() {
             WORKDIR=/root/shared_folder
             rm -f $WORKDIR/noetic_trav-log.txt
             rm -f $WORKDIR/melodic_trav-log.txt
+            rm -f $WORKDIR/gps_waypoint.log
             exit 0
             ;;
         *)

@@ -384,7 +384,7 @@ void Process() {
   tf::Quaternion q_tf(temp_q.x(), temp_q.y(), temp_q.z(), temp_q.w());
   tf::Vector3 t_tf(result_pose(0, 3), result_pose(1, 3), result_pose(2, 3));
   tf_broadcaster.sendTransform(tf::StampedTransform(
-  tf::Transform(q_tf, t_tf), odom_msg.header.stamp, "odom", "base")); //map -> base
+  tf::Transform(q_tf, t_tf), odom_msg.header.stamp, "odom", "imu")); //map -> base
 
   // publish dense scan
   CloudPtr trans_cloud(new CloudType());
