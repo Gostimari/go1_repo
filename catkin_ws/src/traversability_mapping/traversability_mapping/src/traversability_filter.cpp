@@ -289,7 +289,7 @@ public:
     bool transformCloud()
     {
     
-        try{listener.lookupTransform("map","base", ros::Time(0), transform); }
+        try{listener.lookupTransform("world","base", ros::Time(0), transform); }
         catch (tf::TransformException ex){ /*ROS_ERROR("Transfrom Failure.");*/ return false; }
 
         // std::cout << "Accessing transform..." << std::endl;
@@ -302,7 +302,7 @@ public:
 
         pcl::PointCloud<PointType> laserCloudTemp;
 
-        pcl_ros::transformPointCloud("map", *laserCloudIn, laserCloudTemp, listener);
+        pcl_ros::transformPointCloud("world", *laserCloudIn, laserCloudTemp, listener);
         *laserCloudIn = laserCloudTemp;
 
         return true;
@@ -468,7 +468,7 @@ public:
             sensor_msgs::PointCloud2 laserCloudTemp;
             pcl::toROSMsg(*laserCloudOut, laserCloudTemp);
             laserCloudTemp.header.stamp = ros::Time::now();
-            laserCloudTemp.header.frame_id = "map";
+            laserCloudTemp.header.frame_id = "world";
             pubCloudVisualHiRes.publish(laserCloudTemp);
         }
     }
@@ -536,7 +536,7 @@ public:
             sensor_msgs::PointCloud2 laserCloudTemp;
             pcl::toROSMsg(*laserCloudOut, laserCloudTemp);
             laserCloudTemp.header.stamp = ros::Time::now();
-            laserCloudTemp.header.frame_id = "map";
+            laserCloudTemp.header.frame_id = "world";
             pubCloudVisualLowRes.publish(laserCloudTemp);
         }
     }
@@ -650,7 +650,7 @@ public:
         sensor_msgs::PointCloud2 laserCloudTemp;
         pcl::toROSMsg(*laserCloudOut, laserCloudTemp);
         laserCloudTemp.header.stamp = ros::Time::now();
-        laserCloudTemp.header.frame_id = "map";
+        laserCloudTemp.header.frame_id = "world";
         pubCloud.publish(laserCloudTemp);
     }
 
@@ -668,10 +668,10 @@ public:
     void updateLaserScan()
     {
 
-        try{listener.lookupTransform("base","map", ros::Time(0), transform);}
+        try{listener.lookupTransform("base","world", ros::Time(0), transform);}
         catch (tf::TransformException ex){ /*ROS_ERROR("Transfrom Failure.");*/ return; }
 
-        laserCloudObstacles->header.frame_id = "map"; // map
+        laserCloudObstacles->header.frame_id = "world"; // map
         laserCloudObstacles->header.stamp = 0;
         // transform obstacle cloud back to "base" frame
         pcl::PointCloud<PointType> laserCloudTemp;

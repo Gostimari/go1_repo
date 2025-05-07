@@ -9,12 +9,12 @@
         <remap from="~input" to="rslidar_points" />
         <remap from="~output" to="rslidar_points_filtered" />
         <rosparam>
-                min_x: -2.0
-                max_x: 2.0
-                min_y: -100.0
-                max_y: 100.0
-                min_z: -100.0
-                max_z: 100.0 <!--30.0-->
+                min_x: -1.5
+                max_x: 0.1
+                min_y: -2.0
+                max_y: 2.0
+                min_z: -2.0
+                max_z: 2.0
                 keep_organized: false
                 negative: false
         </rosparam>

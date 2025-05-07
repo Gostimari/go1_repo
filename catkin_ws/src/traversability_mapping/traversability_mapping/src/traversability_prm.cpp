@@ -307,9 +307,9 @@ public:
         nav_msgs::Path originPath;
         nav_msgs::Path splinePath;
         
-        originPath.header.frame_id = "map"; 
+        originPath.header.frame_id = "world"; 
         geometry_msgs::PoseStamped pose;
-        pose.header.frame_id = "map";
+        pose.header.frame_id = "world";
 
         originPath.poses.clear();
 
@@ -581,7 +581,7 @@ public:
 
             // path visualization
             visualization_msgs::Marker markerPath;
-            markerPath.header.frame_id = "map";
+            markerPath.header.frame_id = "world";
             markerPath.header.stamp = ros::Time::now();
             markerPath.action = visualization_msgs::Marker::ADD;
             markerPath.type = visualization_msgs::Marker::LINE_STRIP;
@@ -600,7 +600,7 @@ public:
             
             // goal point visualization
             visualization_msgs::Marker markerGoal;
-            markerGoal.header.frame_id = "map";
+            markerGoal.header.frame_id = "world";
             markerGoal.header.stamp = ros::Time::now();
             markerGoal.action = visualization_msgs::Marker::ADD;
             markerGoal.type= visualization_msgs::Marker::SPHERE_LIST;
@@ -631,7 +631,7 @@ public:
 
             // PRM nodes visualization
             visualization_msgs::Marker markerNode;
-            markerNode.header.frame_id = "map";
+            markerNode.header.frame_id = "world";
             markerNode.header.stamp = ros::Time::now();
             markerNode.action = visualization_msgs::Marker::ADD;
             markerNode.type = visualization_msgs::Marker::SPHERE_LIST;
@@ -652,7 +652,7 @@ public:
 
             // PRM edge visualization
             visualization_msgs::Marker markerEdge;
-            markerEdge.header.frame_id = "map";
+            markerEdge.header.frame_id = "world";
             markerEdge.header.stamp = ros::Time::now();
             markerEdge.action = visualization_msgs::Marker::ADD;
             markerEdge.type = visualization_msgs::Marker::LINE_LIST;
@@ -699,7 +699,7 @@ public:
 
             // single source path visualization
             visualization_msgs::Marker markersPath;
-            markersPath.header.frame_id = "map";
+            markersPath.header.frame_id = "world";
             markersPath.header.stamp = ros::Time::now();
             markersPath.action = visualization_msgs::Marker::ADD;
             markersPath.type = visualization_msgs::Marker::LINE_LIST;
@@ -729,7 +729,7 @@ public:
 
     void publishPathStop(){
         // even no feasible path is found, publish an empty path
-        globalPath.header.frame_id = "map";
+        globalPath.header.frame_id = "world";
         globalPath.header.stamp = ros::Time::now();
         // publish path
         pubGlobalPath.publish(globalPath);
@@ -763,11 +763,11 @@ public:
         // Publish
         sensor_msgs::PointCloud2 laserCloudTemp;
         pcl::toROSMsg(nodeCloud, laserCloudTemp);
-        laserCloudTemp.header.frame_id = "map";
+        laserCloudTemp.header.frame_id = "world";
         laserCloudTemp.header.stamp = ros::Time::now();
         pubCloudPRMNodes.publish(laserCloudTemp);
         pcl::toROSMsg(adjacencyCloud, laserCloudTemp);
-        laserCloudTemp.header.frame_id = "map";
+        laserCloudTemp.header.frame_id = "world";
         laserCloudTemp.header.stamp = ros::Time::now();
         pubCloudPRMGraph.publish(laserCloudTemp);
     }
@@ -775,7 +775,7 @@ public:
     void getRobotState(){
         //ros::Duration(0.5).sleep();
         try {
-            listener.lookupTransform("map", "base", ros::Time(0), transform);
+            listener.lookupTransform("world", "base", ros::Time(0), transform);
         } catch (tf::TransformException &ex) {
             ROS_ERROR("Transform Error! PRM -> getRobotState() %s",ex.what());
             //ros::Duration(0.5).sleep();

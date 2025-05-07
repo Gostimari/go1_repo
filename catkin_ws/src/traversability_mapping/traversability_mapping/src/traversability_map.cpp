@@ -467,7 +467,7 @@ public:
     void initializeLocalOccupancyMap()
     {
         // initialization of customized map message
-        occupancyMap2DHeight.header.frame_id = "map"; //odom
+        occupancyMap2DHeight.header.frame_id = "world"; //odom
         occupancyMap2DHeight.occupancy.info.width = localMapArrayLength;
         occupancyMap2DHeight.occupancy.info.height = localMapArrayLength;
         occupancyMap2DHeight.occupancy.info.resolution = mapResolution;
@@ -484,7 +484,7 @@ public:
 
     bool getRobotPosition()
     {
-        try{listener.lookupTransform("map","base", ros::Time(0), transform); } 
+        try{listener.lookupTransform("world","base", ros::Time(0), transform); } 
         catch (tf::TransformException ex){ ROS_ERROR("Transfrom Failure."); return false; }
 
         robotPoint.x = transform.getOrigin().x();
@@ -529,7 +529,7 @@ public:
         // 3. Publish elevation point cloud
         sensor_msgs::PointCloud2 laserCloudTemp;
         pcl::toROSMsg(*laserCloudElevation, laserCloudTemp);
-        laserCloudTemp.header.frame_id = "map"; //odom
+        laserCloudTemp.header.frame_id = "world"; //odom
         laserCloudTemp.header.stamp = ros::Time::now();
         pubElevationCloud.publish(laserCloudTemp);
         // 4. free memory

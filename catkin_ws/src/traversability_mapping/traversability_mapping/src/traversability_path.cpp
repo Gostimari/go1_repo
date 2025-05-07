@@ -227,16 +227,16 @@ public:
         // 2. Transform local paths to global paths
         ros::Duration(0.5).sleep(); // sleep for a second
         try {
-            listener.lookupTransform("map", "base", ros::Time(0), transform);
+            listener.lookupTransform("world", "base", ros::Time(0), transform);
         } catch (tf::TransformException &ex) {
             ROS_ERROR("Transform Error! Path -> updatePathLibrary() %s",ex.what());
             ros::Duration(0.5).sleep();
         }
 
-        pathCloudLocal->header.frame_id = "map";
+        pathCloudLocal->header.frame_id = "world";
         pathCloudLocal->header.stamp = 0; // don't use the latest time, we don't have that transform in the queue yet
 
-        pcl_ros::transformPointCloud("map", *pathCloudLocal, *pathCloudGlobal, listener);
+        pcl_ros::transformPointCloud("world", *pathCloudLocal, *pathCloudGlobal, listener);
 
         // 3. Collision check
         state_t *state = new state_t;
@@ -269,7 +269,7 @@ public:
             sensor_msgs::PointCloud2 laserCloudTemp;
             pcl::toROSMsg(*pathCloudValid, laserCloudTemp);
             laserCloudTemp.header.stamp = ros::Time::now();
-            laserCloudTemp.header.frame_id = "map";
+            laserCloudTemp.header.frame_id = "world";
             pubPathLibraryValid.publish(laserCloudTemp);
         }
 
@@ -278,7 +278,7 @@ public:
             sensor_msgs::PointCloud2 laserCloudTemp;
             pcl::toROSMsg(*pathCloudLocal, laserCloudTemp);
             laserCloudTemp.header.stamp = ros::Time::now();
-            laserCloudTemp.header.frame_id = "map";
+            laserCloudTemp.header.frame_id = "world";
             pubPathLibraryOrigin.publish(laserCloudTemp);
         }
     }
@@ -349,7 +349,7 @@ public:
             sensor_msgs::PointCloud2 laserCloudTemp;
             pcl::toROSMsg(*pathCloud, laserCloudTemp);
             laserCloudTemp.header.stamp = ros::Time::now();
-            laserCloudTemp.header.frame_id = "map";
+            laserCloudTemp.header.frame_id = "world";
             pubPathCloud.publish(laserCloudTemp);
         }
 
@@ -357,7 +357,7 @@ public:
         globalPath.poses.clear();
         for (int i = 0; i < pathList.size(); i++){
             geometry_msgs::PoseStamped pose;
-            pose.header.frame_id = "map";
+            pose.header.frame_id = "world";
             pose.pose.position.x = pathCloudGlobal->points[pathList[i]->stateId].x;
             pose.pose.position.y = pathCloudGlobal->points[pathList[i]->stateId].y;
             pose.pose.position.z = pathCloudGlobal->points[pathList[i]->stateId].z;
@@ -366,7 +366,7 @@ public:
         }
 
         // publish path
-        globalPath.header.frame_id = "map";
+        globalPath.header.frame_id = "world";
         globalPath.header.stamp = ros::Time::now();
         pubGlobalPath.publish(globalPath);
 
@@ -410,7 +410,7 @@ public:
         sensor_msgs::PointCloud2 laserCloudTemp;
         pcl::toROSMsg(*pathCloudValid, laserCloudTemp);
         laserCloudTemp.header.stamp = ros::Time::now();
-        laserCloudTemp.header.frame_id = "map";
+        laserCloudTemp.header.frame_id = "world";
         pubPathLibraryValid.publish(laserCloudTemp);
     }
 };

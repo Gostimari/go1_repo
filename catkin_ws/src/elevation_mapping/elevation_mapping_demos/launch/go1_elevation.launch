@@ -10,7 +10,7 @@
     <!-- Filter the robot structure on the back lslidar points with a "crop box" -->
     <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
 
-    <node pkg="nodelet" type="nodelet" name="crop_box" args="load pcl/CropBox pcl_manager" output="screen">
+    <!-- <node pkg="nodelet" type="nodelet" name="crop_box" args="load pcl/CropBox pcl_manager" output="screen">
         <remap from="~input" to="rslidar_points" />
         <remap from="~output" to="rslidar_points_filtered" />
         <rosparam>
@@ -19,13 +19,13 @@
                 min_y: -100.0
                 max_y: 100.0
                 min_z: -100.0
-                max_z: 100.0 <!--30.0-->
+                max_z: 100.0
                 keep_organized: false
                 negative: false
         </rosparam>
-    </node>
+    </node> -->
 
-    <node pkg="nodelet" type="nodelet" name="crop_box_2" args="load pcl/CropBox pcl_manager" output="screen">
+    <!-- <node pkg="nodelet" type="nodelet" name="crop_box_2" args="load pcl/CropBox pcl_manager" output="screen">
         <remap from="~input" to="rslidar_points" />
         <remap from="~output" to="rslidar_points_filtered_2" />
         <rosparam>
@@ -34,11 +34,11 @@
                 min_y: -2.0
                 max_y: 2.0
                 min_z: -2.0
-                max_z: 2.0 <!--30.0-->
+                max_z: 2.0
                 keep_organized: false
                 negative: false
         </rosparam>
-    </node>
+    </node> -->
 
     <!-- <group ns="elevation"> -->
         <!-- Launch elevation mapping node. -->
@@ -51,7 +51,7 @@
             <param name="grid_map_topic" value="/elevation_mapping/elevation_map" />
             <rosparam command="load" file="$(find elevation_mapping_demos)/config/visualization/occupancy.yaml" />
         </node>
-    </group>
+    <!-- </group> -->
     <!-- <group ns="elevation_local">
         <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
             <rosparam command="load" file="$(find elevation_mapping_demos)/config/robots/go1_local.yaml"/>
