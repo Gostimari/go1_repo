@@ -36,7 +36,8 @@ init_bg_cov: 0.0001
 #t_imu_lidar : [-0.011775 -0.006253 -0.0438256454]
 
 #t_imu_lidar: [0.037, 0, 0.081]
-t_imu_lidar: [0.030, 0.005, 0.095]
+#t_imu_lidar: [0.030, 0.005, 0.095] #previous
+t_imu_lidar: [0.091, 0, 0.050] #calibrated
 # Rotation in Roll 180º
 R_imu_lidar: [1, 0, 0,
              0, 1, 0,
