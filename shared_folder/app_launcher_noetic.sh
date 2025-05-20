@@ -81,7 +81,7 @@ execute_command() {
         7)
             echo "Catkin Build clicked"
             cd ../catkin_ws
-            SHELL=/bin/bash command catkin build &
+            SHELL=/bin/bash command catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release &
             cd ../shared_folder
             COMMAND_PID=$!
             UNSAFE_COMMAND_USED=13 # Mark that an unsafe command was used

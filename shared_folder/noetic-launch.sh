@@ -3,7 +3,7 @@ set -e
 
 cd /root/catkin_ws/
 catkin config --buildlist $BUILDLIST
-catkin build
+catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # setup ros environment
 if [[ ! -z "${SETUP}" ]]; then
