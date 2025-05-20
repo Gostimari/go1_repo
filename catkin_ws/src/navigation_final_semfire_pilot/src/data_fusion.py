@@ -40,22 +40,16 @@ class CostmapFusion:
 
 		if map_type == "both":
 
-			# fused_costmap = []
+			fused_costmap = []
 
-			# i = 0
-			# for elem in self.obstacles.data:
-			# 	if elem == 100:
-			# 		fused_costmap.append(100)
-			# 	else:
-			# 		fused_costmap.append(self.roughness.data[i])
-			# 	i += 1
-			# self.publish_map(fused_costmap)
-
-			## roughness map
-			self.roughness.data = [-1 if elem == 0 else elem for elem in self.roughness.data]
-			self.publish_map(self.roughness.data)
-			## evident map
-			self.publish_map_evident(self.obstacles.data)
+			i = 0
+			for elem in self.obstacles.data:
+				if elem == 100:
+					fused_costmap.append(100)
+				else:
+					fused_costmap.append(self.roughness.data[i])
+				i += 1
+			self.publish_map(fused_costmap)
 
 		elif map_type == "roughness":
 			self.roughness.data = [-1 if elem == 0 else elem for elem in self.roughness.data]
@@ -65,7 +59,7 @@ class CostmapFusion:
 				self.publish_map_local(self.roughness_local.data)
 
 		elif map_type == "evident":
-			self.publish_map_evident(self.obstacles.data)
+			self.publish_map(self.obstacles.data)
 
 		else:
 			rospy.logerr("Data Fusion Node: Unknown map name received inside 'fuse_layers'!")
@@ -123,32 +117,6 @@ class CostmapFusion:
 
 		pub.publish(grid)
 
-	def publish_map_evident(self, fused_costmap):
-
-		# Create an OccupancyGrid variable
-		grid = OccupancyGrid()
-
-		# Complete the information to publish in the message
-		grid.header.stamp = self.obstacles.header.stamp
-		grid.header.frame_id = self.obstacles.header.frame_id
-
-		grid.info.resolution = self.obstacles.info.resolution
-		grid.info.width = self.obstacles.info.width
-		grid.info.height = self.obstacles.info.height
-		grid.info.origin.position.x = self.obstacles.info.origin.position.x
-		grid.info.origin.position.y = self.obstacles.info.origin.position.y
-		grid.info.origin.position.z = self.obstacles.info.origin.position.z
-		grid.info.origin.orientation.x = self.obstacles.info.origin.orientation.x
-		grid.info.origin.orientation.y = self.obstacles.info.origin.orientation.y
-		grid.info.origin.orientation.z = self.obstacles.info.origin.orientation.z
-		grid.info.origin.orientation.w = self.obstacles.info.origin.orientation.w
-
-		grid.data = np.array(fused_costmap).astype('int8')
-
-		pub = rospy.Publisher(map_evident_topic, OccupancyGrid, queue_size=10)
-
-		pub.publish(grid)
-
 
 	def main(self, choose_map):
 		rate = rospy.Rate(1)
@@ -170,7 +138,6 @@ if __name__ == "__main__":
 	choose_map = rospy.get_param('~fusion_type', "both")
 	map_topic = rospy.get_param('~fused_map_topic', "fused_costmap")
 	map_local_topic = rospy.get_param('~fused_map_local_topic', "fused_costmap_local")
-	map_evident_topic = rospy.get_param('~fused_map_evident_topic', "fused_costmap_evident")
 	use_fused_map_local = rospy.get_param('~use_fused_map_local', "false")
 
 	fusion = CostmapFusion()

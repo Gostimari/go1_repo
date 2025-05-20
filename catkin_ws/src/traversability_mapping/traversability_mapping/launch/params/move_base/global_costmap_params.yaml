@@ -18,7 +18,7 @@ global_costmap:
 
   static_layer:
     map_topic: /occupancy_map_local
-    subscribe_to_updates: true
+    subscribe_to_updates: false
     static_map: true
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap
     track_unknown_space: false # flag to decide wether unknown space is treated as free or unknown

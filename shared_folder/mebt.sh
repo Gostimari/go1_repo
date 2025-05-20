@@ -21,6 +21,13 @@ sleep 2  # Give some time for roscore to start
 # Launch the first ROS launch file
 roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_frequency:=50 &
 
+sleep 2
+
+# Launch the second ROS launch file
+roslaunch realsense2_camera rs_aligned_depth.launch &
+
+sleep 2
+
 # Launch the third ROS launch file
 roslaunch rslidar_sdk start.launch &
 

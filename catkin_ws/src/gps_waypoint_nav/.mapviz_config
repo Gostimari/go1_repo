@@ -7,11 +7,11 @@ enable_antialiasing: true
 show_displays: true
 show_status_bar: true
 show_capture_tools: true
-window_width: 1920
-window_height: 1043
-view_scale: 4.819248
-offset_x: 0
-offset_y: 0
+window_width: 1864
+window_height: 1016
+view_scale: 9.849728
+offset_x: -539.7558
+offset_y: -149.3967
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
