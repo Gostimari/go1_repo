@@ -2,7 +2,7 @@
 <launch>
 
 <arg name="feedback_frequency" default="20.0" />
-<arg name="connection_type" default="wireless" />
+<arg name="connection_type" default="ethernet" />
 <arg name="ethernet_ip" default="192.168.123.161" />
 <arg name="wireless_ip" default="192.168.12.1" />
 <arg name="publish_tf_tree" default="true"/>
