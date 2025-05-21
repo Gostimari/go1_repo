@@ -6,7 +6,7 @@ robot_pose_cache_size:                      10
 input_sources:
   front: # A name to identify the input source
     type: pointcloud # Supported types: pointcloud
-    topic: /rslidar_points_filtered
+    topic: /rslidar_points_filtered_elev
     queue_size: 10
     publish_on_update: true # Wheter to publish the elevation map after a callback from this source.
     sensor_processor:
@@ -18,12 +18,12 @@ track_point_z:                              0.0
 min_update_rate:                            2.0
 time_tolerance:                             1.0
 time_offset_for_point_cloud:                0.0
-sensor_processor/ignore_points_above:       0.4 #0.4
+sensor_processor/ignore_points_above:       0.9 #0.4
 robot_motion_map_update/covariance_scale:   0.01
 
 # Map.
-length_in_x:                                25.0 # 6.0
-length_in_y:                                25.0 # 6.0
+length_in_x:                                12.0 # 6.0
+length_in_y:                                12.0 # 6.0
 position_x:                                 0.0
 position_y:                                 0.0
 resolution:                                 0.1
