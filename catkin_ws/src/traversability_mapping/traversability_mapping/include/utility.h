@@ -99,7 +99,7 @@ extern const int scanNumMax = std::max(scanNumCurbFilter, scanNumSlopeFilter);
 
 // Filter Threshold Params
 extern const float sensorRangeLimit = 12; // only keep points with in ... 12 | 6 
-extern const float filterHeightLimit = (urbanMapping == true) ? 0.1 : 0.50; // step diff threshold  0.1 : 0.15 || 0.50
+extern const float filterHeightLimit = (urbanMapping == true) ? 0.1 : 0.80; // step diff threshold  0.1 : 0.15 || 0.50
 extern const float filterAngleLimit = 20; // slope angle threshold 20
 extern const int filterHeightMapArrayLength = sensorRangeLimit * 2 / mapResolution;
 

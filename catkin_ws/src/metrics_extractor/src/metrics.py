@@ -107,7 +107,8 @@ class MetricsExtractor:
 		self.odom_msg = rospy.wait_for_message("lio_odom", Odometry)
 		self.status_msg = rospy.wait_for_message("move_base/status", GoalStatusArray)
 		self.vel_msg = rospy.wait_for_message("cmd_vel", Twist)
-		self.imu_msg = rospy.wait_for_message("camera/imu", Imu)
+		#self.imu_msg = rospy.wait_for_message("camera/imu", Imu)
+		self.imu_msg = rospy.wait_for_message("imu/data", Imu)
   
 		self.high_state_msg = rospy.wait_for_message("high_state", HighState)
   
@@ -169,18 +170,18 @@ class MetricsExtractor:
 		print(f"Velocity = {self.mean_velocity:.3f}")
   
 		##### Section 3 - Instability Index #####
-		# self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
-		# self.imu_append_y = np.append(self.imu_append_y, [self.imu_msg.linear_acceleration.y])
-		# self.imu_append_z = np.append(self.imu_append_z, [self.imu_msg.linear_acceleration.z])
-		# self.imu_derivation_x = np.std(self.imu_append_x)
-		# self.imu_derivation_y = np.std(self.imu_append_y)
-		# self.imu_derivation_z = np.std(self.imu_append_z)
-		self.imu_append_x = self.imu_msg.linear_acceleration.x
-		self.imu_append_y = self.imu_msg.linear_acceleration.y
-		self.imu_append_z = self.imu_msg.linear_acceleration.z
+		self.imu_append_x = np.append(self.imu_append_x, [self.imu_msg.linear_acceleration.x])
+		self.imu_append_y = np.append(self.imu_append_y, [self.imu_msg.linear_acceleration.y])
+		self.imu_append_z = np.append(self.imu_append_z, [self.imu_msg.linear_acceleration.z])
 		self.imu_derivation_x = np.std(self.imu_append_x)
 		self.imu_derivation_y = np.std(self.imu_append_y)
-		self.imu_derivation_z = np.std(self.imu_append_z)		
+		self.imu_derivation_z = np.std(self.imu_append_z)
+		# self.imu_append_x = self.imu_msg.linear_acceleration.x
+		# self.imu_append_y = self.imu_msg.linear_acceleration.y
+		# self.imu_append_z = self.imu_msg.linear_acceleration.z
+		# self.imu_derivation_x = np.std(self.imu_append_x)
+		# self.imu_derivation_y = np.std(self.imu_append_y)
+		# self.imu_derivation_z = np.std(self.imu_append_z)		
 
 		self.instalibity_index = np.sqrt(np.square(self.imu_derivation_x) + np.square(self.imu_derivation_y) + np.square(self.imu_derivation_z))
 		#print(f"Instability index = {self.instalibity_index:.3f}")
