@@ -125,7 +125,7 @@ class CostmapFusion:
 			map_type = self.get_costmaps(choose_map)
 			self.fuse_layers(map_type)
 			elapsed = perf_counter() - t
-			print(f"[FUSION] The elapsed time was: {elapsed:0.2f}.") # with f-string
+			#print(f"[FUSION] The elapsed time was: {elapsed:0.2f}.") # with f-string
 			rate.sleep()
 
 

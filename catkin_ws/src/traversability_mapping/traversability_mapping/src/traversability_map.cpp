@@ -111,6 +111,10 @@ public:
         pcl::fromROSMsg(*laserCloudMsg, *laserCloud);
         // Register New Scan
         updateElevationMap();
+
+        //Update Elevation Map -> Gradually cleans old elevation data to make the map more dynamic
+        decayOldElevationData2();
+
         // publish local occupancy grid map
         publishMap();
     }
@@ -171,6 +175,10 @@ public:
             occupancy = (int)(lround((1 - 1 / (1 + std::exp(thisCell->log_odds))) * 100));
         // update cell
         thisCell->updateOccupancy(occupancy);
+
+        //Set update flags
+        thisCell->updated_in_current_scan = true;
+        thisCell->last_updated_time = ros::Time::now();
     }
 
     void updateCellElevation(mapCell_t* thisCell, PointType* point)
@@ -197,6 +205,10 @@ public:
         float P_final = (1 - K) * P_pred; // P_final = (I - K * H) * P_pred
         // Update cell
         thisCell->updateElevation(x_final, P_final);
+
+        //Set update flags
+        thisCell->updated_in_current_scan = true;
+        thisCell->last_updated_time = ros::Time::now();
     }
 
     mapCell_t* grid2Cell(grid_t* thisGrid)
@@ -245,6 +257,79 @@ public:
             --*cubeX;
         if (point->y + mapCubeLength / 2.0 < 0)
             --*cubeY;
+    }
+
+    void decayOldElevationData() {
+        ros::Time current_time = ros::Time::now();
+        ros::Duration max_age(0.5); // Cells older than this decay
+        float decay_factor = 0.5;   // Reduce elevation confidence by 10% per cycle
+        float max_reset_variance = 1.0; //Max uncertain to reset the cell
+    
+        for (auto childMap : mapArray) {
+            for (int i = 0; i < mapCubeArrayLength; ++i) {
+                for (int j = 0; j < mapCubeArrayLength; ++j) {
+                    mapCell_t* thisCell = childMap->cellArray[i][j];
+                    
+                    if (thisCell->elevation == -FLT_MAX) continue;
+    
+                    if (!thisCell->updated_in_current_scan && 
+                        (current_time - thisCell->last_updated_time) > max_age) {
+                        // Gradually reduce elevation confidence
+                        thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
+                        if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
+                            thisCell->elevation = -FLT_MAX;
+                            thisCell->elevationVar = 0.0;
+                            thisCell->log_odds = 0.0;
+                            thisCell->occupancy = 0;
+                        }
+                    }
+                    thisCell->updated_in_current_scan = false;
+                }
+            }
+        }
+    }
+
+    void decayOldElevationData2() {
+        ros::Time current_time = ros::Time::now();
+
+        float decayRadius = 2.0;
+
+        ros::Duration max_age(0.2); // Cells older than this decay
+        float decay_factor = 0.5;   // Reduce elevation confidence by 10% per cycle
+        float max_reset_variance = 1.0; //Max uncertain to reset the cell
+
+
+        for (auto childMap : mapArray) {
+            // Calculate submap origin
+            float submap_origin_x = childMap->originX + mapCubeLength / 2.0;
+            float submap_origin_y = childMap->originY + mapCubeLength / 2.0;
+            float dx = robotPoint.x - submap_origin_x;
+            float dy = robotPoint.y - submap_origin_y;
+            if (sqrt(dx*dx + dy*dy) > decayRadius) {
+                continue;
+            }
+            for (int i = 0; i < mapCubeArrayLength; ++i) {
+                for (int j = 0; j < mapCubeArrayLength; ++j) {
+
+                    mapCell_t* thisCell = childMap->cellArray[i][j];
+
+                    if (thisCell->elevation == -FLT_MAX) continue;
+
+                    if (!thisCell->updated_in_current_scan && 
+                        (current_time - thisCell->last_updated_time) > max_age) {
+                        // Gradually reduce elevation confidence
+                        thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
+                        if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
+                            thisCell->elevation = -FLT_MAX;
+                            thisCell->elevationVar = 0.0;
+                            thisCell->log_odds = 0.0;
+                            thisCell->occupancy = 0;
+                        }
+                    }
+                    thisCell->updated_in_current_scan = false; // Reset for next scan
+                }
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,8 +484,8 @@ public:
         if (pubOccupancyMapLocal.getNumSubscribers() == 0 && pubOccupancyMapLocalHeight.getNumSubscribers() == 0)
             return;
 
-        // 1.3 Initialize local occupancy grid map to unknown, height to -FLT_MAX
-        std::fill(occupancyMap2DHeight.occupancy.data.begin(), occupancyMap2DHeight.occupancy.data.end(), -1);
+        // 1.3 Initialize local occupancy grid map to unknown(-1), height to -FLT_MAX
+        std::fill(occupancyMap2DHeight.occupancy.data.begin(), occupancyMap2DHeight.occupancy.data.end(), -1); //change this to have the map free(0)/occupied(100)
         std::fill(occupancyMap2DHeight.height.begin(), occupancyMap2DHeight.height.end(), -FLT_MAX);
         std::fill(occupancyMap2DHeight.costMap.begin(), occupancyMap2DHeight.costMap.end(), 0);
 

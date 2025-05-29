@@ -25,15 +25,27 @@ class MetricsAnalyser:
 		self.duration = []
 		self.timestamp_secs = []
 		self.timestamp_nsecs = []
+		self.timestamp_secs_goal1 = []
+		self.timestamp_secs_goal2 = []
+		self.timestamp_secs_goal3 = []
+		self.timestamp_nsecs_goal1 = []
+		self.timestamp_nsecs_goal2 = []
+		self.timestamp_nsecs_goal3 = []
 		self.fails = []
 		self.files_raw = []
 		self.files_metrics = []
+		self.secs_goal1 = None
+		self.nsecs_goal1 = None
+		self.secs_goal2 = None
+		self.nsecs_goal2 = None
+		self.secs_goal3 = None
+		self.nsecs_goal3 = None
 
 		# Com caminho relativo:
-		script_dir = os.path.dirname(__file__)
-		directory = os.path.join(script_dir, '../logfiles/')
+		# script_dir = os.path.dirname(__file__)
+		# directory = os.path.join(script_dir, '../logfiles/')
 		# Caminho absoluto:
-		#directory = ""
+		directory = "/home/duarte/noetic-sim/src/metrics_extractor/logfiles/"
 
 		self.number_of_files=0
 		for root,dirs,files in os.walk(directory):
@@ -59,17 +71,34 @@ class MetricsAnalyser:
 			x = []
 			y = []
 			z = []
-			roll = []
-			pitch = []
 			secs = []
 			nsecs = []
+   
 			for elem in data:
 
 				if elem == "ABORTED":
 					aux += 1
 					continue
+ 
+				if elem == "REACHED GOAL 1":
+					if len(secs) >= 2 and len(nsecs) >= 2:
+						self.secs_goal1 = secs[-2]
+						self.nsecs_goal1 = nsecs[-1]
+					continue
 
-				if(aux == 8):
+				if elem == "REACHED GOAL 2":
+					if len(secs) >= 2 and len(nsecs) >= 2:
+						self.secs_goal2 = secs[-2]
+						self.nsecs_goal2 = nsecs[-1]
+					continue
+				
+				if elem == "REACHED GOAL 3":
+					if len(secs) >= 2 and len(nsecs) >= 2:
+						self.secs_goal3 = secs[-2]
+						self.nsecs_goal3 = nsecs[-1]
+					continue
+					
+				if(aux == 5):
 					aux = 0
 
 				if aux == 0:
@@ -82,10 +111,6 @@ class MetricsAnalyser:
 					secs.append(elem)
 				elif aux == 4:
 					nsecs.append(elem)
-				elif aux == 5:
-					roll.append(elem)
-				elif aux == 6:
-					pitch.append(elem)
 				else:
 					pass
 				aux += 1
@@ -93,10 +118,10 @@ class MetricsAnalyser:
 			self.x.append(x)
 			self.y.append(y)
 			self.z.append(z)
-			self.roll.append(roll)
-			self.pitch.append(pitch)
 			self.timestamp_secs.append(secs)
 			self.timestamp_nsecs.append(nsecs)
+   
+
 
 	def statistic_curves(self):
 

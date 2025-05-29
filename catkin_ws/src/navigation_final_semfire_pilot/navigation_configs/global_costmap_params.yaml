@@ -21,7 +21,7 @@ global_costmap:
 
 
   static_layer:
-    map_topic: /fused_costmap
+    map_topic: /occupancy_map_local #/fused_costmap
     subscribe_to_updates: true
     static_map: true
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap

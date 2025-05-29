@@ -17,10 +17,10 @@ global_costmap:
 
   plugins: 
   - {name: static_layer,  type: "costmap_2d::StaticLayer"}
-  - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
+  #- {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
 
   static_layer:
-    map_topic: /elevation/elevation_map_fused_visualization/elevation_grid
+    map_topic: /occupancy_map_local #/elevation/elevation_map_fused_visualization/elevation_grid
     subscribe_to_updates: true
     static_map: true
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap

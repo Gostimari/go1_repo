@@ -27,9 +27,6 @@ def save_individual_plots(time, metrics, avg_events, output_dir):
         ('velocity', 'Velocity', 'green'),
         ('instability', 'Instability Index', 'red'),
         ('torque', 'Mean Torque', 'purple'),
-        ('foot_force', 'Mean Foot Force', 'orange'),
-        ('power', 'Power Consumption ', 'brown'),
-        ('voltage', 'Voltage', 'black')
     ]
 
     for metric, title, color in metric_info:
@@ -81,10 +78,9 @@ def main():
     # Process each CSV file
     for csv_file in csv_files:
         try:
-            # Data storage
             metrics = {
                 'distance': [], 'velocity': [], 'instability': [],
-                'torque': [], 'foot_force': [], 'power': [], 'voltage': []
+                'torque': []
             }
             events = []
 
@@ -93,15 +89,12 @@ def main():
                 line_count = 0
                 
                 for row in reader:
-                    if len(row) == 7:
+                    if len(row) == 4:
                         try:
                             metrics['distance'].append(float(row[0]))
                             metrics['velocity'].append(float(row[1]))
                             metrics['instability'].append(float(row[2]))
                             metrics['torque'].append(float(row[3]))
-                            metrics['foot_force'].append(float(row[4]))
-                            metrics['power'].append(float(row[5]))
-                            metrics['voltage'].append(float(row[6]))
                             line_count += 1
                         except ValueError:
                             continue
@@ -149,10 +142,7 @@ def main():
         'distance': np.zeros(max_length),
         'velocity': np.zeros(max_length),
         'instability': np.zeros(max_length),
-        'torque': np.zeros(max_length),
-        'foot_force': np.zeros(max_length),
-        'power': np.zeros(max_length),
-        'voltage': np.zeros(max_length)
+        'torque': np.zeros(max_length)
     }
     
     counts = np.zeros(max_length)
