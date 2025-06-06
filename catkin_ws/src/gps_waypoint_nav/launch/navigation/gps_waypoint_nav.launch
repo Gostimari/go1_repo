@@ -2,6 +2,7 @@
 
 <launch>
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_gps_broadcaster" args="0 0 0 0 0 0 base gps" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="utm_world_map_broadcaster" args="0 0 0 3.14 0 0 utm_world world " />
 
     <param name="use_sim_time" value="false" />
 
@@ -15,7 +16,7 @@
      -->
     <!-- Group to contain the rest of the components -->
     <!-- <group name="main_components"> -->
-        <include file="$(find gps_waypoint_nav)/launch/include/setdatum.launch" />
+        <!-- <include file="$(find gps_waypoint_nav)/launch/include/setdatum.launch" /> -->
 
         <!-- Launch robot_localization and navsat -->
         <include file="$(find gps_waypoint_nav)/launch/include/localization_run.launch"/>

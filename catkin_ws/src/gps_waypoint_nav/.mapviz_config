@@ -9,16 +9,16 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1864
 window_height: 1016
-view_scale: 9.849728
-offset_x: -539.7558
-offset_y: -149.3967
+view_scale: 0.3538504
+offset_x: -19.71851
+offset_y: 6.156316
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
     name: new display
     config:
       visible: true
-      collapsed: false
+      collapsed: true
       custom_sources:
         - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
           max_zoom: 19
@@ -57,7 +57,7 @@ displays:
   - type: mapviz_plugins/navsat
     name: new display
     config:
-      visible: false
+      visible: true
       collapsed: true
       topic: /reach/fix
       color: "#a40000"
@@ -70,12 +70,12 @@ displays:
     config:
       visible: true
       collapsed: true
-      topic: /gps_waypoint_nav/vizualize_goal
+      topic: /prm_goal
       color: "#ce5c00"
       draw_style: arrows
       position_tolerance: 0
       buffer_size: 0
-      show_laps: false
+      show_laps: true
       static_arrow_sizes: true
       arrow_size: 36
       use_latest_transforms: true

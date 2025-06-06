@@ -14,6 +14,8 @@
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
       <remap from="odometry/filtered" to="odometry/navsat"/>
       <remap from="gps/fix" to="/reach/fix"/>
+      <remap from="base_link" to="base" />
+      <remap from="odom" to="odom" />
   </node>
   </group>
 

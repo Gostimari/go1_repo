@@ -80,10 +80,12 @@ extern const float sensorMinimumRange = 0.1; // 1.0 0.2
 
 // RS-32
 extern const int N_SCAN = 32;
-extern const int Horizon_SCAN = 2200;
+extern const int Horizon_SCAN = 1800; //2200
 extern const float ang_res_x = 0.2; //0.2
 extern const float ang_res_y = 0.2; //0.2
 extern const float ang_bottom = 15.0+0.1; //15.0
+
+const int ring_rotation_offset = N_SCAN / 4;  // 90° rotation for 16-ring: 4, for 32-ring: 8
 
 // Map Params
 extern const float mapResolution = 0.1; // map resolution
@@ -99,7 +101,7 @@ extern const int scanNumMax = std::max(scanNumCurbFilter, scanNumSlopeFilter);
 
 // Filter Threshold Params
 extern const float sensorRangeLimit = 12; // only keep points with in ... 12 | 6 
-extern const float filterHeightLimit = (urbanMapping == true) ? 0.1 : 0.80; // step diff threshold  0.1 : 0.15 || 0.50
+extern const float filterHeightLimit = (urbanMapping == true) ? 0.1 : 0.15; // step diff threshold  0.1 : 0.15 || 0.50
 extern const float filterAngleLimit = 20; // slope angle threshold 20
 extern const int filterHeightMapArrayLength = sensorRangeLimit * 2 / mapResolution;
 

@@ -71,7 +71,6 @@ public:
         subCloud = nh.subscribe<sensor_msgs::PointCloud2>("/rslidar_points_filtered", 5, &TraversabilityFilter::cloudHandler, this); // /full_cloud_info
         pubFullCloud = nh.advertise<sensor_msgs::PointCloud2>("/full_cloud_info", 5);
 
-
         pubCloud = nh.advertise<sensor_msgs::PointCloud2>("/filtered_pointcloud", 5);
         pubCloudVisualHiRes = nh.advertise<sensor_msgs::PointCloud2>("/filtered_pointcloud_visual_high_res", 5);
         pubCloudVisualLowRes = nh.advertise<sensor_msgs::PointCloud2>("/filtered_pointcloud_visual_low_res", 5);

@@ -12,8 +12,6 @@ private:
     tf::StampedTransform transform;
     // Subscriber
     ros::Subscriber subFilteredGroundCloud;
-    ros::Subscriber amcl_pose;
-    ros::Subscriber gazebo_pose;
     // Publisher
     ros::Publisher pubOccupancyMapLocal;
     ros::Publisher pubOccupancyMapLocalHeight;

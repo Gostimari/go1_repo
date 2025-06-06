@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+apt install ros-noetic-serial -y
+
 cd /root/catkin_ws/
 catkin config --buildlist $BUILDLIST
 catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release

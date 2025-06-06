@@ -5,22 +5,30 @@
 #include <geographic_msgs/GeoPose.h>
 #include <robot_localization/SetDatum.h>
 
-
-
 // initialize variables
 double latitude, longitude, altitude;
 bool initial_gps = true;
-
+int counter = 0;
 
 void gps(const sensor_msgs::NavSatFix::ConstPtr& gps_msg)
 {
-    if(initial_gps)
+    // Initial coordinates of Base frame (robot)
+    if(initial_gps && counter == 10)
     {
-        latitude = gps_msg->latitude;
-        longitude = gps_msg->longitude;
-        altitude = gps_msg->altitude;
-        initial_gps = false;
+        // if (gps_msg->latitude != 0.0 && gps_msg->longitude != 0.0 && gps_msg->altitude != 0.0 && counter == 5)
+        // {
+            latitude = gps_msg->latitude;
+            longitude = gps_msg->longitude;
+            altitude = gps_msg->altitude;
+            initial_gps = false;
+            //counter++;
+        // }
     }
+    counter++;
+
+    //Lookup the TF between robot and Map/world
+
+
     //ROS_INFO("GPS: Latitude: %.8f, Longitude: %.8f", lati, longi);
 }
 

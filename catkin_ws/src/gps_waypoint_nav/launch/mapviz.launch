@@ -1,13 +1,14 @@
 <launch>
 
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="map_wgs84_broadcaster" args="0 0 0 0 0 0 map /wgs84" /> -->
+
   <node pkg="mapviz" type="mapviz" name="mapviz"></node>
 
   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" >
     <param name="local_xy_frame" value="map"/>
     <param name="local_xy_origin" value="origin_bag"/>
-    <param name="use_sim_time" value="true"/>
-    <param name="local_xy_navsatfix_topic" value="/reach/fix"/>
-    <!--<param name="local_xy_origin" value="swri"/>-->
+    <param name="use_sim_time" value="false"/>
+    <param name="local_xy_navsatfix_topic" value="/gps_waypoint_nav/odometry/gps"/>
     <rosparam param="local_xy_origins">
       [{ name: swri,
          latitude: 29.45196669,
@@ -16,14 +17,12 @@
          heading: 0.0},
 
        { name: origin_bag,
-         latitude: 40.18559772172283,
-         longitude: -8.415321658306611,
-         altitude: 57.8489990234375,
+         latitude: 40.186759,
+         longitude: -8.417702,
+         altitude: 53.421001,
          heading: 0.0}]
     </rosparam>
     <remap from="fix" to="reach/fix"/>
   </node>
-
-  <!-- <node pkg="tf" type="static_transform_publisher" name="swri_transform" args="0 0 0 0 0 0 /map /origin 100"  /> -->
 
 </launch>

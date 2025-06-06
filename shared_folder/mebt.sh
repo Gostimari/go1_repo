@@ -23,6 +23,10 @@ roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_freq
 
 sleep 2
 
+roslaunch emlid_reach_ros reach_ros.launch port:=/dev/ttyACM0 &
+
+sleep 2
+
 # Launch the second ROS launch file
 roslaunch realsense2_camera rs_aligned_depth.launch &
 

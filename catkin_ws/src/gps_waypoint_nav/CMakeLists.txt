@@ -31,6 +31,11 @@ target_link_libraries(gps_waypoint ${catkin_LIBRARIES})
 target_link_libraries(collect_gps_waypoints ${catkin_LIBRARIES})
 target_link_libraries(setdatum ${catkin_LIBRARIES})
 
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};/usr/share/cmake/geographiclib")
+find_package(GeographicLib REQUIRED)
+
 install(DIRECTORY  launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+
