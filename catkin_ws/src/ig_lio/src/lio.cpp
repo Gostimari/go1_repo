@@ -1,6 +1,11 @@
 #include "ig_lio/lio.h"
 #include "ig_lio/timer.h"
 
+#include <tf2_ros/transform_listener.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>  // <-- needed for quaternion conversion
+
+
 extern Timer timer;
 
 bool LIO::MeasurementUpdate(SensorMeasurement& sensor_measurement) {
@@ -852,6 +857,43 @@ bool LIO::StaticInitialization(SensorMeasurement& sensor_measurement) {
   Eigen::Vector3d y_axis = Sophus::SO3d::hat(z_axis).matrix() * x_axis;
   y_axis.normalize();
 
+  // Eigen::Matrix3d R_base_imu;
+  // tf2_ros::Buffer tf_buffer;
+  // tf2_ros::TransformListener tf_listener(tf_buffer);
+
+  // tf_buffer.setUsingDedicatedThread(true);
+
+  // ros::Duration timeout(3.0);  // Wait up to 3 seconds
+  // ros::Time now = ros::Time::now();
+
+  // while (!tf_buffer.canTransform("base", "imu", now, timeout)) {
+  //     try {
+  //         geometry_msgs::TransformStamped tf_transform =
+  //             tf_buffer.lookupTransform("base", "imu", now);  
+
+  //         // Extract quaternion from transform
+  //         tf2::Quaternion q(
+  //             tf_transform.transform.rotation.x,
+  //             tf_transform.transform.rotation.y,
+  //             tf_transform.transform.rotation.z,
+  //             tf_transform.transform.rotation.w
+  //         );
+
+  //         // Convert to rotation matrix
+  //         tf2::Matrix3x3 tf_rot(q);
+  //         for (int i = 0; i < 3; ++i)
+  //             for (int j = 0; j < 3; ++j)
+  //                 R_base_imu(i, j) = tf_rot[i][j];
+
+  //     } catch (tf2::TransformException& ex) {
+  //         ROS_WARN("TF lookup failed after canTransform succeeded: %s", ex.what());
+  //       }
+  // }
+
+  // Eigen::Quaterniond q(R_base_imu);
+  // curr_state_.pose.block<3, 3>(0, 0) = q.normalized().toRotationMatrix().transpose();
+
+
   Eigen::Matrix3d init_R;
   init_R.block<3, 1>(0, 0) = x_axis;
   init_R.block<3, 1>(0, 1) = y_axis;
@@ -929,6 +971,45 @@ bool LIO::AHRSInitialization(SensorMeasurement& sensor_measurement) {
     LOG(ERROR) << "AHRS initalization falid, please use static initalizaiton!";
     return false;
   }
+
+  // Eigen::Matrix3d R_base_imu;
+  // tf2_ros::Buffer tf_buffer;
+  // tf2_ros::TransformListener tf_listener(tf_buffer);
+
+  // tf_buffer.setUsingDedicatedThread(true);
+
+  // ros::Duration timeout(3.0);  // Wait up to 3 seconds
+  // ros::Time now = ros::Time::now();
+
+  // // Raw IMU orientation
+  // tf2::Quaternion q_imu;
+  // tf2::fromMsg(back_imu.orientation, q_imu);
+
+  // // Lookup transform from base → imu
+  // geometry_msgs::TransformStamped tf_transform;
+  // try {
+  //     tf_transform = tf_buffer.lookupTransform("base", "imu", ros::Time(0), ros::Duration(1.0));
+  // } catch (tf2::TransformException& ex) {
+  //     ROS_WARN("TF lookup failed: %s", ex.what());
+  // }
+
+  // // Get TF quaternion rotation from base → imu
+  // tf2::Quaternion q_base_imu;
+  // tf2::fromMsg(tf_transform.transform.rotation, q_base_imu);
+
+  // tf2::Quaternion q_aux(0, 1, 0, 0);
+
+  // // Combine: IMU orientation expressed in base frame
+  // tf2::Quaternion q_base = q_base_imu * q_aux * q_imu;
+
+  // // Store it back into a message
+  // sensor_msgs::Imu imu_msg_transformed = back_imu;  // Copy existing message
+  // imu_msg_transformed.orientation = tf2::toMsg(q_base);
+
+  // // Optional: Print RPY to interpret
+  // double roll, pitch, yaw;
+  // tf2::Matrix3x3(q_base).getRPY(roll, pitch, yaw);
+  // ROS_INFO("Transformed IMU orientation (base frame): roll=%.3f, pitch=%.3f, yaw=%.3f", roll, pitch, yaw);
 
   Eigen::Quaterniond temp_q(back_imu.orientation.w,
                             back_imu.orientation.x,

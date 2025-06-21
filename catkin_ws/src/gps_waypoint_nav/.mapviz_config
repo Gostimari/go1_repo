@@ -1,5 +1,5 @@
 capture_directory: "~"
-fixed_frame: map
+fixed_frame: world
 target_frame: <none>
 fix_orientation: false
 rotate_90: false
@@ -9,9 +9,9 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1864
 window_height: 1016
-view_scale: 0.3538504
-offset_x: -19.71851
-offset_y: 6.156316
+view_scale: 6.115911
+offset_x: 41.7863
+offset_y: -1747.574
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
@@ -53,13 +53,13 @@ displays:
       visible: true
       collapsed: false
       topic: gps_waypoint
-      output_frame: /wgs84
+      output_frame: world
   - type: mapviz_plugins/navsat
     name: new display
     config:
       visible: true
       collapsed: true
-      topic: /reach/fix
+      topic: /gps_waypoint_nav/gps/filtered
       color: "#a40000"
       draw_style: points
       use_latest_transforms: true
@@ -70,12 +70,12 @@ displays:
     config:
       visible: true
       collapsed: true
-      topic: /prm_goal
+      topic: /gps_waypoint_nav/vizualize_goal
       color: "#ce5c00"
       draw_style: arrows
       position_tolerance: 0
       buffer_size: 0
       show_laps: true
       static_arrow_sizes: true
-      arrow_size: 36
+      arrow_size: 47
       use_latest_transforms: true

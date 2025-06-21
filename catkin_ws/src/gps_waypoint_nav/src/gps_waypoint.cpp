@@ -121,8 +121,8 @@ geometry_msgs::PointStamped UTMtoMapPoint(geometry_msgs::PointStamped UTM_input)
         try
         {
             UTM_point.header.stamp = ros::Time::now();
-            listener.waitForTransform("world", "utm", time_now, ros::Duration(3.0));
-            listener.transformPoint("world", UTM_input, map_point_output);
+            listener.waitForTransform("odom", "utm", time_now, ros::Duration(3.0));
+            listener.transformPoint("odom", UTM_input, map_point_output);
             notDone = false;
         }
         catch (tf::TransformException& ex)
@@ -140,7 +140,7 @@ move_base_msgs::MoveBaseGoal buildGoal(geometry_msgs::PointStamped map_point, ge
     move_base_msgs::MoveBaseGoal goal;
 
     //Specify what frame we want the goal to be published in
-    goal.target_pose.header.frame_id = "world";
+    goal.target_pose.header.frame_id = "odom";
     goal.target_pose.header.stamp = ros::Time::now();
 
     // Specify x and y goal
@@ -179,19 +179,31 @@ move_base_msgs::MoveBaseGoal buildGoal(geometry_msgs::PointStamped map_point, ge
 
 void gps(const sensor_msgs::NavSatFix::ConstPtr& gps_msg)
 {
-    if(initial_gps && counter == 10)
+    // Initial coordinates of Base frame (robot)
+    if(initial_gps && counter >= 10)
     {
-        // if (gps_msg->latitude != 0.0 && gps_msg->longitude != 0.0 && gps_msg->altitude != 0.0 && counter == 5)
-        // {
+        if (gps_msg->latitude != 0.0 && gps_msg->longitude != 0.0 && gps_msg->altitude == 0.0)
+        {
             latitude = gps_msg->latitude;
             longitude = gps_msg->longitude;
             altitude = gps_msg->altitude;
             initial_gps = false;
             //counter++;
-        // }
+        }
+        else 
+        {
+            ROS_INFO("GPS not valid, waiting...");
+            initial_gps = true;
+        }
     }
     counter++;
+
+    //Lookup the TF between robot and Map/world
+
+
+    //ROS_INFO("GPS: Latitude: %.8f, Longitude: %.8f", lati, longi);
 }
+
 
 void odometry_CB(const nav_msgs::Odometry::ConstPtr& odom_msg)
 {
@@ -236,7 +248,7 @@ int main(int argc, char** argv)
     ros::Publisher move_base_simple_pub = n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1000);
     ros::Publisher vizualize_goal_pub = n.advertise<geometry_msgs::PoseStamped>("/gps_waypoint_nav/vizualize_goal", 1000);
 
-    ros::Subscriber sub_odom = n.subscribe("/gps_waypoint_nav/odometry/gps", 1000, odometry_CB); // change to the navsat odometry
+    ros::Subscriber sub_odom = n.subscribe("/lio_odom", 1000, odometry_CB); // change to the navsat odometry /gps_waypoint_nav/odometry/gps
     ros::Subscriber move_base_status = n.subscribe("/move_base/status", 1000, goal_status);
 
     ros::Subscriber sub_gps = n.subscribe("/reach/fix", 1000, gps);
@@ -249,11 +261,18 @@ int main(int argc, char** argv)
     waypointVect = getWaypoints(path_local);
     //ROS_INFO("waypointVect: %d", waypointVect.size());
 
-    goal_tolerance = 2.0; //set goal tolerance
+    goal_tolerance = 0.5; //set goal tolerance
+
+    double qx = 0, qy = 0, qz =0, qw = 0;
+
+    double roll = 0;
+    double pitch = 0;
+    double yaw = 1.57;
+    const double PI  = 3.141592653589793238463;
 
     while(ros::ok())
     {
-        if (waypoint_start){
+        if (waypoint_start && !initial_gps){
 
             // if(counter == waypointVect.size())
             // {
@@ -300,14 +319,13 @@ int main(int argc, char** argv)
                 ROS_INFO("Received Latitude goal:%.8f", latiGoal);
                 ROS_INFO("Received longitude goal:%.8f", longiGoal);
 
-                //LocalCartesian proj(latitude, latitude, 0, earth);
+                //LocalCartesian proj(latitude, longitude, 0, earth);
 
                 //proj.Forward(latiGoal, longiGoal, 0, teste_x, teste_y, teste_z);
 
                 //map_point.point.x = teste_x;
                 //map_point.point.y = teste_y;
                 //map_point.point.z = teste_z;
-
                 //Convert lat/long to utm:
                 UTM_point = latLongtoUTM(latiGoal, longiGoal);
                 //UTM_next = latLongtoUTM(latiNext, longiNext);
@@ -322,16 +340,28 @@ int main(int argc, char** argv)
                 // Send Goal
                 ROS_INFO("Sending goal: x: %.2f, y: %.2f", map_point.point.x, map_point.point.y);
                 //ac.sendGoal(goal); //push goal to move_base node
+            
+                double cy = cos(yaw * 0.5);
+                double sy = sin(yaw * 0.5);
+                double cp = cos(pitch * 0.5);
+                double sp = sin(pitch * 0.5);
+                double cr = cos(roll * 0.5);
+                double sr = sin(roll * 0.5);
+            
+                qw = cr * cp * cy + sr * sp * sy;
+                qx = sr * cp * cy - cr * sp * sy;
+                qy = cr * sp * cy + sr * cp * sy;
+                qz = cr * cp * sy - sr * sp * cy;
 
                 pose_msg.header.frame_id = "world";
                 pose_msg.header.stamp = ros::Time::now();
-                pose_msg.pose.position.x = map_point.point.x;
-                pose_msg.pose.position.y = map_point.point.y;
+                pose_msg.pose.position.x = map_point.point.y;
+                pose_msg.pose.position.y = map_point.point.x;
                 pose_msg.pose.position.z = 0.0;
-                pose_msg.pose.orientation.x = 0.0;
-                pose_msg.pose.orientation.y = 0.0;
-                pose_msg.pose.orientation.z = 0.0;
-                pose_msg.pose.orientation.w = 1.0;
+                pose_msg.pose.orientation.x = qx;
+                pose_msg.pose.orientation.y = qy;
+                pose_msg.pose.orientation.z = qz;
+                pose_msg.pose.orientation.w = qw;
                 vizualize_goal_pub.publish(pose_msg);
 
                 pose_msg.header.frame_id = "world";
@@ -423,6 +453,10 @@ int main(int argc, char** argv)
             move_base_simple_pub.publish(pose_msg);
             break;
         }
+        else
+        {
+            ROS_INFO("BOAS");
+        } 
         ros::spinOnce();
     }
 
@@ -480,7 +514,7 @@ bool waitToReachGoal(double map_x, double map_y, double goal_tolerance)
             // check that it has moved enough
             if(abs(current_distance_to_goal - last_distance_to_goal) < 0.1)
             {
-                if(current_distance_to_goal < 3.5)
+                if(current_distance_to_goal < 2.0)
                 {
                     goal_reached = true;
                     return true;
@@ -501,14 +535,14 @@ bool waitToReachGoal(double map_x, double map_y, double goal_tolerance)
         //     error_counter++;
         //     break;
         // }
-        if (status == 3 && current_distance_to_goal < 2.5)
+        if (status == 3 && current_distance_to_goal < 1.0)
         {
             goal_reached = true;
             return true;
         }
         ros::spinOnce();
     }
-    if (status == 3 && current_distance_to_goal < 2.5)
+    if (status == 3 && current_distance_to_goal < 1.0)
     {
         goal_reached = true;
         return true;       

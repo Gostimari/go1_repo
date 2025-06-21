@@ -1,0 +1,56 @@
+<launch>
+<!-- Launch file for Bpearl LiDAR -->
+
+    <!-- Static transforms -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="rslidar_broadcaster" args="0.167 0 0.211 0 1.57 0 base rslidar" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster" args="0.16 0 0.06 0 0 0 base camera_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="world_map_broadcaster" args="0 0 0 0 0 0 world map" />
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 1.57 3.14 imu robot" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="robot_broadcaster" args="0 0 0 3.14 0 0 robot base" /> -->
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 1.57 3.14 base imu" /> -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 0 0 base imu" />
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="robot_broadcaster" args="0 0 0 0 0 0 robot base" /> -->
+
+	<node pkg="point_lio" type="pointlio_mapping" name="laserMapping" output="screen">
+	<rosparam command="load" file="$(find point_lio)/config/bpearl.yaml" />
+	<param name="use_imu_as_input" type="bool" value="1"/> <!--change to 1 to use IMU as input of Point-LIO-->
+	<param name="prop_at_freq_of_imu" type="bool" value="1"/>
+	<param name="check_satu" type="bool" value="1"/>
+	<param name="init_map_size" type="int" value="10"/>
+	<param name="point_filter_num" type="int" value="5"/> <!--4, 3--> 
+	<param name="space_down_sample" type="bool" value="1" />  
+	<param name="filter_size_surf" type="double" value="0.5" /> <!--0.5, 0.3, 0.2, 0.15, 0.1--> 
+	<param name="filter_size_map" type="double" value="0.5" /> <!--0.5, 0.3, 0.15, 0.1-->
+	<param name="ivox_nearby_type" type="int" value="6" /> <!--0.5, 0.3, 0.15, 0.1-->
+	<param name="runtime_pos_log_enable" type="bool" value="0" /> <!--1-->
+	</node>
+
+    <!-- Nodelet manager -->
+    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen" />
+
+    <!-- IMU Transformer Nodelet -->
+    <node pkg="nodelet" type="nodelet" name="imu_transformer" args="load imu_transformer/imu_transformer_nodelet nodelet_manager" output="screen">
+        <param name="~target_frame" value="imu" /> <!-- camera_gyro_frame -->
+        
+        <!-- Remap input and output topics to match your setup --> <!--/camera/imu-->
+        <remap from="imu_in/data" to="/imu/data" />
+        <remap from="imu_out/data" to="/imu/data_transformed" />
+    </node>
+
+    <!-- IMU Filter (Madgwick) -->
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_madgwick" output="screen">
+        <param name="use_mag" value="false"/>
+        <param name="publish_tf" value="false"/>
+        <param name="world_frame" value="enu"/>
+        <param name="base_link_frame" value="base"/>
+        <remap from="imu/data_raw" to="/imu/data_transformed" />
+        <remap from="imu/data" to="/madgwick_filtered_imu"/>
+    </node>
+
+    <!-- RViz Visualization -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find point_lio)/rviz_cfg/lio_show_mine.rviz" required="true" />
+
+</launch>

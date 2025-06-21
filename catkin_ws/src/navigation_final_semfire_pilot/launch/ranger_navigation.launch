@@ -39,7 +39,7 @@
   <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
   <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
     <!-- <remap from="~input" to="octomap_point_cloud_centers" /> -->
-    <remap from="~input" to="octomap_point_cloud_centers" /> <!-- current_scan || octomap_point_cloud_centers -->
+    <remap from="~input" to="current_scan" /> <!-- current_scan || octomap_point_cloud_centers -->
     <remap from="~output" to="decimated_pointclouds" />
     <rosparam>
       filter_field_name: z
@@ -62,8 +62,8 @@
           max_x: 100.0
           min_y: -100.0
           max_y: 100.0
-          min_z: 0.1
-          max_z: 2.0 <!--30.0-->
+          min_z: -2.0
+          max_z: 0.85 <!--30.0-->
           keep_organized: false
           negative: false
     </rosparam>

@@ -20,6 +20,10 @@
 		<remap from="cloud_in" to="/current_scan" /> 
 
 		<remap from="projected_map" to="map" /> <!-- map -->
+
+		<param name="track_changes" value="true"/>
+
+		<param name="listen_changes" value="true"/>
 	
 	</node>
 </launch>

@@ -292,8 +292,8 @@ public:
 
         float decayRadius = 2.0;
 
-        ros::Duration max_age(0.2); // Cells older than this decay
-        float decay_factor = 0.5;   // Reduce elevation confidence by 10% per cycle
+        ros::Duration max_age(0.1); // Cells older than this decay
+        float decay_factor = 1.0;   // Reduce elevation confidence by 10% per cycle
         float max_reset_variance = 1.0; //Max uncertain to reset the cell
 
 
@@ -313,16 +313,18 @@ public:
 
                     if (thisCell->elevation == -FLT_MAX) continue;
 
-                    if (!thisCell->updated_in_current_scan && 
-                        (current_time - thisCell->last_updated_time) > max_age) {
+                    // if (!thisCell->updated_in_current_scan && 
+                    //     (current_time - thisCell->last_updated_time) > max_age) {
+                    if ((current_time - thisCell->last_updated_time) > max_age) {                    
+                    //if (!thisCell->updated_in_current_scan) {                    
                         // Gradually reduce elevation confidence
                         thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
-                        if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
+                        //if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
                             thisCell->elevation = -FLT_MAX;
                             thisCell->elevationVar = 0.0;
                             thisCell->log_odds = 0.0;
                             thisCell->occupancy = 0;
-                        }
+                        //}
                     }
                     thisCell->updated_in_current_scan = false; // Reset for next scan
                 }
@@ -550,7 +552,7 @@ public:
     void initializeLocalOccupancyMap()
     {
         // initialization of customized map message
-        occupancyMap2DHeight.header.frame_id = "world"; //odom
+        occupancyMap2DHeight.header.frame_id = "map"; //odom
         occupancyMap2DHeight.occupancy.info.width = localMapArrayLength;
         occupancyMap2DHeight.occupancy.info.height = localMapArrayLength;
         occupancyMap2DHeight.occupancy.info.resolution = mapResolution;
@@ -567,7 +569,7 @@ public:
 
     bool getRobotPosition()
     {
-        try{listener.lookupTransform("world","base", ros::Time(0), transform); } 
+        try{listener.lookupTransform("map","base", ros::Time(0), transform); } 
         catch (tf::TransformException ex){ ROS_ERROR("Transfrom Failure."); return false; }
 
         robotPoint.x = transform.getOrigin().x();
@@ -612,7 +614,7 @@ public:
         // 3. Publish elevation point cloud
         sensor_msgs::PointCloud2 laserCloudTemp;
         pcl::toROSMsg(*laserCloudElevation, laserCloudTemp);
-        laserCloudTemp.header.frame_id = "world"; //odom
+        laserCloudTemp.header.frame_id = "map"; //odom
         laserCloudTemp.header.stamp = ros::Time::now();
         pubElevationCloud.publish(laserCloudTemp);
         // 4. free memory

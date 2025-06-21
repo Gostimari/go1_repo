@@ -119,6 +119,10 @@ execute_command() {
             echo "Ros Purge clicked"
             rosclean purge -y
             ;;
+        12)
+            echo "Rosbag Record clicked"
+            ./record_bag.sh
+            ;;
         11)
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
@@ -229,6 +233,7 @@ while true; do
         --button="Rqt tf tree:8" \
         --button="Custom Command:9" \
         --button="Ros Purge:10" \
+        --button="Rosbag:12" \
         --button="Kill:11" \
         --buttons-layout=spread \
         --text="Click a button to execute a command or Kill to stop the process. If you want to launch the traversability_mapping, you need to launch it on the Roslaunch Melodic App too. The 'Custom Command' button is to launch a terminal command, like 'rostopic list' with built-in terminal output."

@@ -8,8 +8,8 @@ global_costmap:
   width: 250
   height: 250
   transform_tolerance: 1.0 #0.5
-  footprint: [[-0.40, -0.165], [-0.40, 0.165], [0.35, 0.165], [0.35, -0.165]]
-  footprint_padding: 0.1
+  footprint: [[-0.35, -0.165], [-0.35, 0.165], [0.35, 0.165], [0.35, -0.165]]
+  footprint_padding: 0.0
 
   plugins: 
   - {name: static_layer,  type: "costmap_2d::StaticLayer"}
@@ -24,4 +24,4 @@ global_costmap:
     track_unknown_space: false # flag to decide wether unknown space is treated as free or unknown
 
   inflation_layer:
-    inflation_radius: 0.02
+    inflation_radius: 0.01

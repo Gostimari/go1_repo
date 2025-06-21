@@ -16,6 +16,7 @@
       <remap from="gps/fix" to="/reach/fix"/>
       <remap from="base_link" to="base" />
       <remap from="odom" to="odom" />
+      <remap from="imu/data" to="/madgwick_filtered_imu"/>
   </node>
   </group>
 
