@@ -19,7 +19,6 @@ services:
       - ../shared_folder/.p10k.zsh:/root/.p10k.zsh:rw
       - ../shared_folder/.zsh_history:/root/.zsh_history:rw
       - ../shared_folder/.bash_history:/root/.bash_history:rw
-      - ../shared_folder/.oh-my-zsh:/root/.oh-my-zsh
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
@@ -54,7 +53,6 @@ services:
       - ../shared_folder/.p10k.zsh:/root/.p10k.zsh:rw
       - ../shared_folder/.zsh_history:/root/.zsh_history:rw
       - ../shared_folder/.bash_history:/root/.bash_history:rw
-      - ../shared_folder/.oh-my-zsh:/root/.oh-my-zsh
       - /dev/dri:/dev/dri
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
