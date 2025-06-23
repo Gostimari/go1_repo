@@ -18,19 +18,17 @@ roscore &
 
 sleep 2  # Give some time for roscore to start
 
-# Launch the first ROS launch file
 roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_frequency:=50 &
 
 sleep 2
 
-# roslaunch emlid_reach_ros reach_ros.launch port:=/dev/ttyACM0 &
+roslaunch emlid_reach_ros reach_ros.launch port:=/dev/ttyACM0 &
 
-# sleep 2
+sleep 2
 
-# Launch the second ROS launch file
-# roslaunch realsense2_camera rs_aligned_depth.launch &
+roslaunch realsense2_camera rs_aligned_depth.launch &
 
-# sleep 2
+sleep 2
 
 # Launch the third ROS launch file
 roslaunch rslidar_sdk start.launch &
@@ -65,8 +63,8 @@ while ! grep -q "$STRING" "$FILE"; do
     sleep 1
 done
 
-# # rosrun metrics_extractor metrics.py &
-# # sleep 5
+rosrun metrics_extractor metrics.py &
+sleep 5
 
 #echo "Target string detected. Starting ROS launch..."
 roslaunch gps_waypoint_nav gps_waypoint_nav.launch &

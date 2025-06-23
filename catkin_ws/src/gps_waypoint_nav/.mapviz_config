@@ -9,9 +9,9 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1864
 window_height: 1016
-view_scale: 6.115911
-offset_x: 41.7863
-offset_y: -1747.574
+view_scale: 0.04736239
+offset_x: -3.542981
+offset_y: -1.925305
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
@@ -70,7 +70,7 @@ displays:
     config:
       visible: true
       collapsed: true
-      topic: /gps_waypoint_nav/vizualize_goal
+      topic: /prm_goal
       color: "#ce5c00"
       draw_style: arrows
       position_tolerance: 0

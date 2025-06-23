@@ -67,7 +67,7 @@ void ImuCallBack(const sensor_msgs::Imu::ConstPtr& msg_ptr) {
   static double last_imu_timestamp = 0.0;
   static sensor_msgs::Imu last_imu = *msg_ptr;
   // parameters for EMA filter
-  static double a = 0.8;
+  static double a = 0.5; //0.8
   static double b = 1.0 - a;
 
   sensor_msgs::Imu imu_msg = *msg_ptr;

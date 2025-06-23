@@ -1,7 +1,7 @@
 ARG ARCH=
 #2
 ARG CORES=6
-FROM ${ARCH}ros:melodic-ros-core
+FROM ${ARCH}osrf/ros:melodic-desktop-full
 
 LABEL maintainer="Duarte Cruz <duarte.cruz@isr.uc.pt>"
 
@@ -31,6 +31,9 @@ RUN apt-get update \
     fonts-powerline \
     autojump
 
+RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
 # Install some python packages
 RUN apt-get -y install \
     python \
@@ -59,25 +62,12 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-diagnostic-msgs \
     yad
 
-# Clean-up
-WORKDIR /
-RUN apt-get clean
-
 #Configure catkin workspace
 ENV CATKIN_WS=/root/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
-#WORKDIR $CATKIN_WS
 
 # Clean-up
 WORKDIR /
 RUN apt-get clean
 
-#RUN echo "source /usr/local/bin/catkin_entrypoint.sh" >> /root/.bashrc
-#COPY melodic-launch.sh /melodic-launch.sh
-#RUN chmod +x /melodic-launch.sh
-
-#COPY app_launcher_melodic.sh /app_launcher_melodic.sh
-#RUN chmod +x /app_launcher_melodic.sh
-
-#ENTRYPOINT ["/melodic-launch.sh"]
 CMD ["bash"]

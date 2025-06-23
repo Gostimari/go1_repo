@@ -111,7 +111,7 @@ public:
         updateElevationMap();
 
         //Update Elevation Map -> Gradually cleans old elevation data to make the map more dynamic
-        decayOldElevationData2();
+        decayOldElevation();
 
         // publish local occupancy grid map
         publishMap();
@@ -257,45 +257,13 @@ public:
             --*cubeY;
     }
 
-    void decayOldElevationData() {
+    void decayOldElevation() {
+
         ros::Time current_time = ros::Time::now();
+        float decayRadius = 2.0;
         ros::Duration max_age(0.5); // Cells older than this decay
         float decay_factor = 0.5;   // Reduce elevation confidence by 10% per cycle
         float max_reset_variance = 1.0; //Max uncertain to reset the cell
-    
-        for (auto childMap : mapArray) {
-            for (int i = 0; i < mapCubeArrayLength; ++i) {
-                for (int j = 0; j < mapCubeArrayLength; ++j) {
-                    mapCell_t* thisCell = childMap->cellArray[i][j];
-                    
-                    if (thisCell->elevation == -FLT_MAX) continue;
-    
-                    if (!thisCell->updated_in_current_scan && 
-                        (current_time - thisCell->last_updated_time) > max_age) {
-                        // Gradually reduce elevation confidence
-                        thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
-                        if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
-                            thisCell->elevation = -FLT_MAX;
-                            thisCell->elevationVar = 0.0;
-                            thisCell->log_odds = 0.0;
-                            thisCell->occupancy = 0;
-                        }
-                    }
-                    thisCell->updated_in_current_scan = false;
-                }
-            }
-        }
-    }
-
-    void decayOldElevationData2() {
-        ros::Time current_time = ros::Time::now();
-
-        float decayRadius = 2.0;
-
-        ros::Duration max_age(0.1); // Cells older than this decay
-        float decay_factor = 1.0;   // Reduce elevation confidence by 10% per cycle
-        float max_reset_variance = 1.0; //Max uncertain to reset the cell
-
 
         for (auto childMap : mapArray) {
             // Calculate submap origin
@@ -313,20 +281,21 @@ public:
 
                     if (thisCell->elevation == -FLT_MAX) continue;
 
-                    // if (!thisCell->updated_in_current_scan && 
-                    //     (current_time - thisCell->last_updated_time) > max_age) {
-                    if ((current_time - thisCell->last_updated_time) > max_age) {                    
-                    //if (!thisCell->updated_in_current_scan) {                    
-                        // Gradually reduce elevation confidence
-                        thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
-                        //if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
-                            thisCell->elevation = -FLT_MAX;
-                            thisCell->elevationVar = 0.0;
-                            thisCell->log_odds = 0.0;
-                            thisCell->occupancy = 0;
-                        //}
+                    if (!thisCell->updated_in_current_scan && 
+                         (current_time - thisCell->last_updated_time) > max_age) {
+                    // if ((current_time - thisCell->last_updated_time) > max_age) {                    
+                        if (!thisCell->updated_in_current_scan) {                    
+                            // Gradually reduce elevation confidence
+                            thisCell->elevationVar *= (1.0 / decay_factor); // Increase uncertainty
+                            if (thisCell->elevationVar > max_reset_variance) { // If too uncertain, reset
+                                thisCell->elevation = -FLT_MAX;
+                                thisCell->elevationVar = 0.0;
+                                thisCell->log_odds = 0.0;
+                                thisCell->occupancy = 0;
+                            }
+                        }
+                        thisCell->updated_in_current_scan = false; // Reset for next scan
                     }
-                    thisCell->updated_in_current_scan = false; // Reset for next scan
                 }
             }
         }

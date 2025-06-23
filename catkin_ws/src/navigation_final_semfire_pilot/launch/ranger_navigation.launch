@@ -58,7 +58,7 @@
     <remap from="~input" to="decimated_pointclouds_bobcat_base" />
     <remap from="~output" to="preProcessed_pointcloud" />
     <rosparam>
-          min_x: -100.0
+          min_x: 0.2
           max_x: 100.0
           min_y: -100.0
           max_y: 100.0

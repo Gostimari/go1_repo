@@ -182,7 +182,7 @@ void gps(const sensor_msgs::NavSatFix::ConstPtr& gps_msg)
     // Initial coordinates of Base frame (robot)
     if(initial_gps && counter >= 10)
     {
-        if (gps_msg->latitude != 0.0 && gps_msg->longitude != 0.0 && gps_msg->altitude == 0.0)
+        if (gps_msg->latitude != 0.0 && gps_msg->longitude != 0.0 && gps_msg->altitude != 0.0)
         {
             latitude = gps_msg->latitude;
             longitude = gps_msg->longitude;
@@ -197,9 +197,6 @@ void gps(const sensor_msgs::NavSatFix::ConstPtr& gps_msg)
         }
     }
     counter++;
-
-    //Lookup the TF between robot and Map/world
-
 
     //ROS_INFO("GPS: Latitude: %.8f, Longitude: %.8f", lati, longi);
 }
@@ -248,7 +245,7 @@ int main(int argc, char** argv)
     ros::Publisher move_base_simple_pub = n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1000);
     ros::Publisher vizualize_goal_pub = n.advertise<geometry_msgs::PoseStamped>("/gps_waypoint_nav/vizualize_goal", 1000);
 
-    ros::Subscriber sub_odom = n.subscribe("/lio_odom", 1000, odometry_CB); // change to the navsat odometry /gps_waypoint_nav/odometry/gps
+    ros::Subscriber sub_odom = n.subscribe("/gps_waypoint_nav/odometry/gps", 1000, odometry_CB); // change to the navsat odometry /lio_odom
     ros::Subscriber move_base_status = n.subscribe("/move_base/status", 1000, goal_status);
 
     ros::Subscriber sub_gps = n.subscribe("/reach/fix", 1000, gps);
@@ -269,6 +266,8 @@ int main(int argc, char** argv)
     double pitch = 0;
     double yaw = 1.57;
     const double PI  = 3.141592653589793238463;
+    double x_rotated = 0.0;
+    double y_rotated = 0.0;
 
     while(ros::ok())
     {
@@ -353,10 +352,13 @@ int main(int argc, char** argv)
                 qy = cr * sp * cy + sr * cp * sy;
                 qz = cr * cp * sy - sr * sp * cy;
 
+                //x_rotated = map_point.point.x*cos(1.9926) - map_point.point.y*sin(1.9926);
+                //y_rotated = map_point.point.x*sin(1.9926) - map_point.point.y*cos(1.9926);
+
                 pose_msg.header.frame_id = "world";
                 pose_msg.header.stamp = ros::Time::now();
-                pose_msg.pose.position.x = map_point.point.y;
-                pose_msg.pose.position.y = map_point.point.x;
+                pose_msg.pose.position.x = map_point.point.x;
+                pose_msg.pose.position.y = map_point.point.y;
                 pose_msg.pose.position.z = 0.0;
                 pose_msg.pose.orientation.x = qx;
                 pose_msg.pose.orientation.y = qy;
@@ -364,10 +366,13 @@ int main(int argc, char** argv)
                 pose_msg.pose.orientation.w = qw;
                 vizualize_goal_pub.publish(pose_msg);
 
+                x_rotated = map_point.point.x*cos(1.57) - map_point.point.y*sin(1.57);
+                y_rotated = map_point.point.x*sin(1.57) - map_point.point.y*cos(1.57);
+
                 pose_msg.header.frame_id = "world";
                 pose_msg.header.stamp = ros::Time::now();
-                pose_msg.pose.position.x = map_point.point.x;
-                pose_msg.pose.position.y = map_point.point.y;
+                pose_msg.pose.position.x = x_rotated;
+                pose_msg.pose.position.y = y_rotated;
                 pose_msg.pose.position.z = 0.0;
                 pose_msg.pose.orientation.x = 0.0;
                 pose_msg.pose.orientation.y = 0.0;
@@ -443,8 +448,8 @@ int main(int argc, char** argv)
             //status, so i need to make the switch for the metrics to save that the robot reached the last point.
             pose_msg.header.frame_id = "world";
             pose_msg.header.stamp = ros::Time::now();
-            pose_msg.pose.position.x = map_point.point.x;
-            pose_msg.pose.position.y = map_point.point.y;
+            pose_msg.pose.position.x = x_rotated;
+            pose_msg.pose.position.y = y_rotated;
             pose_msg.pose.position.z = 0.0;
             pose_msg.pose.orientation.x = 0.0;
             pose_msg.pose.orientation.y = 0.0;
@@ -453,10 +458,6 @@ int main(int argc, char** argv)
             move_base_simple_pub.publish(pose_msg);
             break;
         }
-        else
-        {
-            ROS_INFO("BOAS");
-        } 
         ros::spinOnce();
     }
 

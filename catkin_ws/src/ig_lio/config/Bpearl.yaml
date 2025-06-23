@@ -1,6 +1,6 @@
 #lidar_topic: /hesai/pandar
 lidar_topic: /rslidar_points
-imu_topic: /madgwick_filtered_imu
+imu_topic: /madgwick_filtered_imu #/imu_filtered
 lidar_type: Hesai # livox velodyne ouster Hesai Bpearl
 min_radius: 0.4
 max_radius: 100

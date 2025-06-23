@@ -6,8 +6,8 @@ import numpy as np
 
 class ImuFilter:
     def __init__(self):
-        self.sub = rospy.Subscriber('/go1_imu', Imu, self.callback)
-        self.pub = rospy.Publisher('/go1_imu_filtered', Imu, queue_size=10)
+        self.sub = rospy.Subscriber('/madgwick_filtered_imu', Imu, self.callback)
+        self.pub = rospy.Publisher('/imu_filtered', Imu, queue_size=1)
 
         # Low pass filter parameter for all values
         self.alpha = 0.5
@@ -32,13 +32,16 @@ class ImuFilter:
         self.low_pass_filter(data)
 
         # Set the header of filtered IMU data
-        self.filtered_imu.header.stamp = rospy.Time.now()
+        self.filtered_imu.header.stamp = data.header.stamp #rospy.Time.now()
         self.filtered_imu.header.frame_id = data.header.frame_id
 
         # Set covariance values (unchanged)
-        self.filtered_imu.orientation_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
-        self.filtered_imu.angular_velocity_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
-        self.filtered_imu.linear_acceleration_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
+        # self.filtered_imu.orientation_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
+        # self.filtered_imu.angular_velocity_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
+        # self.filtered_imu.linear_acceleration_covariance = [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
+        self.filtered_imu.orientation_covariance = [0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0]
+        self.filtered_imu.angular_velocity_covariance: [0.0004, 0.0, 0.0, 0.0, 0.0004, 0.0, 0.0, 0.0, 0.0004]
+        self.filtered_imu.linear_acceleration_covariance: [0.0004, 0.0, 0.0, 0.0, 0.0004, 0.0, 0.0, 0.0, 0.0004]
 
         # Publish the filtered IMU data
         self.pub.publish(self.filtered_imu)

@@ -5,11 +5,8 @@
   <node pkg="mapviz" type="mapviz" name="mapviz"></node>
 
   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" >
-    <param name="local_xy_frame" value="world"/>
-    
+    <param name="local_xy_frame" value="world"/> 
     <param name="local_xy_origin" value="auto"/>
-
-
     <param name="use_sim_time" value="false"/>
     <param name="local_xy_navsatfix_topic" value="/gps_waypoint_nav/gps/filtered"/>
     <rosparam param="local_xy_origins">

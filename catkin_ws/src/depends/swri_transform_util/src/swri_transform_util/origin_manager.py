@@ -178,8 +178,10 @@ class OriginManager(object):
         else:
             origin.header.stamp = rospy.Time.now()
 
-        origin.pose.position.y = 40.186667
-        origin.pose.position.x = -8.417701
+        # origin.pose.position.y = 40.186694
+        # origin.pose.position.x = -8.417709
+        origin.pose.position.y = latitude
+        origin.pose.position.x = longitude                                                                                                                                                
         origin.pose.position.z = 0
 
         # Heading is always 0
@@ -187,53 +189,17 @@ class OriginManager(object):
 
         roll = 0
         pitch = 0
-        yaw = 0
+        yaw = -0.4226
         qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
         qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
         qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
         qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
-        # Initialize tf2 buffer and listener (once, e.g. in your __init__)
-        self.tf_buffer = tf2_ros.Buffer()
-        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-
-        # Transform orientation from imu_madg frame to base_link
-        # try:
-        #     # Lookup the transform from IMU frame to base_link
-        #     transform = self.tf_buffer.lookup_transform(
-        #         "map",  # target frame
-        #         "base",  # source frame (probably 'imu_madg')
-        #         self.imu.header.stamp,  # or rospy.Time(0) for latest available
-        #         rospy.Duration(1.0)
-        #     )
-
-
-        #     # Create a PoseStamped from IMU orientation
-        #     imu_pose = PoseStamped()
-        #     imu_pose.header = self.imu.header
-        #     imu_pose.pose.orientation = self.imu.orientation
-        #     imu_pose.pose.position.x = 0
-        #     imu_pose.pose.position.y = 0
-        #     imu_pose.pose.position.z = 0
-        
-        #     # Transform the pose into base_link frame
-        #     transformed_pose = tf2_geometry_msgs.do_transform_pose(imu_pose, transform)
-
-        #     # Use transformed orientation
-        #     origin.pose.orientation = transformed_pose.pose.orientation
-    
-        # except (tf2_ros.LookupException, tf2_ros.ExtrapolationException, tf2_ros.ConnectivityException) as e:
-        #     rospy.logwarn("Could not transform IMU orientation to base_link: {}".format(e))
-        #     # Optionally fall back to default orientation or skip
 
         origin.pose.orientation.x = qx
         origin.pose.orientation.y = qy
         origin.pose.orientation.z = qz
         origin.pose.orientation.w = qw
 
-        #origin.pose.orientation.x = -0.009
-        #origin.pose.orientation.y = -0.019
-        #origin.pose.orientation.z = 0.547
-        #origin.pose.orientation.w = 0.837
         self.origin_source = source
         self.origin = origin
         self.origin_pub.publish(self.origin)

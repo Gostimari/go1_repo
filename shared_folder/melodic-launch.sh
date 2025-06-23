@@ -18,16 +18,13 @@ fi
 
 source $SETUP
 
-apt install zsh -y
-
 python /root/catkin_ws/src/depends/ethzasl_xsens_driver/nodes/mtdevice.py -l --output-mode=sotac --output-settings=tqMAG
 
 cd ../shared_folder
-#exec /bin/bash
 exec ./app_launcher_melodic.sh
-#!/bin/bash
+
+# To prevent the container to auto stop
 # while true; do
 #     echo "Service is running..."
 #     sleep 1
 # done
-#roslaunch --wait $ROSPACKAGE $LAUNCHFILE #launch the file

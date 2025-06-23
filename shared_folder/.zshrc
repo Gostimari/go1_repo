@@ -108,16 +108,11 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f /root/.p10k.zsh ]] || source /root/.p10k.zsh
 
 source /opt/ros/melodic/setup.zsh
 source /opt/ros/noetic/setup.zsh
 source /root/catkin_ws/devel/setup.zsh
-
-
-export  __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia
-
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/root/catkin_ws/src/ros_unitree/unitree_ros/unitree_gazebo/worlds/models
 
 catkin() {
   if [[ "$1" == "build" ]]; then
@@ -142,7 +137,6 @@ docker() {
     command docker "$@"  # Handle other `docker` commands normally (e.g., `ps`, `build`, etc.)
   fi
 }
-export PATH=$HOME/.local/bin:$PATH
 
 cd /root/
 

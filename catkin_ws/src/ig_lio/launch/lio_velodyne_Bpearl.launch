@@ -44,17 +44,20 @@
         <param name="base_link_frame" value="base"/>
         <remap from="imu/data_raw" to="/imu/data_transformed" />
         <remap from="imu/data" to="/madgwick_filtered_imu"/>
+        <param name="gain" value="0.2" />
     </node>
 
+    <!-- <node pkg="ig_lio" type="imu_filter.py" name="imu_filter" /> -->
+
     <!-- IMU Complementary Filter -->
-    <!--node pkg="imu_complementary_filter" type="complementary_filter_node" name="imu_complementary_filter" output="screen">
-        <param name="use_mag" value="false"/>
+    <!-- <node pkg="imu_complementary_filter" type="complementary_filter_node" name="imu_complementary_filter" output="screen">
+        <param name="use_mag" value="true"/>
         <param name="publish_tf" value="false"/>
-        <param name="world_frame" value="nwu"/>
+        <param name="world_frame" value="enu"/>
         <param name="base_link_frame" value="base"/>
         <remap from="imu/data_raw" to="/madgwick_filtered_imu"/>
         <remap from="imu/data" to="/filtered_imu"/>
-    </node-->
+    </node> -->
 
     <!-- RViz Visualization -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ig_lio)/rviz/lio_show_mine.rviz" required="true" />

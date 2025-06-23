@@ -19,7 +19,7 @@ local_costmap:
   z_voxels: 20
 
   plugins:
-    - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
+    #- {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
     #- {name: lidar_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
     #- {name: cameras_obstacles_layer,  type: "costmap_2d::VoxelLayer"}
     - {name: static_layer,  type: "costmap_2d::StaticLayer"}

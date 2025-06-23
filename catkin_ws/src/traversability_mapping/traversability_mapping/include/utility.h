@@ -87,7 +87,7 @@ extern const float ang_bottom = 15.0+0.1; //15.0
 
 // Map Params
 extern const float mapResolution = 0.1; // map resolution
-extern const float mapCubeLength = 6.0; // the length of a sub-map (meters) 1.0
+extern const float mapCubeLength = 1.0; // the length of a sub-map (meters) 1.0
 extern const int mapCubeArrayLength = mapCubeLength / mapResolution; // the grid dimension of a sub-map (mapCubeLength / mapResolution)
 extern const int mapArrayLength = 2000 / mapCubeLength; // the sub-map dimension of global map (2000m x 2000m)
 extern const int rootCubeIndex = mapArrayLength / 2; // by default, robot is at the center of global map at the beginning
@@ -108,7 +108,7 @@ extern const bool predictionEnableFlag = true;
 extern const float predictionKernalSize = 0.2; // predict elevation within x meters 0.2
 
 // Occupancy Params
-extern const float p_occupied_when_laser = 0.8; // 0.9 0.65
+extern const float p_occupied_when_laser = 0.9; // 0.9 0.65
 extern const float p_occupied_when_no_laser = 0.2;
 extern const float large_log_odds = 100;
 extern const float max_log_odds_for_belief = 20; // 20
@@ -123,7 +123,7 @@ extern const float visualizationFrequency = 0; //2 n, skip n scans then publish,
 
 // Robot Params
 extern const float robotRadius = 0.30; //0.2
-extern const float sensorHeight = 0.70; //0.5
+extern const float sensorHeight = 0.85; //0.5
 
 // Traversability Params
 extern const int traversabilityObserveTimeTh = 10;
@@ -181,6 +181,7 @@ struct mapCell_t {
     float elevation, elevationVar;
 
     bool updated_in_current_scan;
+    float traversability_decay;
     ros::Time last_updated_time;
 
     mapCell_t()
