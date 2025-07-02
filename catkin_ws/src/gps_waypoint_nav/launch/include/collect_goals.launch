@@ -2,26 +2,16 @@
 
 <launch>
 
-  <!-- 
-	Note: 
-	 - Button mapping specific for Logitech and xbox joysticks 
-	 - You may need to remap by changing params below
-	-->
-	<arg name="collect_button_num" value="1" />
-	<arg name="collect_button_sym" value="1" />
-	<arg name="end_button_num" value="2" />
-	<arg name="end_button_sym" value="2" />
 	<arg name="coordinates_file_dir" value="/waypoint_files/points_outdoor.txt" />
 
   <!-- Run collect_gps_waypoints node -->
   	<node ns="/gps_waypoint_nav" pkg="gps_waypoint_nav" type="collect_gps_waypoints" name="collect_gps_waypoints" output="screen"/>
 			<!-- WARNING: This will replace any file in this directory with the same name.-->
 			<param name="/gps_waypoint_nav/coordinates_file" value="$(arg coordinates_file_dir)" type="string" />
-			<param name="/gps_waypoint_nav/collect_button_num" value="$(arg collect_button_num)" type="int" />
-			<param name="/gps_waypoint_nav/end_button_num" value="$(arg end_button_num)" type="int" />
-			<param name="/gps_waypoint_nav/collect_button_sym" value="$(arg collect_button_sym)" type="string" />
-			<param name="/gps_waypoint_nav/end_button_sym" value="$(arg end_button_sym)" type="string" />
 
+	<!-- <include file="$(find gps_waypoint_nav)/launch/include/setdatum.launch" /> -->
+
+	<include file="$(find gps_waypoint_nav)/launch/include/localization_run.launch"/>
 
 	<include file="$(find gps_waypoint_nav)/launch/mapviz.launch"/>
 

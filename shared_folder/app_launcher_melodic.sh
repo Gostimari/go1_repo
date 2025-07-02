@@ -128,6 +128,7 @@ execute_command() {
         rm -f $WORKDIR/melodic_trav.log
         rm -f $WORKDIR/gps_waypoint.log
         rm -f $WORKDIR/fail.log
+        rm -f $WORKDIR/custom_output*
         ;;
     252)
         # Kill existing process if any
@@ -170,6 +171,7 @@ execute_command() {
         rm -f $WORKDIR/melodic_trav.log
         rm -f $WORKDIR/gps_waypoint.log
         rm -f $WORKDIR/fail.log
+        rm -f $WORKDIR/custom_output*
         exit 0
         ;;
     *)

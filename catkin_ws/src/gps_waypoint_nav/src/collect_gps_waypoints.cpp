@@ -73,30 +73,6 @@ int main(int argc, char** argv)
 		std::ofstream coordFile (path_abs.c_str());
 		ROS_INFO("Saving coordinates to: %s", path_abs.c_str());
 		
-	// Give instructions:
-		// ros::param::get("/gps_waypoint_nav/collect_button_sym", collect_button_sym);
-		// ros::param::get("/gps_waypoint_nav/end_button_sym", end_button_sym);
-		// std::cout << std::endl;
-		// std::cout << "Press " << collect_button_sym.c_str() << " button to collect and store waypoint." << std::endl;
-		// std::cout << "Press " << end_button_sym.c_str() << " button to end waypoint collection." << std::endl;
-		// std::cout << std::endl;
-
-	// Select a start key
-		// while(activation_key != 1)
-		// {
-		// 	std::cin >> activation_key;
-
-		// 	if(activation_key == 1)
-		// 	{
-		// 		ROS_INFO("Waypoint collection started!");
-		// 		continue_collection = true;
-		// 	}
-		// 	else
-		// 	{
-		// 		continue_collection = false;
-		// 		ROS_INFO("Invalid key");
-		// 	}
-		// }
 
 	ROS_INFO("Waypoint collection started!");
 	continue_collection = true;
@@ -116,55 +92,38 @@ int main(int argc, char** argv)
 				{
 					// Check that there was sufficient change in position between points
 					// This makes the move_base navigation smoother and stops points from being collected twice
-					double difference_lat = abs((lati_point - lati_last)*pow(10,6))*pow(10,-6);
-					double difference_long = abs((longi_point - longi_last)*pow(10,6))*pow(10,-6);
+					// double difference_lat = abs((lati_point - lati_last)*pow(10,6))*pow(10,-6);
+					// double difference_long = abs((longi_point - longi_last)*pow(10,6))*pow(10,-6);
 
-					if( (difference_lat > min_coord_change) || (difference_long > min_coord_change))
-					{
+					// if( (difference_lat > min_coord_change) || (difference_long > min_coord_change))
+					// {
 						//write waypoint
-						ROS_INFO("You have collected another waypoint!");
+						
 						std::cout << std::endl;
 						numWaypoints++;
 						coordFile << std::fixed << std::setprecision(8) << lati_point << " " << longi_point << std::endl;
 						lati_last = lati_point;
 						longi_last = longi_point;
-					}
+						ROS_INFO("You have collected another waypoint!");
+					// }
 
-					else
-					{//do not write waypoint
-						ROS_WARN("Waypoint not saved, you have not moved enough");
-						ROS_WARN("New Latitude: %f   Last Latitude: %f \n", lati_point, lati_last );
-						ROS_WARN("New Longitude: %f   Last Longitude: %f \n", longi_point, longi_last );
-					}
+					// else
+					// {//do not write waypoint
+					// 	ROS_WARN("Waypoint not saved, you have not moved enough");
+					// 	ROS_WARN("New Latitude: %f   Last Latitude: %f \n", lati_point, lati_last );
+					// 	ROS_WARN("New Longitude: %f   Last Longitude: %f \n", longi_point, longi_last );
+					// }
 					time_last = time_current;
 				}
 				else{}
 				gps_received = false;
 
-				//ROS_INFO("Press %s button to end waypoint collection or 3 to continue:", end_button_sym.c_str());
-				//activation_key = 0;
-
-				//while (activation_key != 2 && activation_key != 3)
-				//{
-					//std::cin >> activation_key;
 				if (points_counter == 3)	
 				{
-					// if(activation_key == 2)
-					// {
-						ROS_INFO("Waypoint collection Ended!");
-						continue_collection = false;
-						coordFile << std::fixed << std::setprecision(8) << lati_last << " " << longi_last << std::endl;
+					ROS_INFO("Waypoint collection Ended!");
+					continue_collection = false;
+					coordFile << std::fixed << std::setprecision(8) << lati_last << " " << longi_last << std::endl;
 
-					// }
-					// else if(activation_key == 3)
-					// {
-					// 	ROS_INFO("Waypoint collection continued!");
-					// 	continue_collection = true;
-					// }
-					// else
-					// {
-					// 	ROS_INFO("Invalid Option!");
-					// }
 				}
 				else
 				{

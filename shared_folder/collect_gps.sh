@@ -6,20 +6,19 @@ FILE="$WORKDIR/melodic_trav.log"
 STRING="melodic ready"
 
 # Make sure Wi-Fi is turned off
-#sudo nmcli radio wifi off
+# sudo nmcli radio wifi off
 
-# Properly connect to the correct ethernet ports
-sudo nmcli connection up RS-Bpearl
+# # Properly connect to the correct ethernet ports
+# sudo nmcli connection up RS-Bpearl
 
-sleep 2
+# sleep 2
 
-# Start ROS core if not already running
-roscore &
+# # Start ROS core if not already running
+# roscore &
 
-sleep 2  # Give some time for roscore to start
+# sleep 2  # Give some time for roscore to start
 
-# Launch the first ROS launch file
-roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_frequency:=50 &
+roslaunch go1_ros_interface robot.launch connection_type:=wireless feedback_frequency:=10 & #50
 
 sleep 2
 
@@ -27,22 +26,24 @@ roslaunch emlid_reach_ros reach_ros.launch port:=/dev/ttyACM0 &
 
 sleep 2
 
-# Launch the second ROS launch file
-roslaunch realsense2_camera rs_aligned_depth.launch &
+# roslaunch realsense2_camera rs_aligned_depth.launch &
 
-sleep 2
+# sleep 2
 
 # Launch the third ROS launch file
 roslaunch rslidar_sdk start.launch &
 
-sleep 10
+sleep 5
 
 roslaunch ig_lio lio_velodyne_Bpearl.launch &
 sleep 10
 
+# roslaunch point_lio mapping_bpearl.launch &
+# sleep 10
+
 ## MEBT
-roslaunch octomap_server octomap_mapping.launch &
-sleep 10
+# roslaunch octomap_server octomap_mapping.launch &
+# sleep 10
 roslaunch navigation_final_semfire_pilot ranger_navigation.launch &
 sleep 10
 
@@ -62,6 +63,7 @@ while ! grep -q "$STRING" "$FILE"; do
     sleep 1
 done
 
-sleep 2
+# rosrun metrics_extractor metrics.py &
+# sleep 2
 
 roslaunch gps_waypoint_nav collect_goals.launch &

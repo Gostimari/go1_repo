@@ -9,14 +9,15 @@
   <arg name="source" default="octo" />
   <!-- Use "once" to run only one time or "loop" to run continuously. -->
   <arg name="frequency" default="loop" />
-  <arg name="resolution" default="0.25" /> <!-- 0.25 -->
-  <arg name="meters" default="9" />
+  <arg name="resolution" default="0.20" /> <!-- 0.25 -->
+  <arg name="meters" default="6" />
 
   <!-- Roughness parameters -->
-  <arg name="dimension" default="10" /> <!-- 35 -->
+  <arg name="dimension" default="6" /> <!-- 35 -->
   <arg name="fused_map_topic" default="fused_costmap" />
 
   <!-- Evident obstacles parameters -->
+  <arg name="use_fused_map_evident" default="false" />
   <arg name="dimension_evident" default="6" />
   <arg name="fused_map_evident_topic" default="fused_costmap_evident" />
 
@@ -51,14 +52,14 @@
   </node>
 
   <!-- launch here the frame node -->
-  <node pkg="navigation_final_semfire_pilot" type="frame_changer" name="frame_changing_node" />
+  <!-- <node pkg="navigation_final_semfire_pilot" type="frame_changer" name="frame_changing_node" /> -->
 
   <!-- Filter out the points that are too far away -->
   <node pkg="nodelet" type="nodelet" name="crop_box" args="load pcl/CropBox pcl_manager" output="screen">
-    <remap from="~input" to="decimated_pointclouds_bobcat_base" />
+    <remap from="~input" to="decimated_pointclouds" />
     <remap from="~output" to="preProcessed_pointcloud" />
     <rosparam>
-          min_x: 0.2
+          min_x: -100.0
           max_x: 100.0
           min_y: -100.0
           max_y: 100.0
@@ -106,30 +107,34 @@
             evident_threshold: 3.0
             variance_threshold: 1.0 
             mean_threshold: 1.0
-            variation_threshold: 1.5 <!-- 1.5 -->
+            variation_threshold: 1.5
       </rosparam>
     </node>
   </group>
 
-  <node pkg="navigation_final_semfire_pilot" type="processing_node_main.py" name="processing_node_main" output="screen" >
-    <rosparam subst_value="true">
-          map: $(arg map)
-          source: $(arg source)
-          frequency: $(arg frequency)
-          dimension: $(arg dimension)
-          resolution: $(arg resolution)
-          dimension_local: $(arg dimension_local)
-          use_fused_map_local: $(arg use_fused_map_local)
-          meters: $(arg meters)
-          gradient_threshold: 0.35 <!--0.35-->
-    </rosparam>
-  </node>
-  
+  <group unless="$(eval fusion_type == 'evident')">
+    <node pkg="navigation_final_semfire_pilot" type="processing_node_main.py" name="processing_node_main" output="screen" >
+      <rosparam subst_value="true">
+            map: $(arg map)
+            source: $(arg source)
+            frequency: $(arg frequency)
+            dimension: $(arg dimension)
+            resolution: $(arg resolution)
+            dimension_local: $(arg dimension_local)
+            use_fused_map_local: $(arg use_fused_map_local)
+            meters: $(arg meters)
+            gradient_threshold: 0.35
+      </rosparam>
+    </node>
+  </group>
+
   <node pkg="navigation_final_semfire_pilot" type="data_fusion.py" name="data_fusion" output="screen">
     <param name="fusion_type" value="$(arg fusion_type)"/>
     <param name="fused_map_topic" value="$(arg fused_map_topic)"/>
     <param name="fused_map_local_topic" value="$(arg fused_map_local_topic)" />
     <param name="use_fused_map_local" value="$(arg use_fused_map_local)"/>
+    <param name="fused_map_evident_topic" value="$(arg fused_map_evident_topic)" />
+    <param name="use_fused_map_evident" value="$(arg use_fused_map_evident)"/>
   </node>
 
 </launch> 

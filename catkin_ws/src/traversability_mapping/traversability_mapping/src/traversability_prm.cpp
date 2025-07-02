@@ -13,7 +13,6 @@ private:
     tf::StampedTransform transform;
 
     ros::Subscriber subGoal;
-    ros::Subscriber gazebo_pose;
     
     ros::Publisher pubPRMGraph; // publish PRM nodes and edges
     ros::Publisher pubPRMPath; // path extracted from roadmap

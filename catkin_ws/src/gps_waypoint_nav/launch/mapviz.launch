@@ -9,6 +9,7 @@
     <param name="local_xy_origin" value="auto"/>
     <param name="use_sim_time" value="false"/>
     <param name="local_xy_navsatfix_topic" value="/gps_waypoint_nav/gps/filtered"/>
+    <!--<param name="local_xy_navsatfix_topic" value="/gps_waypoint_nav/gps/filtered"/>-->
     <rosparam param="local_xy_origins">
       [{ name: swri,
          latitude: 29.45196669,

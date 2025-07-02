@@ -12,8 +12,7 @@ private:
     ros::NodeHandle nh;
     // ROS subscriber
     ros::Subscriber subCloud;
-    ros::Subscriber amcl_pose;
-    ros::Subscriber gazebo_pose;
+    ros::Subscriber subOdom;
     // Mutex Memory Lock
     std::mutex mtx;
     // ROS publisher
@@ -75,6 +74,8 @@ public:
         pubCloudVisualHiRes = nh.advertise<sensor_msgs::PointCloud2>("/filtered_pointcloud_visual_high_res", 5);
         pubCloudVisualLowRes = nh.advertise<sensor_msgs::PointCloud2>("/filtered_pointcloud_visual_low_res", 5);
         pubLaserScan = nh.advertise<sensor_msgs::LaserScan>("/pointcloud_2_laserscan", 5);
+
+        subOdom = nh.subscribe<nav_msgs::Odometry>("/gps_waypoint_nav/odometry/navsat", 5, &TraversabilityFilter::odomHandler, this);
 
         nanPoint.x = std::numeric_limits<float>::quiet_NaN();
         nanPoint.y = std::numeric_limits<float>::quiet_NaN();
@@ -284,6 +285,14 @@ public:
             }
         }
     }
+
+    void odomHandler(const nav_msgs::Odometry::ConstPtr& msg) {
+
+        // robotPoint.x = msg->pose.pose.position.x;
+        // robotPoint.y = msg->pose.pose.position.y;
+        // robotPoint.z = msg->pose.pose.position.z;
+    }
+
 
     bool transformCloud()
     {

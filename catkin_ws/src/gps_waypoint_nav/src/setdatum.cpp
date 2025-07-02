@@ -38,8 +38,6 @@ void gps(const sensor_msgs::NavSatFix::ConstPtr& gps_msg)
     }
     counter++;
 
-    //Lookup the TF between robot and Map/world
-
 
     //ROS_INFO("GPS: Latitude: %.8f, Longitude: %.8f", lati, longi);
 }

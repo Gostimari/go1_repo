@@ -12,6 +12,7 @@ private:
     tf::StampedTransform transform;
     // Subscriber
     ros::Subscriber subFilteredGroundCloud;
+    ros::Subscriber subOdom;
     // Publisher
     ros::Publisher pubOccupancyMapLocal;
     ros::Publisher pubOccupancyMapLocalHeight;
@@ -57,6 +58,8 @@ public:
         pubOccupancyMapLocalHeight = nh.advertise<elevation_msgs::OccupancyElevation>("/occupancy_map_local_height", 5);
         // publish elevation map for visualization
         pubElevationCloud = nh.advertise<sensor_msgs::PointCloud2>("/elevation_pointcloud", 5);
+
+        subOdom = nh.subscribe<nav_msgs::Odometry>("/gps_waypoint_nav/odometry/navsat", 5, &TraversabilityMapping::odomHandler, this);
 
         allocateMemory();
     }
@@ -534,6 +537,13 @@ public:
         occupancyMap2DHeight.occupancy.data.resize(occupancyMap2DHeight.occupancy.info.width * occupancyMap2DHeight.occupancy.info.height);
         occupancyMap2DHeight.height.resize(occupancyMap2DHeight.occupancy.info.width * occupancyMap2DHeight.occupancy.info.height);
         occupancyMap2DHeight.costMap.resize(occupancyMap2DHeight.occupancy.info.width * occupancyMap2DHeight.occupancy.info.height);
+    }
+
+    void odomHandler(const nav_msgs::Odometry::ConstPtr& msg) {
+
+        // robotPoint.x = msg->pose.pose.position.x;
+        // robotPoint.y = msg->pose.pose.position.y;
+        // robotPoint.z = msg->pose.pose.position.z;
     }
 
     bool getRobotPosition()

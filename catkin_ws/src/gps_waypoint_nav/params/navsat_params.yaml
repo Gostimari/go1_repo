@@ -2,9 +2,9 @@ navsat_transform:
   frequency: 10
   delay: 3.0
   magnetic_declination_radians: 0.0160
-  yaw_offset: 1.1474
+  yaw_offset: 0.4363 #-1.1474 #0.4363 #2.7037 
   zero_altitude: false
   broadcast_cartesian_transform: true # utm broadcast is deprecated
-  publish_filtered_gps: true
-  use_odometry_yaw: true
+  publish_filtered_gps: true #being use on mapviz origin
+  use_odometry_yaw: false
   wait_for_datum: false

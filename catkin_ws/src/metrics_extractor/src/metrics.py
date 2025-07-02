@@ -7,6 +7,7 @@ from tf import TransformListener
 import csv
 from actionlib_msgs.msg import GoalStatusArray
 from move_base_msgs.msg import MoveBaseActionGoal
+from std_msgs.msg import String
 from datetime import datetime
 from pyquaternion import Quaternion
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
@@ -87,7 +88,8 @@ class MetricsExtractor:
 		self.mean_voltage = 0
 		self.goal_counter = 0
 		self.last_status = 0
-  
+		self.waypoint_status = "0"
+
 		# Get the current directory and navigate to "src/metrics_extractor"
 		self.current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 		self.logfiles_path = os.path.join(self.current_path, "logfiles")
@@ -106,9 +108,10 @@ class MetricsExtractor:
 		"""
 		self.odom_msg = rospy.wait_for_message("lio_odom", Odometry)
 		self.status_msg = rospy.wait_for_message("move_base/status", GoalStatusArray)
+		#self.waypoint_status = rospy.wait_for_message("gps_waypoint_nav/gps_waypoint_status", String)
 		self.vel_msg = rospy.wait_for_message("cmd_vel", Twist)
 		#self.imu_msg = rospy.wait_for_message("camera/imu", Imu)
-		self.imu_msg = rospy.wait_for_message("imu/data", Imu)
+		self.imu_msg = rospy.wait_for_message("madgwick_filtered_imu", Imu)
   
 		self.high_state_msg = rospy.wait_for_message("high_state", HighState)
   
@@ -259,20 +262,48 @@ class MetricsExtractor:
 				self.last_status = current_status
 
 			# Goal reached (status 3) and not yet processed
-			if self.goal_reached and not self.goal_processed:
+			if self.waypoint_status == "1":
 				writer_raw = csv.writer(self.file_raw, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-				writer_raw.writerow(["REACHED GOAL %d" % self.goal_counter])
+				writer_raw.writerow(["REACHED GOAL 1"])
 				writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-				writer_metrics.writerow(["REACHED GOAL %d" % self.goal_counter])
-				print(f"Goal {self.goal_counter} reached")
-				if self.goal_counter == 3:
-					self.file_raw.close()
-					self.file_metrics.close()
-					self.trigger_end == True
-					print("All goals reached. Exiting...")
-					exit()
+				writer_metrics.writerow(["REACHED GOAL 1"])
 				self.goal_reached = False
 				self.goal_processed = True
+				self.waypoint_status = "0"
+			elif self.waypoint_status == "2":
+				writer_raw = csv.writer(self.file_raw, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+				writer_raw.writerow(["REACHED GOAL 2"])
+				writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+				writer_metrics.writerow(["REACHED GOAL 2"])
+				self.goal_reached = False
+				self.goal_processed = True
+				self.waypoint_status = "0"
+			elif self.waypoint_status == "3":
+				writer_raw = csv.writer(self.file_raw, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+				writer_raw.writerow(["REACHED GOAL 3"])
+				writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+				writer_metrics.writerow(["REACHED GOAL 3"])
+				self.file_raw.close()
+				self.file_metrics.close()
+				self.trigger_end == True
+				print("All goals reached. Exiting...")
+				exit()
+				self.goal_reached = False
+				self.goal_processed = True
+			# elif self.goal_reached and not self.goal_processed:
+			# 	writer_raw = csv.writer(self.file_raw, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+			# 	writer_raw.writerow(["REACHED GOAL %d" % self.goal_counter])
+			# 	writer_metrics = csv.writer(self.file_metrics, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+			# 	writer_metrics.writerow(["REACHED GOAL %d" % self.goal_counter])
+			# 	print(f"Goal {self.goal_counter} reached")
+			# 	if self.goal_counter == 3:
+			# 		self.file_raw.close()
+			# 		self.file_metrics.close()
+			# 		self.trigger_end == True
+			# 		print("All goals reached. Exiting...")
+			# 		exit()
+			# 	self.goal_reached = False
+			# 	self.goal_processed = True					
 			elif current_status == 4 or self.trigger_end:
 				writer_raw = csv.writer(self.file_raw, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 				writer_raw.writerow(["ABORTED"])
@@ -281,12 +312,16 @@ class MetricsExtractor:
 				print("Goal aborted")
 				#exit()
 
+	def callback(self, msg):
+		self.waypoint_status = msg.data
 
 	def main(self):
 		"""
 		Main function, responsible for calling the remaining functions.
 		"""
 		rate = rospy.Rate(5)
+
+		rospy.Subscriber("gps_waypoint_nav/gps_waypoint_status", String, self.callback)
   
 		while not rospy.is_shutdown():
 

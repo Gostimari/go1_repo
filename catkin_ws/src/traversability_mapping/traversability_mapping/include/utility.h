@@ -76,7 +76,7 @@ extern const bool urbanMapping = false;
 // Using velodyne cloud "ring" channel for image projection (other lidar may have different name for this channel, change "PointXYZIR" below)
 extern const bool useCloudRing = true; // if true, ang_res_y and ang_bottom are not used
 
-extern const float sensorMinimumRange = 0.15; // 1.0 0.2
+extern const float sensorMinimumRange = 0.3; // 1.0 0.2
 
 // RS-32
 extern const int N_SCAN = 32;
@@ -114,12 +114,12 @@ extern const float large_log_odds = 100;
 extern const float max_log_odds_for_belief = 20; // 20
 
 // 2D Map Publish Params
-extern const int localMapLength = 25; // length of the local occupancy grid map (meter)
+extern const int localMapLength = 25.0; // length of the local occupancy grid map (meter)
 extern const int localMapArrayLength = localMapLength / mapResolution;
 
 // Visualization Params
 extern const float visualizationRadius = 50;
-extern const float visualizationFrequency = 0; //2 n, skip n scans then publish, n=0, visualize at each scan
+extern const float visualizationFrequency = 2; //2 n, skip n scans then publish, n=0, visualize at each scan
 
 // Robot Params
 extern const float robotRadius = 0.30; //0.2
@@ -136,7 +136,7 @@ extern const std::vector<int> costHierarchy(tmp, tmp + sizeof(tmp) / sizeof(int)
 
 // PRM Planner Settings
 extern const bool planningUnknown = true;
-extern const float costmapInflationRadius = 0.1; //0.2 0.8
+extern const float costmapInflationRadius = 0.2; //0.2 0.8
 extern const float neighborSampleRadius = 0.5;
 extern const float neighborConnectHeight = 1.0; //1.0
 extern const float neighborConnectRadius = 2.0; //2.0 2.5

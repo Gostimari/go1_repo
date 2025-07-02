@@ -80,7 +80,7 @@ services:
         hard: 524288
     environment:
     #  UPDATES: enabled
-      THREADS: 24
+      THREADS: 8
     ports:
       - "8080:80"
     command: run  # Runs the server after the data is imported

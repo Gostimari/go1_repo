@@ -18,7 +18,7 @@ track_point_z:                              0.0
 min_update_rate:                            2.0
 time_tolerance:                             1.0
 time_offset_for_point_cloud:                0.0
-sensor_processor/ignore_points_above:       0.95 #0.4
+sensor_processor/ignore_points_above:       0.85 #0.4
 robot_motion_map_update/covariance_scale:   0.01
 
 # Map.
@@ -38,7 +38,7 @@ visibility_cleanup_rate:                    10.0 #1.0
 scanning_duration:                          1.0
 
 # Init submap
-initialize_elevation_map:                   true  # false
+initialize_elevation_map:                   false  # false
 initialization_method:                      1
 length_in_x_init_submap:                    6
 length_in_y_init_submap:                    6

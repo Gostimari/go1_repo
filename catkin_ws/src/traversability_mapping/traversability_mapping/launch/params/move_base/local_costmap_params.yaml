@@ -1,10 +1,10 @@
 local_costmap:
   global_frame: map
   robot_base_frame: base # bobcat_base
-  update_frequency: 5.0
-  publish_frequency: 5.0
-  transform_tolerance: 1.0
-  static_map: true #true
+  update_frequency: 5.0 #2.0
+  publish_frequency: 5.0 #2.0
+  transform_tolerance: 2.0 #1.0
+ # static_map: true #true
   rolling_window: true
   width: 6
   height: 6
@@ -60,7 +60,7 @@ local_costmap:
       }
 
   static_layer:
-    map_topic: /fused_costmap #/occupancy_map_local #/elevation_map_fused_visualization/elevation_grid
+    map_topic: /fused_costmap #/fused_costmap #/occupancy_map_local #/elevation_map_fused_visualization/elevation_grid
     subscribe_to_updates: true
     static_map: true
     trinary_costmap: true # flag to switch between trinary costmap (unknown/free/occ) or full range costmap

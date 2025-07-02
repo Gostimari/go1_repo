@@ -1,10 +1,14 @@
 #!/bin/bash
 set -e
 
+export ROS_MASTER_URI=http://192.168.12.173:11311
+export ROS_IP=192.168.12.173
+
+
 #Build the catkin workspace
 cd /root/catkin_ws/
-catkin config --buildlist $BUILDLIST
-catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
+# catkin config --buildlist $BUILDLIST
+# catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # setup ros environment
 if [[ ! -z "${SETUP}" ]]; then

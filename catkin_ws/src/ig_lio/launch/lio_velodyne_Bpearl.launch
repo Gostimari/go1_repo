@@ -4,17 +4,19 @@
     <!-- Static transforms -->
     <node pkg="tf2_ros" type="static_transform_publisher" name="rslidar_broadcaster" args="0.167 0 0.211 0 1.57 0 base rslidar" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster" args="0.16 0 0.06 0 0 0 base camera_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 0 0 base imu" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom" />
-    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="mapviz_map_broadcaster" args="0 0 0 1.57 0 0 mapviz world" /> -->
-
     <node pkg="tf2_ros" type="static_transform_publisher" name="world_map_broadcaster" args="0 0 0 0 0 0 world map" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_gps_broadcaster" args="0 0 0 0 0 0 base gps" />
 
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="mapviz_map_broadcaster" args="0 0 0 1.57 0 0 mapviz world" /> -->
     <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 1.57 3.14 imu robot" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="robot_broadcaster" args="0 0 0 3.14 0 0 robot base" /> -->
-
     <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 1.57 3.14 base imu" /> -->
-    <node pkg="tf2_ros" type="static_transform_publisher" name="imu_broadcaster" args="0.076 0 0.162 0 0 0 base imu" />
     <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="robot_broadcaster" args="0 0 0 0 0 0 robot base" /> -->
+
+    <node pkg="ig_lio" type="frame_publisher.py" name="frame_publisher" output="screen" />
+
 
     <!-- Load configuration parameters -->
     <rosparam command="load" file="$(find ig_lio)/config/Bpearl.yaml" />
@@ -28,23 +30,25 @@
     <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen" />
 
     <!-- IMU Transformer Nodelet -->
-    <node pkg="nodelet" type="nodelet" name="imu_transformer" args="load imu_transformer/imu_transformer_nodelet nodelet_manager" output="screen">
-        <param name="~target_frame" value="imu" /> <!-- camera_gyro_frame -->
+    <!-- <node pkg="nodelet" type="nodelet" name="imu_transformer" args="load imu_transformer/imu_transformer_nodelet nodelet_manager" output="screen">
+        <param name="~target_frame" value="imu" /> camera_gyro_frame -->
         
         <!-- Remap input and output topics to match your setup --> <!--/camera/imu-->
-        <remap from="imu_in/data" to="/imu/data" />
+        <!-- <remap from="imu_in/data" to="/imu/data" />
         <remap from="imu_out/data" to="/imu/data_transformed" />
-    </node>
+    </node> -->
 
     <!-- IMU Filter (Madgwick) -->
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_madgwick" output="screen">
-        <param name="use_mag" value="true"/>
+        <param name="use_mag" value="false"/>
+        <param name="use_magnetic_field_msg" value="false"/>
         <param name="publish_tf" value="false"/>
         <param name="world_frame" value="enu"/>
         <param name="base_link_frame" value="base"/>
-        <remap from="imu/data_raw" to="/imu/data_transformed" />
+        <remap from="imu/data_raw" to="/imu/data" />
         <remap from="imu/data" to="/madgwick_filtered_imu"/>
-        <param name="gain" value="0.2" />
+        <param name="gain" value="0.1" />
+        <param name="zeta" value="0" />
     </node>
 
     <!-- <node pkg="ig_lio" type="imu_filter.py" name="imu_filter" /> -->
@@ -58,6 +62,8 @@
         <remap from="imu/data_raw" to="/madgwick_filtered_imu"/>
         <remap from="imu/data" to="/filtered_imu"/>
     </node> -->
+
+    <env name="DISABLE_ROS1_EOL_WARNINGS" value="1"/>
 
     <!-- RViz Visualization -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ig_lio)/rviz/lio_show_mine.rviz" required="true" />

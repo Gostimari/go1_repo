@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Pose, Quaternion
 from gps_common.msg import GPSStatus
 import rospy
 from sensor_msgs.msg import NavSatStatus, Imu
@@ -38,7 +38,9 @@ import tf
 import numpy as np
 import tf2_ros
 import tf2_geometry_msgs
-
+from nav_msgs.msg import Odometry
+import math
+import tf.transformations as aux
 
 class InvalidFixException(Exception):
     """Exception to throw when a GPSFix or NavSatFix message does not contain a valid fix."""
@@ -185,21 +187,48 @@ class OriginManager(object):
         origin.pose.position.z = 0
 
         # Heading is always 0
+        # self.odom = rospy.wait_for_message("lio_odom", Odometry)
         self.imu = rospy.wait_for_message("madgwick_filtered_imu", Imu)
 
         roll = 0
         pitch = 0
-        yaw = -0.4226
+        yaw = -0.436 #0.4226 #-0.4226 #1.1337 
         qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
         qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
         qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
         qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+
+        # 1. Extract current quaternion
+        # current_q = [
+        #     self.imu.orientation.x,
+        #     self.imu.orientation.y,
+        #     self.imu.orientation.z,
+        #     self.imu.orientation.w
+        # ]
+
+        # # 2. Create a quaternion for the additional yaw rotation
+        # yaw_q = aux.quaternion_from_euler(0, 0, yaw)  # roll=0, pitch=0, yaw=additional_yaw
+
+        # # 3. Multiply quaternions (apply additional_yaw in pose's local frame)
+        # new_q = aux.quaternion_multiply(current_q, yaw_q)
+
+        # # 4. Update pose orientation
+        # origin.pose.orientation = Quaternion(*new_q)
 
         origin.pose.orientation.x = qx
         origin.pose.orientation.y = qy
         origin.pose.orientation.z = qz
         origin.pose.orientation.w = qw
 
+        # origin.pose.orientation.x = self.odom.pose.pose.orientation.x * qx
+        # origin.pose.orientation.y = self.odom.pose.pose.orientation.y * qy
+        # origin.pose.orientation.z = self.odom.pose.pose.orientation.z * qz
+        # origin.pose.orientation.w = self.odom.pose.pose.orientation.w * qw
+
+        # origin.pose.orientation.x = self.imu.orientation.x
+        # origin.pose.orientation.y = self.imu.orientation.y
+        # origin.pose.orientation.z = self.imu.orientation.z
+        # origin.pose.orientation.w = self.imu.orientation.w
         self.origin_source = source
         self.origin = origin
         self.origin_pub.publish(self.origin)
@@ -285,9 +314,6 @@ class OriginManager(object):
             stamp: Msg header stamp if available
         """
         self.set_origin("custom", pos[0], pos[1], pos[2], stamp)
-
-    def imu_data(self, msg):
-        self.imu = msg
 
     def _publish_diagnostic(self):
         """Publish diagnostics."""

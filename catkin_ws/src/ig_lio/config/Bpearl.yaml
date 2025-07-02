@@ -1,20 +1,20 @@
 #lidar_topic: /hesai/pandar
 lidar_topic: /rslidar_points
-imu_topic: /madgwick_filtered_imu #/imu_filtered
+imu_topic: /madgwick_filtered_imu #/imu_filtered #/imu/data
 lidar_type: Hesai # livox velodyne ouster Hesai Bpearl
-min_radius: 0.4
+min_radius: 0.3
 max_radius: 100
 point_filter_num: 5
 # time_scale: 0 # nclt: 0.001 other: 1000.0
-enable_ahrs_initalization: true
+enable_ahrs_initalization: false
 enable_acc_correct: false
 
 scan_resolution: 0.5
 voxel_map_resolution: 0.5
 max_iterations: 10
 
-acc_cov: 0.01
-gyr_cov: 0.0001
+acc_cov: 0.01 #0.1 #0.01
+gyr_cov: 0.001 #0.01 0.001
 ba_cov: 0.000001
 bg_cov: 0.000001
 
@@ -31,7 +31,7 @@ init_ba_cov: 0.0001
 init_bg_cov: 0.0001
 
 # t_imu_lidar: [0.091, 0, 0.050] #calibrated (imu vertical)
-t_imu_lidar: [0.07, 0.013, 0.060] #calibrated (imu horizontal)
+t_imu_lidar: [0.07, -0.013, -0.060] #calibrated (imu horizontal)
 # t_imu_lidar: [0.20, 0.013, 0.45]
 # Rotation in Roll 180º
 # R_imu_lidar: [1, 0, 0,

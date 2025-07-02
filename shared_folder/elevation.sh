@@ -6,20 +6,19 @@ FILE="$WORKDIR/melodic_trav.log"
 STRING="melodic ready"
 
 # Make sure Wi-Fi is turned off
-sudo nmcli radio wifi off
+#sudo nmcli radio wifi off
 
 # Properly connect to the correct ethernet ports
-sudo nmcli connection up RS-Bpearl
+#sudo nmcli connection up RS-Bpearl
 
-sleep 2
+#sleep 2
 
 # Start ROS core if not already running
-roscore &
+# roscore &
 
-sleep 2  # Give some time for roscore to start
+# sleep 2  # Give some time for roscore to start
 
-# Launch the first ROS launch file
-roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_frequency:=50 &
+roslaunch go1_ros_interface robot.launch connection_type:=wireless feedback_frequency:=10 & #50
 
 sleep 2
 
@@ -27,14 +26,14 @@ roslaunch emlid_reach_ros reach_ros.launch port:=/dev/ttyACM0 &
 
 sleep 2
 
-roslaunch realsense2_camera rs_aligned_depth.launch &
+# roslaunch realsense2_camera rs_aligned_depth.launch &
 
-sleep 2
+# sleep 2
 
 # Launch the third ROS launch file
 roslaunch rslidar_sdk start.launch &
 
-sleep 10
+sleep 5
 
 roslaunch ig_lio lio_velodyne_Bpearl.launch &
 sleep 10
@@ -60,7 +59,7 @@ while ! grep -q "$STRING" "$FILE"; do
 done
 
 rosrun metrics_extractor metrics.py &
-sleep 5
+sleep 2
 
 #echo "Target string detected. Starting ROS launch..."
 roslaunch gps_waypoint_nav gps_waypoint_nav.launch &

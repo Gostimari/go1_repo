@@ -123,6 +123,10 @@ execute_command() {
             echo "Rosbag Record clicked"
             ./record_bag.sh
             ;;
+        13)
+            echo "Goal Status clicked"
+            ./goal_status.sh
+            ;;
         11)
             # Kill existing process if any
             if [ -n "$COMMAND_PID" ]; then
@@ -165,6 +169,7 @@ execute_command() {
             rm -f $WORKDIR/melodic_trav.log
             rm -f $WORKDIR/gps_waypoint.log
             rm -f $WORKDIR/fail.log
+            rm -f $WORKDIR/custom_output*
             ;;
         252)
             echo "Window closed by user. Exiting."
@@ -211,6 +216,7 @@ execute_command() {
             rm -f $WORKDIR/melodic_trav.log
             rm -f $WORKDIR/gps_waypoint.log
             rm -f $WORKDIR/fail.log
+            rm -f $WORKDIR/custom_output*
             exit 0
             ;;
         *)
@@ -234,6 +240,7 @@ while true; do
         --button="Custom Command:9" \
         --button="Ros Purge:10" \
         --button="Rosbag:12" \
+        --button="Goal_Status:13" \
         --button="Kill:11" \
         --buttons-layout=spread \
         --text="Click a button to execute a command or Kill to stop the process. If you want to launch the traversability_mapping, you need to launch it on the Roslaunch Melodic App too. The 'Custom Command' button is to launch a terminal command, like 'rostopic list' with built-in terminal output."

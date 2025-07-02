@@ -74,10 +74,10 @@ def main():
 		elapsed = time.perf_counter() - t
 
 		# print("The elapsed time was: " + str(format(elapsed, '.2f')) + " with " + str(points) + "points.") # classic
-		if use_last_one == False:
-			print(f"[EVIDENT] The elapsed time was: {elapsed:0.2f} with {points} points.") # with f-string
-		else:
-			print(f"[EVIDENT] The elapsed time was: {elapsed:0.2f} with {last_points} points.") # with f-string
+		# if use_last_one == False:
+		# 	print(f"[EVIDENT] The elapsed time was: {elapsed:0.2f} with {points} points.") # with f-string
+		# else:
+		# 	print(f"[EVIDENT] The elapsed time was: {elapsed:0.2f} with {last_points} points.") # with f-string
 
 
 		rate.sleep()

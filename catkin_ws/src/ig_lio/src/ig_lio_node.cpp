@@ -67,7 +67,7 @@ void ImuCallBack(const sensor_msgs::Imu::ConstPtr& msg_ptr) {
   static double last_imu_timestamp = 0.0;
   static sensor_msgs::Imu last_imu = *msg_ptr;
   // parameters for EMA filter
-  static double a = 0.5; //0.8
+  static double a = 0.8; //0.8
   static double b = 1.0 - a;
 
   sensor_msgs::Imu imu_msg = *msg_ptr;
@@ -385,11 +385,11 @@ void Process() {
   pose_with_covariance_pub.publish(pose_with_covariance_msg);
 
   // tf message
-  static tf::TransformBroadcaster tf_broadcaster;
-  tf::Quaternion q_tf(temp_q.x(), temp_q.y(), temp_q.z(), temp_q.w());
-  tf::Vector3 t_tf(result_pose(0, 3), result_pose(1, 3), result_pose(2, 3));
-  tf_broadcaster.sendTransform(tf::StampedTransform(
-  tf::Transform(q_tf, t_tf), odom_msg.header.stamp, "odom", "base")); //map -> base
+  // static tf::TransformBroadcaster tf_broadcaster;
+  // tf::Quaternion q_tf(temp_q.x(), temp_q.y(), temp_q.z(), temp_q.w());
+  // tf::Vector3 t_tf(result_pose(0, 3), result_pose(1, 3), result_pose(2, 3));
+  // tf_broadcaster.sendTransform(tf::StampedTransform(
+  // tf::Transform(q_tf, t_tf), odom_msg.header.stamp, "odom", "base")); //map -> base
 
   // publish dense scan
   CloudPtr trans_cloud(new CloudType());

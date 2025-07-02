@@ -9,9 +9,9 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1864
 window_height: 1016
-view_scale: 0.04736239
-offset_x: -3.542981
-offset_y: -1.925305
+view_scale: 0.04736235
+offset_x: -14.8217
+offset_y: 0.4357637
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
@@ -33,9 +33,9 @@ displays:
   - type: mapviz_plugins/odometry
     name: new display
     config:
-      visible: true
+      visible: false
       collapsed: true
-      topic: /gps_waypoint_nav/odometry/gps
+      topic: /gps_waypoint_nav/odometry/navsat
       color: "#00ff00"
       draw_style: lines
       position_tolerance: 0
@@ -53,7 +53,7 @@ displays:
       visible: true
       collapsed: false
       topic: gps_waypoint
-      output_frame: world
+      output_frame: /wgs84
   - type: mapviz_plugins/navsat
     name: new display
     config:

@@ -29,7 +29,8 @@ class CostmapFusion:
 				self.roughness_local = rospy.wait_for_message('new_local_costmap_local', OccupancyGrid)
 			return "roughness"
 		elif choose_map == "evident":
-			self.obstacles = rospy.wait_for_message('evident_obstacles_map', OccupancyGrid)
+			if use_fused_map_evident == True:
+				self.obstacles = rospy.wait_for_message('evident_obstacles_map', OccupancyGrid)
 			return "evident"
 		else:
 			rospy.logerr("Data Fusion Node: Unknown map name received inside 'get_costmaps'!")
@@ -59,7 +60,8 @@ class CostmapFusion:
 				self.publish_map_local(self.roughness_local.data)
 
 		elif map_type == "evident":
-			self.publish_map(self.obstacles.data)
+			if use_fused_map_evident == True:
+				self.publish_map_evident(self.obstacles.data)
 
 		else:
 			rospy.logerr("Data Fusion Node: Unknown map name received inside 'fuse_layers'!")
@@ -88,6 +90,32 @@ class CostmapFusion:
 		grid.data = np.array(fused_costmap).astype('int8')
 
 		pub = rospy.Publisher(map_topic, OccupancyGrid, queue_size=10)
+
+		pub.publish(grid)
+
+	def publish_map_evident(self, fused_costmap):
+
+		# Create an OccupancyGrid variable
+		grid = OccupancyGrid()
+
+		# Complete the information to publish in the message
+		grid.header.stamp = self.obstacles.header.stamp
+		grid.header.frame_id = self.obstacles.header.frame_id
+
+		grid.info.resolution = self.obstacles.info.resolution
+		grid.info.width = self.obstacles.info.width
+		grid.info.height = self.obstacles.info.height
+		grid.info.origin.position.x = self.obstacles.info.origin.position.x
+		grid.info.origin.position.y = self.obstacles.info.origin.position.y
+		grid.info.origin.position.z = self.obstacles.info.origin.position.z
+		grid.info.origin.orientation.x = self.obstacles.info.origin.orientation.x
+		grid.info.origin.orientation.y = self.obstacles.info.origin.orientation.y
+		grid.info.origin.orientation.z = self.obstacles.info.origin.orientation.z
+		grid.info.origin.orientation.w = self.obstacles.info.origin.orientation.w
+
+		grid.data = np.array(fused_costmap).astype('int8')
+
+		pub = rospy.Publisher(map_evident_topic, OccupancyGrid, queue_size=10)
 
 		pub.publish(grid)
 
@@ -139,6 +167,8 @@ if __name__ == "__main__":
 	map_topic = rospy.get_param('~fused_map_topic', "fused_costmap")
 	map_local_topic = rospy.get_param('~fused_map_local_topic', "fused_costmap_local")
 	use_fused_map_local = rospy.get_param('~use_fused_map_local', "false")
+	map_evident_topic = rospy.get_param('~fused_map_evident_topic', "fused_costmap_evident")
+	use_fused_map_evident = rospy.get_param('~use_fused_map_evident', "false")
 
 	fusion = CostmapFusion()
 	fusion.main(choose_map)
