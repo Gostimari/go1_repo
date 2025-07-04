@@ -26,7 +26,10 @@ def save_individual_plots(time, metrics, avg_events, output_dir):
         ('distance', 'Travelled Distance', 'blue'),
         ('velocity', 'Velocity', 'green'),
         ('instability', 'Instability Index', 'red'),
-        ('torque', 'Mean Torque', 'purple'),
+        ('torque', 'Torque', 'purple'),
+        ('foot', 'Foot Force', 'purple'),
+        ('power', 'Power Consumption', 'red'),
+        ('voltage', 'Voltage Consumption', 'blue')
     ]
 
     for metric, title, color in metric_info:
@@ -41,9 +44,9 @@ def save_individual_plots(time, metrics, avg_events, output_dir):
                 label = f"Goal {goal_num} Reached" if event_type == 'goal_reached' else "Mission Aborted"
                 line_color = 'green' if event_type == 'goal_reached' else 'red'
                 ax.axvline(x=t, color=line_color, linestyle='--', alpha=0.7)
-                if metric == 'distance':
-                    ax.text(t, ax.get_ylim()[1]*0.95, label,
-                           color=line_color, ha='right', va='top', rotation=90)
+                # if metric == 'distance':
+                #     ax.text(t, ax.get_ylim()[1]*0.95, label,
+                #            color=line_color, ha='right', va='top', rotation=90)
 
         plt.tight_layout()
         plt.savefig(os.path.join(output_dir, f"{metric}.pdf"), bbox_inches='tight')
@@ -51,7 +54,7 @@ def save_individual_plots(time, metrics, avg_events, output_dir):
 
 def main():
     # Directory containing your CSV files (change this to your actual directory)
-    input_dir = '../logfiles/trav/'  # Replace with your directory path
+    input_dir = '../logfiles/new_metrics/mebt/'  # Replace with your directory path
     file_pattern = 'logfile_metrics-''*'''
     
     # Find all matching files
@@ -64,7 +67,7 @@ def main():
     print(f"Found {len(csv_files)} files to process")
     
     # Output directory
-    output_dir = '../plots/trav'
+    output_dir = '../plots/mebt'
     
     # Create output directory if needed
     os.makedirs(output_dir, exist_ok=True)
@@ -80,7 +83,7 @@ def main():
         try:
             metrics = {
                 'distance': [], 'velocity': [], 'instability': [],
-                'torque': []
+                'torque': [], 'foot':[], 'power': [], 'voltage': []
             }
             events = []
 
@@ -89,29 +92,32 @@ def main():
                 line_count = 0
                 
                 for row in reader:
-                    if len(row) == 4:
+                    if len(row) == 7:
                         try:
                             metrics['distance'].append(float(row[0]))
                             metrics['velocity'].append(float(row[1]))
                             metrics['instability'].append(float(row[2]))
                             metrics['torque'].append(float(row[3]))
+                            metrics['foot'].append(float(row[4]))
+                            metrics['power'].append(float(row[5]))
+                            metrics['voltage'].append(float(row[6]))
                             line_count += 1
                         except ValueError:
                             continue
                     elif len(row) == 1:
-                        event_text = row[0].strip()
+                        event_text = row[0].strip()                       
                         if "REACHED GOAL 1" in event_text:
                             goal_number = int(event_text.split()[-1])
                             # Store both position and time (assuming 5Hz sampling)
-                            events.append(('goal_reached_1', line_count-1, goal_number))
+                            events.append(('goal_reached', line_count-1, goal_number))
                         elif "REACHED GOAL 2" in event_text:
                             goal_number = int(event_text.split()[-1])
                             # Store both position and time (assuming 5Hz sampling)
-                            events.append(('goal_reached_2', line_count-1, goal_number))
+                            events.append(('goal_reached', line_count-1, goal_number))
                         elif "REACHED GOAL 3" in event_text:
                             goal_number = int(event_text.split()[-1])
                             # Store both position and time (assuming 5Hz sampling)
-                            events.append(('goal_reached_3', line_count-1, goal_number))
+                            events.append(('goal_reached', line_count-1, goal_number))
                         elif "ABORTED" in event_text:
                             events.append(('aborted', line_count-1))
 
@@ -119,6 +125,8 @@ def main():
             current_length = len(metrics['distance'])
             if current_length > max_length:
                 max_length = current_length
+
+            max_length = max_length + 10
                 
             all_metrics.append(metrics)
             
@@ -142,7 +150,10 @@ def main():
         'distance': np.zeros(max_length),
         'velocity': np.zeros(max_length),
         'instability': np.zeros(max_length),
-        'torque': np.zeros(max_length)
+        'torque': np.zeros(max_length),
+        'foot': np.zeros(max_length),
+        'power': np.zeros(max_length),
+        'voltage': np.zeros(max_length)
     }
     
     counts = np.zeros(max_length)

@@ -13,6 +13,9 @@ all_velocities = []
 last_distances = []
 last_instabilities = []
 file_torque_means = []
+mean_foot_force = []
+mean_power_consumption = []
+mean_voltage_consumption = []
 elapsed_time_s = []
 position_x = []
 position_y = []
@@ -22,11 +25,10 @@ goal_counts = {'REACHED GOAL 1': 0, 'REACHED GOAL 2': 0, 'REACHED GOAL 3': 0}
 
 # Define column order
 COLUMNS = ['travelled_distance', 'instant_velocity', 
-          'instability_index', 'mean_torque']
+          'instability_index', 'mean_torque', 'mean_foot_force', 'power_consumption', 'voltage_consumption']
 
 COLUMNS_RAW = ['position_x', 'position_y', 
-              'position_z', 'elapsed_time_s', 'elapse_time_ns', 
-              'odom_x', 'odom_y', 'odom_z']
+              'position_z', 'elapsed_time_s', 'elapse_time_ns']
 
 
 def parse_file_datetime(filename):
@@ -69,7 +71,7 @@ def process_file(file_path):
         f.seek(0)  # Reset to process data
         for line in f:
             parts = line.strip().split(',')
-            if len(parts) == 4:
+            if len(parts) == 7:
                 try:
                     valid_lines.append(line)
                     final_distance = float(parts[0])  # Track last distance
@@ -77,7 +79,7 @@ def process_file(file_path):
                     continue
     
     # Check for implicit Goal 3 in this specific file
-    if has_goal2 and final_distance > 1000 and current_file_goals['REACHED GOAL 3'] == 0:
+    if has_goal2 and final_distance > 150 and current_file_goals['REACHED GOAL 3'] == 0:
         goal_counts['REACHED GOAL 3'] += 1
         has_goal3 = True
 
@@ -94,6 +96,9 @@ def process_file(file_path):
             'all_velocities': df['instant_velocity'].tolist(),
             'last_instability': df['instability_index'].iloc[-1],
             'mean_torque': df['mean_torque'].mean(),
+            'mean_foot_force': df['mean_foot_force'].mean(),
+            'power_consumption': df['power_consumption'].mean(),
+            'voltage_consumption': df['voltage_consumption'].mean()
         }
     else:
         return None
@@ -104,7 +109,7 @@ def process_file(file_path):
 
 # Collect and sort files chronologically
 all_files = []
-for csv_file in Path('.').glob('../logfiles/mebt2/logfile_metrics-*.csv'):
+for csv_file in Path('.').glob('../logfiles/new_metrics/elev/logfile_metrics-*.csv'):
     dt = parse_file_datetime(csv_file)
     if dt:  # Only process files with valid dates
         all_files.append((dt, csv_file))
@@ -123,7 +128,10 @@ for dt, csv_file in sorted_files:
             'filename': csv_file.name,
             'last_distance': metrics['last_distance'],
             'last_instability': metrics['last_instability'],
-            'mean_torque': metrics['mean_torque']
+            'mean_torque': metrics['mean_torque'],
+            'mean_foot_force': metrics['mean_foot_force'],
+            'power_consumption': metrics['power_consumption'],
+            'voltage_consumption': metrics['voltage_consumption']
         })
         # Add to aggregate lists
         last_distances.append(metrics['last_distance'])
@@ -131,6 +139,9 @@ for dt, csv_file in sorted_files:
         if not np.isnan(metrics['last_instability']):
             last_instabilities.append(metrics['last_instability'])
         file_torque_means.append(metrics['mean_torque'])
+        mean_foot_force.append(metrics['mean_foot_force'])
+        mean_power_consumption.append(metrics['power_consumption'])
+        mean_voltage_consumption.append(metrics['voltage_consumption'])
 
 
 ############################ METRICS RAW FILES ############################
@@ -157,7 +168,7 @@ def process_file_raw(file_path_raw):
         f.seek(0)  # Reset to process data
         for line in f:
             parts = line.strip().split(',')
-            if len(parts) == 8:
+            if len(parts) == 5:
                 try:
                     valid_lines.append(line)
                     final_distance_raw = float(parts[0])  # Track last distance
@@ -165,7 +176,7 @@ def process_file_raw(file_path_raw):
                     continue
 
     # Check for implicit Goal 3 in this specific file
-    if not has_goal2_raw and final_distance_raw < 1000:
+    if not has_goal2_raw and final_distance_raw < 100:
         return None
         
     if not valid_lines:
@@ -182,13 +193,13 @@ def process_file_raw(file_path_raw):
         'position_x': df['position_x'].tolist(),
         'position_y': df['position_y'].tolist(),
         'position_z': df['position_z'].tolist(),
-        'elapsed_time_s': df['elapsed_time_s'].iloc[-1],
+        'elapsed_time_s': df['elapsed_time_s'].tolist(),
     }
 
 
 # Collect and sort raw files chronologically
 all_raw_files = []
-for csv_raw_file in Path('.').glob('../logfiles/mebt2/logfile_raw-*.csv'):
+for csv_raw_file in Path('.').glob('../logfiles/new_metrics/elev/logfile_raw-*.csv'):
     dt = parse_file_datetime(csv_raw_file)
     if dt:  # Only process files with valid dates
         all_raw_files.append((dt, csv_raw_file))
@@ -233,12 +244,15 @@ stats = {
     'Instant Velocity': calculate_stats(all_velocities, "m/s"),
     'Instability Index': calculate_stats(last_instabilities),
     'Mean Torque': calculate_stats(file_torque_means, "N·m"),
-    'Elapsed Time': calculate_stats(elapsed_time_s, "s")
+    'Mean Foot Force': calculate_stats(mean_foot_force, "N"),
+    'Mean Power Consumption': calculate_stats(mean_power_consumption, "W"),
+    'Mean Voltage Consumption': calculate_stats(mean_voltage_consumption, "V"),
+    'Elapsed Time': elapsed_time_s[0][-1] - elapsed_time_s[0][0]
 }
 
 # Calculate success rates
 #total_files = len(file_distance_info)
-total_files = 50
+total_files = 1
 #print(f"{total_files} Total Files")
 #print(f"{goal_counts['REACHED GOAL 1']} Goal 1")
 success_rates = {
@@ -251,10 +265,14 @@ success_rates = {
 # Verification printout
 print("\n=== Statistical Summary ===")
 for metric, values in stats.items():
-    print(f"\n{metric}:")
-    print(f"  Mean: {values['mean']:.3f} {values['unit']}")
-    print(f"  Median: {values['median']:.3f} {values['unit']}")
-    print(f"  Std Dev: {values['stdev']:.3f} {values['unit']}")
+    if metric == 'Elapsed Time':
+        print(f"\n{metric}:")
+        print(f"{values}")
+    else:
+        print(f"\n{metric}:")
+        print(f"  Mean: {values['mean']:.3f} {values['unit']}")
+        print(f"  Median: {values['median']:.3f} {values['unit']}")
+        print(f"  Std Dev: {values['stdev']:.3f} {values['unit']}")
 
 print("\n=== Goal Achievement ===")
 for goal, count in goal_counts.items():
@@ -272,7 +290,7 @@ latex_table = f"""
 
 \\begin{{table}}[htbp]
 \\centering
-\\caption{{MEBT Metrics Table}}
+\\caption{{Elevation Metrics Table}}
 \\label{{tab:simulation-metrics}}
 \\sisetup{{
     table-format=1.3,
@@ -286,12 +304,10 @@ Travelled Distance (m) & {stats['Travelled Distance']['mean']:.2f} & {stats['Tra
 Velocity (m/s) & {stats['Instant Velocity']['mean']:.3f} & {stats['Instant Velocity']['median']:.3f} & {stats['Instant Velocity']['stdev']:.3f} \\\\
 Instability Index & {stats['Instability Index']['mean']:.3f} & {stats['Instability Index']['median']:.3f} & {stats['Instability Index']['stdev']:.3f} \\\\
 Torque (N·m) & {stats['Mean Torque']['mean']:.2f} & {stats['Mean Torque']['median']:.2f} & {stats['Mean Torque']['stdev']:.2f} \\\\
-Elapsed Time(s) & {stats['Elapsed Time']['mean']:.2f} & {stats['Elapsed Time']['median']:.2f} & {stats['Elapsed Time']['stdev']:.2f} \\\\
-Goal 1 Success(\%) & {{{success_rates['Goal 1']*100:.1f}}} \\\\
-Goal 2 Success(\%) & {{{success_rates['Goal 2']*100:.1f}}} \\\\
-Goal 3 Success(\%) & {{{success_rates['Goal 3']*100:.1f}}} \\\\
-Overall Goal Success(\%) & {{{success_rates['Overall']*100:.1f}}} \\\\
-Successful Runs & {{{len(file_distance_info)}/50}} \\\\
+Foot Force (N) & {stats['Mean Foot Force']['mean']:.2f} & {stats['Mean Foot Force']['median']:.2f} & {stats['Mean Foot Force']['stdev']:.2f} \\\\
+Power Draw (A) & {stats['Mean Power Consumption']['mean']/1000:.2f} & {stats['Mean Power Consumption']['median']/1000:.2f} & {stats['Mean Power Consumption']['stdev']/1000:.2f} \\\\
+Voltage (V) & {stats['Mean Voltage Consumption']['mean']/1000:.2f} & {stats['Mean Voltage Consumption']['median']/1000:.2f} & {stats['Mean Voltage Consumption']['stdev']/1000:.2f} \\\\
+Elapsed Time(s) & {stats['Elapsed Time']:.2f} \\\\
 
 \\bottomrule
 \\end{{tabular}}
@@ -300,8 +316,14 @@ Successful Runs & {{{len(file_distance_info)}/50}} \\\\
 \\end{{document}}
 """
 
+# Goal 1 Success(\%) & {{{success_rates['Goal 1']*100:.1f}}} \\\\
+# Goal 2 Success(\%) & {{{success_rates['Goal 2']*100:.1f}}} \\\\
+# Goal 3 Success(\%) & {{{success_rates['Goal 3']*100:.1f}}} \\\\
+# Overall Goal Success(\%) & {{{success_rates['Overall']*100:.1f}}} \\\\
+# Successful Runs & {{{len(file_distance_info)}/50}} \\\\
+
 # Save output
-with open('../tables/mebt/mebt2_table.tex', 'w') as f:
+with open('../tables/elev/elev_table.tex', 'w') as f:
     f.write(latex_table)
 
 print("\nLaTeX table with statistics generated successfully!")
@@ -340,7 +362,7 @@ for i in range(len(position_x)):
 ax.set_xlabel('X (m)', labelpad=12)
 ax.set_ylabel('Y (m)', labelpad=12)
 ax.set_zlabel('Z (m)', labelpad=12)
-ax.set_title('Robot Navigation Paths in 50 Experiments', pad=20)
+ax.set_title('Robot Navigation Paths in 1 Experiment', pad=20)
 ax.grid(True, alpha=0.3)
 ax.view_init(elev=25, azim=-120)  # Good viewing angle
 
@@ -354,5 +376,5 @@ legend_elements = [
 ax.legend(handles=legend_elements, loc='best')
 
 plt.tight_layout()
-plt.savefig('../tables/mebt/mebt2_3d_paths.png', dpi=300, bbox_inches='tight')
-print("3D path visualization saved to ../tables/mebt/mebt2_3d_paths.png")
+plt.savefig('../tables/elev/elev_3d_paths.png', dpi=300, bbox_inches='tight')
+print("3D path visualization saved to ../tables/elev/elev_3d_paths.png")
