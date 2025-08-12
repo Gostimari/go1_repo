@@ -5,7 +5,7 @@ project(rslidar_sdk)
 #=======================================
 # Custom Point Type (XYZI, XYZIRT)
 #=======================================
-set(POINT_TYPE XYZIRT)
+set(POINT_TYPE XYZI)
 
 #=======================================
 # Compile setup (ORIGINAL, CATKIN, COLCON)

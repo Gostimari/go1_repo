@@ -5,6 +5,8 @@
  *      Author: Christian Gehring
  */
 
+#ifndef ROS2_BUILD
+
 #include <gtest/gtest.h>
 #include <tf/tf.h>
 #include <kindr/Core>
@@ -114,3 +116,5 @@ TEST(TfConventionTest, GeometricalInterpretation) {
   kindr::ConventionTest<tf::Quaternion, tf::Vector3, double>::testGeometricalInterpretation();
   kindr::ConventionTest<tf::Matrix3x3, tf::Vector3, double>::testGeometricalInterpretation();
 }
+
+#endif /* ROS2_BUILD */

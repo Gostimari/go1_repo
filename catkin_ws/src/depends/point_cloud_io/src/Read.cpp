@@ -8,16 +8,7 @@
 
 #include "point_cloud_io/Read.hpp"
 
-//#include <filesystem>
-#if __has_include(<filesystem>)
-  #include <filesystem>
-  namespace fs = std::filesystem;
-#elif __has_include(<experimental/filesystem>)
-  #include <experimental/filesystem> 
-  namespace fs = std::experimental::filesystem;
-#else
-  error "Missing the <filesystem> header."
-#endif
+#include <filesystem>
 
 // PCL
 #include <pcl/io/ply_io.h>
@@ -85,7 +76,7 @@ void Read::initialize() {
 }
 
 bool Read::readFile(const std::string& filePath, const std::string& pointCloudFrameId) {
-  if (fs::path(filePath).extension() == ".ply") {
+  if (std::filesystem::path(filePath).extension() == ".ply") {
     // Load .ply file.
     pcl::PointCloud<pcl::PointXYZRGBNormal> pointCloud;
     if (pcl::io::loadPLYFile(filePath, pointCloud) != 0) {
@@ -96,7 +87,7 @@ bool Read::readFile(const std::string& filePath, const std::string& pointCloudFr
     pcl::toROSMsg(pointCloud, *pointCloudMessage_);
   }
 #ifdef HAVE_VTK
-  else if (fs::path(filePath).extension() == ".vtk") {
+  else if (std::filesystem::path(filePath).extension() == ".vtk") {
     // Load .vtk file.
     pcl::PolygonMesh polygonMesh;
     pcl::io::loadPolygonFileVTK(filePath, polygonMesh);

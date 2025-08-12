@@ -44,7 +44,6 @@ add_executable(read
   src/Read.cpp
 )
 target_link_libraries(read
-  stdc++fs
   ${catkin_LIBRARIES}
 )
 
@@ -106,7 +105,6 @@ if(CATKIN_ENABLE_TESTING)
     ${catkin_INCLUDE_DIRS}
   )
   target_link_libraries(test_${PROJECT_NAME}
-    stdc++fs
     gtest_main
     ${catkin_LIBRARIES}
   )

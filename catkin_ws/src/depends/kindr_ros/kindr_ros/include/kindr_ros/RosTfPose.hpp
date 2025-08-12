@@ -28,6 +28,8 @@
 
 #pragma once
 
+#ifndef ROS2_BUILD
+
 // kindr
 #include <kindr/Core>
 
@@ -84,3 +86,5 @@ inline static void convertToRosTf(const kindr::HomogeneousTransformation<PrimTyp
 }
 
 }  // namespace kindr_ros
+
+#endif /* ROS2_BUILD */

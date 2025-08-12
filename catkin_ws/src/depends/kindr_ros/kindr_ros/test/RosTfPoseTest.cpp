@@ -26,6 +26,8 @@
  *
  */
 
+#ifndef ROS2_BUILD
+
 #include <iostream>
 
 #include <Eigen/Core>
@@ -254,3 +256,5 @@ TEST(RosTfPoseEigen, convertTwoWays) {
   EXPECT_NEAR(tfTransformConverted.getOrigin().y(), tfTransform.getOrigin().y(), 1e-8);
   EXPECT_NEAR(tfTransformConverted.getOrigin().z(), tfTransform.getOrigin().z(), 1e-8);
 }
+
+#endif /* ROS2_BUILD */

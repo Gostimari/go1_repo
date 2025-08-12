@@ -378,3 +378,94 @@ ax.legend(handles=legend_elements, loc='best')
 plt.tight_layout()
 plt.savefig('../tables/elev/elev_3d_paths.png', dpi=300, bbox_inches='tight')
 print("3D path visualization saved to ../tables/elev/elev_3d_paths.png")
+
+
+# Create 2D plot
+# fig = plt.figure(figsize=(12, 10))
+# ax = fig.add_subplot(111)
+
+# # Plot each experiment's path
+# for i in range(len(position_x)):
+#     # Define the angle of rotation in radians
+#     theta = np.radians(-20)  # 45 degrees
+
+#     # Define the x, y values
+#     x = np.array(position_x[i])
+#     y = np.array(position_y[i])
+
+#     # Apply the rotation
+#     x_rotated = x * np.cos(theta) - y * np.sin(theta)
+#     y_rotated = x * np.sin(theta) + y * np.cos(theta)
+    
+#     # Plot main path (semi-transparent)
+#     ax.plot(x_rotated, y_rotated, 
+#             alpha=1.0,          # Opaque
+#             linewidth=5.0,       # Thin lines
+#             color='red',
+#             linestyle='--')        # Consistent color
+
+# # # -19.02 -13.71
+# # # 9.72 -22.27
+# # # -10.79 -6.89
+# # #Goals
+# ax.scatter(19.02, 13.71, 
+#             color='blue', s=20, marker='o')
+# ax.scatter(-9.72, 22.27, 
+#             color='green', s=20, marker='o')
+# ax.scatter(10.79, 6.89, 
+#             color='lime', s=20, marker='o')
+
+# # Set background transparent
+# ax.set_facecolor('none')
+# fig.patch.set_facecolor('none')
+
+# # Remove axis ticks and frames
+# ax.axis('off')
+
+# # Save the plot with transparent background
+# plt.savefig('../tables/elev/elev2_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True, pad_inches=0)
+# print("3D path visualization saved to ../tables/elev/elev2_2d_paths.png")
+
+
+# Read the file with header
+data = pd.read_csv('../logfiles/new_metrics/elev/odom.csv')
+
+# Extract X and Y positions (skip first 457 rows if needed)
+position_x = data["field.pose.pose.position.x"].iloc[421:].values
+position_y = data["field.pose.pose.position.y"].iloc[421:].values
+
+# Create 2D plot
+fig = plt.figure(figsize=(12, 10))
+ax = fig.add_subplot(111)
+
+# Define the angle of rotation in radians
+theta = np.radians(-20)  # 45 degrees
+
+# Define the x, y values
+x = np.array(position_x)
+y = np.array(position_y)
+
+# Apply the rotation
+x_rotated = x * np.cos(theta) - y * np.sin(theta)
+y_rotated = x * np.sin(theta) + y * np.cos(theta)
+
+# Plot main path (semi-transparent)
+ax.plot(x_rotated, y_rotated, 
+        alpha=1.0,          # Opaque
+        linewidth=5.0,       # Thin lines
+        color='red',
+        linestyle='--')        # Consistent color
+
+# Set background transparent
+ax.set_facecolor('none')
+fig.patch.set_facecolor('none')
+
+# Remove axis ticks and frames
+ax.axis('off')
+
+# Save the plot
+plt.tight_layout()
+plt.savefig('../tables/elev/elev2_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True)
+print("2D path visualization saved to ../tables/elev/elev2_2d_paths.png")
+
+
