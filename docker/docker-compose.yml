@@ -46,7 +46,7 @@ services:
     network_mode: "host"
     volumes:
       - ../catkin_ws/src:/root/catkin_ws/src
-      - ../catkin_ws/build:/root/catkin_ws/build
+      #- ../catkin_ws/build:/root/catkin_ws/build
       - ../catkin_ws/src/gps_waypoint_nav/.mapviz_config:/root/.mapviz_config:rw
       - ../shared_folder:/root/shared_folder
       - ../shared_folder/.zshrc:/root/.zshrc:rw

@@ -3,6 +3,10 @@
 export GDK_BACKEND=x11
 export XDG_SESSION_TYPE=x11
 
+#Source ROS environments
+source /opt/ros/melodic/setup.bash
+source /root/catkin_ws/devel/setup.bash
+
 # Global variables
 COMMAND_PID=""
 UNSAFE_COMMAND_USED="" # Flag to track if an unsafe command has been run
@@ -49,7 +53,9 @@ execute_command() {
     6)
         echo "Catkin Build clicked"
         cd ../catkin_ws
-        SHELL=/bin/bash command catkin build &
+        SHELL=/bin/bash command catkin config --whitelist $BUILDLIST
+        SHELL=/bin/bash command catkin build -v
+        source devel/setup.bash
         cd ../shared_folder
         COMMAND_PID=$!
         UNSAFE_COMMAND_USED=6 # Mark that an unsafe command was used
@@ -92,7 +98,6 @@ execute_command() {
         if [ -n "$COMMAND_PID" ]; then
             case "$UNSAFE_COMMAND_USED" in
                 1)
-                    send_safe_stop
                     UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
                     ;;
                 *)
@@ -135,7 +140,6 @@ execute_command() {
         if [ -n "$COMMAND_PID" ]; then
             case "$UNSAFE_COMMAND_USED" in
                 1)
-                    send_safe_stop
                     UNSAFE_COMMAND_USED=3  # Mark that an unsafe command was used
                     ;;
                 *)

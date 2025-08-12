@@ -66,6 +66,9 @@ RUN apt-get install -y ros-${ROS_DISTRO}-navigation \
 ENV CATKIN_WS=/root/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
 
+RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
+
 # Clean-up
 WORKDIR /
 RUN apt-get clean

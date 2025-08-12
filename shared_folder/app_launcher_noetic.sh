@@ -3,6 +3,10 @@
 export GDK_BACKEND=x11
 export XDG_SESSION_TYPE=x11
 
+#Source ROS environments
+source /opt/ros/noetic/setup.bash
+source /root/catkin_ws/devel/setup.bash
+
 # Global variables
 COMMAND_PID=""
 UNSAFE_COMMAND_USED=""  # Flag to track if an unsafe command has been run
@@ -81,7 +85,9 @@ execute_command() {
         7)
             echo "Catkin Build clicked"
             cd ../catkin_ws
-            SHELL=/bin/bash command catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release &
+            SHELL=/bin/bash command catkin config --buildlist $BUILDLIST
+            SHELL=/bin/bash command catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
+            source devel/setup.bash
             cd ../shared_folder
             COMMAND_PID=$!
             UNSAFE_COMMAND_USED=13 # Mark that an unsafe command was used

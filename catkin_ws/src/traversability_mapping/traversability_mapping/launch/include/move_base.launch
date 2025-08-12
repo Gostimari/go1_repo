@@ -5,7 +5,7 @@
     <!--launch-prefix="xterm -e">-->
     <rosparam file="$(find traversability_mapping)/launch/params/move_base/global_costmap_params.yaml" command="load"/>
     <rosparam file="$(find traversability_mapping)/launch/params/move_base/local_costmap_params.yaml" command="load"/>
-<!--     <rosparam file="$(find traversability_mapping)/launch/params/move_base/local_costmap_params_trav.yaml" command="load"/> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> -->
+<!--     <rosparam file="$(find traversability_mapping)/launch/params/move_base/local_costmap_params_trav.yaml" command="load"/> -->
     <rosparam file="$(find traversability_mapping)/launch/params/move_base/move_base_params.yaml" command="load"/>
     <param name="base_global_planner" type="string" value="tm_planner/TMPlanner"/>
     <!-- <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/> -->

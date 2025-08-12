@@ -1,28 +1,18 @@
 #!/bin/bash
 set -e
 
-export ROS_MASTER_URI=http://192.168.12.173:11311/
-export ROS_IP=192.168.12.173
+#export ROS_MASTER_URI=http://192.168.12.173:11311/
+#export ROS_IP=192.168.12.173
 
 #Build the catkin workspace
 cd /root/catkin_ws
-# catkin config --whitelist $BUILDLIST #only builds these packages
-# catkin build -v
+catkin config --whitelist $BUILDLIST #only builds these packages
+catkin build -v
 
-# setup ros environment
-if [[ ! -z "${SETUP}" ]]; then
-        #from environment variable; should be a absolute path to the appropriate workspaces's setup.bash
-        echo "source env is set to '$SETUP'"
-else
-        # basic ros environment
-	export SETUP="/opt/ros/$ROS_DISTRO/setup.bash"
-        echo "source env is set to '/opt/ros/$ROS_DISTRO/setup.bash'"
-fi
-
-source $SETUP
-
+#Run emlid configuration device script
 python /root/catkin_ws/src/depends/ethzasl_xsens_driver/nodes/mtdevice.py -l --output-mode=sotac --output-settings=tqMAG
 
+#Start melodic app
 cd ../shared_folder
 exec ./app_launcher_melodic.sh
 
