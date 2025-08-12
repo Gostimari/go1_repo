@@ -1,0 +1,3 @@
+[submodule "catkin_ws/src/depends/marti_common"]
+	path = catkin_ws/src/depends/marti_common
+	url = https://github.com/swri-robotics/marti_common.git
