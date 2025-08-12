@@ -1,10 +1,10 @@
-# 🚀 Autonomous Waypoint Navigation on Unitree Go1 Edu in Irregular Outdoor Terrains
+# Autonomous Waypoint Navigation on Unitree Go1 Edu in Irregular Outdoor Terrains
 
 This repository provides three robust pipelines for autonomous waypoint navigation on the Unitree Go1 Edu robot, tailored for irregular outdoor terrains. Below is a step-by-step guide to set up and utilize the system effectively.
 
 ---
 
-## 📦 Installation
+## First Steps
 
 ### 1. Install Docker
 Follow the official Docker installation guide for your OS:  
@@ -29,14 +29,14 @@ sudo apt install git
 sudo dnf install git
 ```
 
-#### Clone the Repo
+#### Clone the repo and all the submodules
 ```bash
-git clone https://github.com/Gostimari/go1_repo.git
+git clone --recursive https://github.com/Gostimari/go1_repo.git
 ```
 
 ---
 
-## 🐳 Docker Setup
+## Docker Setup
 1. Enable Docker GUI access:
    ```bash
    xhost +local:root
@@ -49,7 +49,7 @@ git clone https://github.com/Gostimari/go1_repo.git
    ```
 ---
 
-## 🧭 Navigation Pipelines
+## Navigation Pipelines
 
 ### Option 1: Elevation Mapping
 ```bash
@@ -74,7 +74,7 @@ roslaunch traversability_mapping offline.launch
 
 ---
 
-## 🛠️ Launch Individual Components
+## Launch Individual Components
 
 ### iG_LIO
 ```bash
@@ -119,7 +119,7 @@ roslaunch gps_waypoint_nav mapviz.launch
 
 ---
 
-## 🌍 Map Server Setup (Docker)
+## Map Server Setup (Docker)
 
 1. Download map data (e.g., Portugal):
    ```bash
@@ -151,7 +151,7 @@ roslaunch gps_waypoint_nav mapviz.launch
 
 ---
 
-## 📊 Metrics & Analysis
+## Metrics & Analysis
 
 ### 1. Extract Metrics
 ```bash

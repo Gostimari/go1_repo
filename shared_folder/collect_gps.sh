@@ -6,10 +6,10 @@ FILE="$WORKDIR/melodic_trav.log"
 STRING="melodic ready"
 
 # Make sure Wi-Fi is turned off
-# sudo nmcli radio wifi off
+sudo nmcli radio wifi off
 
 # # Properly connect to the correct ethernet ports
-# sudo nmcli connection up RS-Bpearl
+sudo nmcli connection up RS-Bpearl
 
 # sleep 2
 
@@ -18,7 +18,7 @@ STRING="melodic ready"
 
 # sleep 2  # Give some time for roscore to start
 
-roslaunch go1_ros_interface robot.launch connection_type:=wireless feedback_frequency:=10 & #50
+roslaunch go1_ros_interface robot.launch connection_type:=ethernet feedback_frequency:=10 & #50
 
 sleep 2
 
