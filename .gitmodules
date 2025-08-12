@@ -1,3 +1,36 @@
 [submodule "catkin_ws/src/depends/marti_common"]
 	path = catkin_ws/src/depends/marti_common
 	url = https://github.com/swri-robotics/marti_common.git
+[submodule "catkin_ws/src/depends/emlid_reach_ros"]
+	path = catkin_ws/src/depends/emlid_reach_ros
+	url = https://github.com/tmxkn1/emlid_reach_ros.git
+[submodule "catkin_ws/src/depends/ethzasl_xsens_driver"]
+	path = catkin_ws/src/depends/ethzasl_xsens_driver
+	url = https://github.com/ethz-asl/ethzasl_xsens_driver.git
+[submodule "catkin_ws/src/depends/kindr"]
+	path = catkin_ws/src/depends/kindr
+	url = https://github.com/ANYbotics/kindr.git
+[submodule "catkin_ws/src/depends/kindr_ros"]
+	path = catkin_ws/src/depends/kindr_ros
+	url = https://github.com/ANYbotics/kindr_ros.git
+[submodule "catkin_ws/src/depends/message_logger"]
+	path = catkin_ws/src/depends/message_logger
+	url = https://github.com/ANYbotics/message_logger.git
+[submodule "catkin_ws/src/depends/nmea_msgs"]
+	path = catkin_ws/src/depends/nmea_msgs
+	url = https://github.com/tmxkn1/nmea_msgs.git
+[submodule "catkin_ws/src/depends/point_cloud_io"]
+	path = catkin_ws/src/depends/point_cloud_io
+	url = https://github.com/ANYbotics/point_cloud_io.git
+[submodule "catkin_ws/src/depends/ros_numpy"]
+	path = catkin_ws/src/depends/ros_numpy
+	url = https://github.com/eric-wieser/ros_numpy.git
+[submodule "catkin_ws/src/rslidar_sdk"]
+	path = catkin_ws/src/rslidar_sdk
+	url = https://github.com/RoboSense-LiDAR/rslidar_sdk.git
+[submodule "catkin_ws/src/unitree_ros_to_real"]
+	path = catkin_ws/src/unitree_ros_to_real
+	url = https://github.com/unitreerobotics/unitree_ros_to_real.git
+[submodule "catkin_ws/src/ros_numpy"]
+	path = catkin_ws/src/ros_numpy
+	url = https://github.com/eric-wieser/ros_numpy.git
