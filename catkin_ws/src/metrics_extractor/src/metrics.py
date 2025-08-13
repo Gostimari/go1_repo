@@ -92,7 +92,7 @@ class MetricsExtractor:
 
 		# Get the current directory and navigate to "src/metrics_extractor"
 		self.current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-		self.logfiles_path = os.path.join(self.current_path, "logfiles")
+		self.logfiles_path = os.path.join(self.current_path, "logfiles/elev")
 
 		# Create directory if it doesn't exist
 		os.makedirs(self.logfiles_path, exist_ok=True)
