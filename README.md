@@ -86,7 +86,7 @@ sudo dnf install git
 git clone --recursive https://github.com/Gostimari/go1_repo.git
 ```
 
-## 3. Docker Setup
+### 3. Docker Setup
 
 #### Enable Docker GUI access:
    ```bash
@@ -268,30 +268,13 @@ After collecting the metrics, you can generate visualizations and LaTeX-ready ta
 
 **Configuration for Specific Algorithms**
 
-To adapt the script for a specific algorithm, update the following lines in `table_generator.py`:
+To adapt the script for a specific algorithm, update the global parameter in `table_generator.py`:
 
-- Change line 112:
-  ```bash
-  for csv_file in Path('.').glob('../logfiles/elev/logfile_metrics-*.csv'):
-  ```
-- Change line 202:
-  ```bash
-  for csv_raw_file in Path('.').glob('../logfiles/elev/logfile_raw-*.csv'):
-  ```
-- Change line 326:
-  ```bash
-  with open('../tables/elev/elev_table.tex', 'w') as f:
-  ```
-- Change line 379:
-  ```bash
-  plt.savefig('../tables/elev/elev_3d_paths.png', dpi=300, bbox_inches='tight')
-  ```
-- Change line 426:
-  ```bash
-  plt.savefig('../tables/elev/elev2_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True, pad_inches=0)
-  ```
-
-Replace `elev` with the appropriate folder name for the desired algorithm (`mebt` or `elev`).
+- Change `BASE_DIR` and `OUTPUT_DIR` (lines 10-11), with the appropriate folder name for the desired algorithm (`mebt` or `elev`).
+```bash
+BASE_DIR = '../logfiles/mebt/'  # Specifies the directory where the log files are stored.
+OUTPUT_DIR = '../tables/mebt/'  # Specifies the directory where output files (e.g., figures, LaTeX tables) will be saved.
+```
 
 ---
 

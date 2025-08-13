@@ -6,6 +6,18 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+# Define a global parameter for the base directory
+BASE_DIR = '../logfiles/mebt/'  # Specifies the directory where the log files are stored. Change this to '../logfiles/elev/' if needed.
+OUTPUT_DIR = '../tables/mebt/'  # Specifies the directory where output files (e.g., figures, LaTeX tables) will be saved. Change this to '../tables/elev/' if needed.
+
+# Determine the caption based on BASE_DIR
+if BASE_DIR == '../logfiles/elev/':
+    caption_text = "Elevation Metrics Table"
+elif BASE_DIR == '../logfiles/mebt/':
+    caption_text = "MEBT Metrics Table"
+else:
+    caption_text = "Metrics Table"  # Default fallback
+
 # Initialize storage lists
 file_distance_info = []
 file_distance_info_raw = []
@@ -109,7 +121,7 @@ def process_file(file_path):
 
 # Collect and sort files chronologically
 all_files = []
-for csv_file in Path('.').glob('../logfiles/elev/logfile_metrics-*.csv'):
+for csv_file in Path('.').glob(f'{BASE_DIR}logfile_metrics-*.csv'):
     dt = parse_file_datetime(csv_file)
     if dt:  # Only process files with valid dates
         all_files.append((dt, csv_file))
@@ -199,7 +211,7 @@ def process_file_raw(file_path_raw):
 
 # Collect and sort raw files chronologically
 all_raw_files = []
-for csv_raw_file in Path('.').glob('../logfiles/elev/logfile_raw-*.csv'):
+for csv_raw_file in Path('.').glob(f'{BASE_DIR}logfile_raw-*.csv'):
     dt = parse_file_datetime(csv_raw_file)
     if dt:  # Only process files with valid dates
         all_raw_files.append((dt, csv_raw_file))
@@ -251,8 +263,8 @@ stats = {
 }
 
 # Calculate success rates
-#total_files = len(file_distance_info)
-total_files = 1
+total_files = len(file_distance_info)
+#total_files = 1
 #print(f"{total_files} Total Files")
 #print(f"{goal_counts['REACHED GOAL 1']} Goal 1")
 success_rates = {
@@ -290,7 +302,7 @@ latex_table = f"""
 
 \\begin{{table}}[htbp]
 \\centering
-\\caption{{Elevation Metrics Table}}
+\\caption{{{caption_text}}}
 \\label{{tab:simulation-metrics}}
 \\sisetup{{
     table-format=1.3,
@@ -323,7 +335,7 @@ Elapsed Time(s) & {stats['Elapsed Time']:.2f} \\\\
 # Successful Runs & {{{len(file_distance_info)}/50}} \\\\
 
 # Save output
-with open('../tables/elev/elev_table.tex', 'w') as f:
+with open(f'{OUTPUT_DIR}table.tex', 'w') as f:
     f.write(latex_table)
 
 print("\nLaTeX table with statistics generated successfully!")
@@ -376,8 +388,8 @@ legend_elements = [
 ax.legend(handles=legend_elements, loc='best')
 
 plt.tight_layout()
-plt.savefig('../tables/elev/elev_3d_paths.png', dpi=300, bbox_inches='tight')
-print("3D path visualization saved to ../tables/elev/elev_3d_paths.png")
+plt.savefig(f'{OUTPUT_DIR}fig_3d_paths.png', dpi=300, bbox_inches='tight')
+print("3D path visualization saved successfully!")
 
 
 # Create 2D plot
@@ -423,49 +435,7 @@ fig.patch.set_facecolor('none')
 ax.axis('off')
 
 # Save the plot with transparent background
-plt.savefig('../tables/elev/elev2_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True, pad_inches=0)
-print("3D path visualization saved to ../tables/elev/elev2_2d_paths.png")
-
-
-# Read the file with header
-# data = pd.read_csv('../logfiles/new_metrics/elev/odom.csv')
-
-# # Extract X and Y positions (skip first 457 rows if needed)
-# position_x = data["field.pose.pose.position.x"].iloc[421:].values
-# position_y = data["field.pose.pose.position.y"].iloc[421:].values
-
-# # Create 2D plot
-# fig = plt.figure(figsize=(12, 10))
-# ax = fig.add_subplot(111)
-
-# # Define the angle of rotation in radians
-# theta = np.radians(-20)  # 45 degrees
-
-# # Define the x, y values
-# x = np.array(position_x)
-# y = np.array(position_y)
-
-# # Apply the rotation
-# x_rotated = x * np.cos(theta) - y * np.sin(theta)
-# y_rotated = x * np.sin(theta) + y * np.cos(theta)
-
-# # Plot main path (semi-transparent)
-# ax.plot(x_rotated, y_rotated, 
-#         alpha=1.0,          # Opaque
-#         linewidth=5.0,       # Thin lines
-#         color='red',
-#         linestyle='--')        # Consistent color
-
-# # Set background transparent
-# ax.set_facecolor('none')
-# fig.patch.set_facecolor('none')
-
-# # Remove axis ticks and frames
-# ax.axis('off')
-
-# # Save the plot
-# plt.tight_layout()
-# plt.savefig('../tables/elev/elev2_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True)
-# print("2D path visualization saved to ../tables/elev/elev2_2d_paths.png")
+plt.savefig(f'{OUTPUT_DIR}fig_2d_paths.png', dpi=300, bbox_inches='tight', transparent=True, pad_inches=0)
+print("3D path visualization saved successfully!")
 
 
